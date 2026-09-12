@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Rewrite the README for product users, move application engineering and operations details into AGENTS.md, and add contributor guidance requiring a current-head ReviewGate 5/5 before merge.
+
 - Enable ReviewGate pull request reviews from its `main` branch, with general/adversarial checks, structured results, and maintainer-requested rereviews using the existing OpenRouter secret.
 
 - Add authenticated hosted MCP at `/mcp/` in a dedicated Django app, sharing REST search, metadata, screenshot references, account info, and administrator submission/retry behavior. Include filter discovery, setup docs, revocation/permission/parity tests, and multi-worker ASGI serving.
