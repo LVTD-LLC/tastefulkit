@@ -50,7 +50,7 @@ curl 'https://tastefulkit.com/api/v1/designs' \
   --data '{"title":"Example","source_url":"https://example.com/","description":"Describe the layout, typography, palette, and useful patterns.","kind":"landing_page","tags":["minimal","editorial"],"industry":"software"}'
 ```
 
-POST returns 201 (new) or 200 (existing), identified by URL + kind + selector + viewport width. Capture is asynchronous: poll `GET /api/v1/designs/{id}` for `capture_status=ready`. Admins can see pending/failed entries; other users only see published, ready designs. Retry failures with `POST /api/v1/designs/{id}/retry`. An optional CSS `selector` captures a component; `viewport_width` defaults to 1440. Screenshots belong to their original creators, not to this project.
+POST returns 201 (new) or 200 (existing), identified by URL + kind + selector + viewport width. Screenshot requests are paced for the Cloudflare free tier; transient provider errors retry automatically up to three times. Capture is asynchronous: poll `GET /api/v1/designs/{id}` for `capture_status=ready`. Admins can see pending/failed entries; other users only see published, ready designs. Retry failures with `POST /api/v1/designs/{id}/retry`. An optional CSS `selector` captures a component; `viewport_width` defaults to 1440. Screenshots belong to their original creators, not to this project.
 
 Interactive API schema: `/api/docs`. Source URLs must resolve to public HTTP(S) addresses. Rendering takes place at Cloudflare, not inside the app's private network. Submission does not fetch an arbitrary user-supplied screenshot URL.
 
