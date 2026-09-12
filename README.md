@@ -10,13 +10,14 @@ A searchable library of real-world UI design examples for people and their agent
 
 - Email-verified signup, login, passkeys, account settings, and personal API keys.
 - Design library with text/semantic search, element/style/industry filters, and saved designs.
+- Hosted MCP with personal API-key authentication at https://tastefulkit.com/mcp/.
 - One flexible model for landing pages, pricing pages, heroes, blogs, dashboards, and other UI elements.
 - Admin-only, idempotent ingestion API. A background worker captures screenshots and generates embeddings.
 - Private Cloudflare R2 storage with short-lived signed image URLs; Cloudflare Browser Run and Workers AI.
 - Django admin for moderation and failed-capture retries.
 - GitHub Actions builds one immutable GHCR image and deploys web and worker apps to CapRover.
 
-MCP, pairwise voting, Elo rankings, and learned personal taste profiles are roadmap items, not implemented in this release. The daily research agent is external to the app: it submits through the ingestion API. No catalogue entries are hardcoded or seeded by migrations.
+Pairwise voting, Elo rankings, and learned personal taste profiles are roadmap items, not implemented in this release. The daily research agent is external to the app: it submits through the ingestion API. No catalogue entries are hardcoded or seeded by migrations.
 
 ## Local development
 
@@ -55,6 +56,36 @@ curl 'https://tastefulkit.com/api/v1/designs' \
 POST returns 201 (new) or 200 (existing), identified by URL + kind + selector + viewport width. Screenshot requests are paced for the Cloudflare free tier; transient provider errors retry automatically up to three times. Capture is asynchronous: poll `GET /api/v1/designs/{id}` for `capture_status=ready`. Admins can see pending/failed entries; other users only see published, ready designs. Retry failures with `POST /api/v1/designs/{id}/retry`. An optional CSS `selector` captures a component; `viewport_width` defaults to 1440. Screenshots belong to their original creators, not to this project.
 
 Interactive API schema: `/api/docs`. Source URLs must resolve to public HTTP(S) addresses. Rendering takes place at Cloudflare, not inside the app's private network. Submission does not fetch an arbitrary user-supplied screenshot URL.
+
+## Hosted MCP
+
+Connect a Streamable HTTP client to `https://tastefulkit.com/mcp/` with
+`Authorization: Bearer $TASTEFULKIT_API_KEY`. The key is the same personal key used
+by REST; there is no separate OAuth flow. See the [connection guide](https://tastefulkit.com/docs/api-reference/mcp/)
+for setup, tool arguments, and troubleshooting.
+
+The `apps/hosted_mcp/` Django app exposes list/search/detail, filter discovery, account
+info, and administrator-only submit/retry tools. Catalogue services and API-key
+verification are shared with REST. Key rotation and account deactivation take
+effect on the next request. Screenshot references expire after 15 minutes.
+
+Production serves `tastefulkit.asgi:application` using Gunicorn with Uvicorn workers.
+MCP is mounted at `/mcp/`; other paths still use Django and its middleware, including
+WhiteNoise. Stateless HTTP with JSON responses works across workers without sticky
+sessions, persistent MCP session storage, or SSE proxy buffering changes. The parent
+ASGI app runs the MCP lifespan. MCP validates host and origin separately because it
+does not pass through Django middleware. Only `SITE_URL` is an allowed browser origin.
+
+For local MCP development, run the ASGI entrypoint (Django `runserver` is WSGI-only):
+
+```sh
+DJANGO_SETTINGS_MODULE=tastefulkit.local_settings uv run uvicorn tastefulkit.asgi:application --host 127.0.0.1 --port 8000
+```
+
+Use `http://localhost:8000/mcp/` locally, with a local account's API key.
+The normal web and worker commands remain available. Verify MCP with
+`uv run pytest apps/hosted_mcp -q`; tests include real Streamable HTTP client connectivity,
+REST parity, visibility, revocation, validation, and admin boundaries.
 
 ## Production configuration
 
