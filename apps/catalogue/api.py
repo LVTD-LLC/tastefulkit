@@ -29,6 +29,13 @@ class DesignIn(Schema):
     selector: str = Field(default="", max_length=200)
     viewport_width: int = Field(default=1440, ge=320, le=2560)
 
+    @field_validator("title", "description", "industry", "selector", "source_url")
+    @classmethod
+    def safe_text(cls, value):
+        if "\x00" in value or any(0xD800 <= ord(c) <= 0xDFFF for c in value):
+            raise ValueError("Text contains invalid characters.")
+        return value
+
     @field_validator("tags")
     @classmethod
     def tag_lengths(cls, tags):

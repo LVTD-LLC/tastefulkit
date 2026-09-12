@@ -35,9 +35,11 @@ def process_design(pk):
         content = capture(design)
         with Image.open(io.BytesIO(content)) as source:
             source.load()
-            source.thumbnail((720, 1200))
+            # Crop the first viewport before resizing; full-page shrinking blurs cards.
+            preview = source.crop((0, 0, source.width, min(source.height, source.width * 2 // 3)))
+            preview.thumbnail((720, 480))
             output = io.BytesIO()
-            source.convert("RGB").save(output, format="JPEG", quality=80)
+            preview.convert("RGB").save(output, format="JPEG", quality=80)
         design.screenshot.save(f"{design.pk}.jpg", ContentFile(content), save=False)
         stored.append(design.screenshot.name)
         design.thumbnail.save(f"{design.pk}.jpg", ContentFile(output.getvalue()), save=False)

@@ -42,6 +42,7 @@ def visible_designs():
 
 
 def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
+    query, kind, tag, industry = [clean_search_text(v) for v in (query, kind, tag, industry)]
     designs = visible_designs().prefetch_related("tags")
     if kind:
         designs = designs.filter(kind=kind)
@@ -112,3 +113,7 @@ def rank_vectors(designs, query_vector):
             ranked.append((pk, similarity))
     ranked.sort(key=lambda item: item[1], reverse=True)
     return ranked
+
+
+def clean_search_text(value):
+    return value.replace("\x00", "").encode("utf-8", "replace").decode()[:300]

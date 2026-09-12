@@ -153,3 +153,10 @@ def test_library_save_and_visibility(client, user, design):
     design.published = False
     design.save()
     assert client.get(design.get_absolute_url()).status_code == 404
+
+
+def test_control_characters_in_search_do_not_break_postgres(design):
+    with patch("apps.catalogue.services.embed", side_effect=ValueError("offline")):
+        matches, mode = search_designs("warm\x00", tag="\x00")
+    assert list(matches) == [design]
+    assert mode == "text"
