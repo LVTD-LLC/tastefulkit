@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Adopt the approved reference-stack logo across public and app headers/footers, with theme-aware branding, matching browser/touch icons, and a first-party social preview.
+
 - Fix Qdrant SDK client lifecycle handling discovered during live rollout; verify actual SDK cleanup in regression coverage.
 
 - Move live embedding storage and similarity ranking to an isolated internal Qdrant service.

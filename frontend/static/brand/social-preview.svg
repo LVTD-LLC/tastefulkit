@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#f8f7f3"/>
+  <g transform="translate(160 205) scale(2.1)" fill="#242922">
+    <path d="M52 8Q52 3 57 4.5L92 14.5Q96 15.6 96 20V68Q96 73 91 71.5L84 69.5V29Q84 24 79 22.5L52 14.8Z"/>
+    <path d="M30 25Q30 20 35 21.5L74 32.5Q78 33.6 78 38V83Q78 88 73 86.5L66 84.5V47Q66 42 61 40.5L30 31.7Z"/>
+    <path d="M8 42Q8 37 13 38.5L56 50.5Q60 51.6 60 56V94Q60 99 55 97.5L12 85.5Q8 84.4 8 80Z"/>
+  </g>
+  <text x="425" y="327" fill="#242922" font-family="Arial, sans-serif" font-size="78" font-weight="700" letter-spacing="-3">TastefulKit</text>
+  <text x="430" y="380" fill="#62675e" font-family="Arial, sans-serif" font-size="26">Design references tuned to your taste.</text>
+</svg>

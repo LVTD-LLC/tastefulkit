@@ -19,14 +19,14 @@
             <meta property="og:description"
                   content="Discover design references tuned to your taste." />
             <meta property="og:image"
-                  content="https://osig.app/g?site=meta&style=logo&font=markerfelt&title=TastefulKit&subtitle=Discover%20design%20references%20tuned%20to%20your%20taste." />
+                  content="{{ public_site_url }}{% static 'brand/social-preview.png' %}" />
             <meta property="og:locale" content="en_US" />
-            <meta name="twitter:card" content="summary" />
+            <meta name="twitter:card" content="summary_large_image" />
             <meta name="twitter:title" content="TastefulKit" />
             <meta name="twitter:description"
                   content="Discover design references tuned to your taste." />
             <meta name="twitter:image"
-                  content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=TastefulKit&subtitle=Discover%20design%20references%20tuned%20to%20your%20taste." />
+                  content="{{ public_site_url }}{% static 'brand/social-preview.png' %}" />
         {% endblock meta %}
         {% include "components/posthog.html" %}
         <script>
