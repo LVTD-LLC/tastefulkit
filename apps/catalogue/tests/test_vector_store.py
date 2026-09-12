@@ -176,3 +176,17 @@ def test_qdrant_write_failure_schedules_retry(user, qdrant_store):
     design.refresh_from_db()
     assert design.embedding_error and design.embedding_model == ""
     assert Schedule.objects.filter(func="apps.catalogue.tasks.index_design").exists()
+
+
+def test_client_factory_closes_real_sdk_client(settings, monkeypatch):
+    from qdrant_client import QdrantClient
+
+    from apps.catalogue.vector_store import get_client
+
+    settings.QDRANT_URL = "http://qdrant.test:6333"
+    client = QdrantClient(":memory:")
+    monkeypatch.setattr("apps.catalogue.vector_store.QdrantClient", lambda **kwargs: client)
+    with get_client() as opened:
+        assert opened.get_collections().collections == []
+    with pytest.raises(RuntimeError, match="closed"):
+        client.get_collections()
