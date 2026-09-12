@@ -1,7 +1,9 @@
 import hashlib
 
+from django.core.paginator import Paginator
 from django.db import transaction
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 from django.utils.text import slugify
 from django_q.tasks import async_task
 
@@ -101,3 +103,56 @@ def serialize_design(design, *, admin=False):
 
 def clean_search_text(value):
     return value.replace("\x00", "").encode("utf-8", "replace").decode()[:300]
+
+
+def design_page(query="", kind="", tag="", industry="", page=1):
+    """Shared REST/MCP search, visibility, pagination and screenshot serialization."""
+    designs, mode = search_designs(query, kind, tag, industry)
+    pager = Paginator(designs, 24)
+    current = pager.get_page(page)
+    return {
+        "items": [serialize_design(design) for design in current],
+        "page": current.number,
+        "pages": pager.num_pages,
+        "total": pager.count,
+        "search_mode": mode,
+    }
+
+
+def design_detail(design_id, user):
+    admin = user.is_active and user.is_superuser
+    designs = Design.objects.all().defer("embedding") if admin else visible_designs()
+    design = get_object_or_404(designs.prefetch_related("tags"), pk=design_id)
+    return serialize_design(design, admin=admin)
+
+
+def retry_design_capture(design_id):
+    """Retry an eligible capture after the caller has enforced admin authorization."""
+    design = get_object_or_404(Design, pk=design_id)
+    if design.capture_status not in {Design.Status.FAILED, Design.Status.PENDING}:
+        raise ValueError("Only pending or failed entries can be retried.")
+    queue_capture(design.pk)
+    return {"queued": True, "id": str(design.pk)}
+
+
+def design_filters(page=1):
+    """Discover filter values from visible designs only, in bounded pages."""
+    visible = visible_designs()
+    tags = Tag.objects.filter(designs__in=visible).order_by("name").distinct()
+    industries = (
+        visible.exclude(industry="")
+        .order_by("industry")
+        .values_list("industry", flat=True)
+        .distinct()
+    )
+    tag_page = Paginator(tags.values_list("name", flat=True), 100).get_page(page)
+    industry_page = Paginator(industries, 100).get_page(page)
+    return {
+        "kinds": [{"value": value, "label": label} for value, label in Design.Kind.choices],
+        "tags": list(tag_page),
+        "industries": list(industry_page),
+        "tags_page": tag_page.number,
+        "tags_pages": tag_page.paginator.num_pages,
+        "industries_page": industry_page.number,
+        "industries_pages": industry_page.paginator.num_pages,
+    }

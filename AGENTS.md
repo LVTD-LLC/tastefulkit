@@ -26,6 +26,7 @@ with the app structure that Cookiecutter created.
 - `apps/pages/` - landing, pricing, legal, and other static or marketing pages,
   plus repository-tracked content such as blog and docs when generated.
 - `apps/api/` - Django Ninja API schemas, auth, services, and routers.
+- `apps/hosted_mcp/` - authenticated hosted MCP tools; mounted by `tastefulkit/asgi.py`.
 - `apps/pages/content/docs/` - public user-facing Markdown documentation content.
 - `tastefulkit/settings.py` - environment-driven Django
   settings.

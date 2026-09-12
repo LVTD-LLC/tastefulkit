@@ -115,6 +115,7 @@ THIRD_PARTY_APPS = [
 
 CUSTOM_APPS = [
     "apps.catalogue.apps.CatalogueConfig",
+    "apps.hosted_mcp.apps.MCPConfig",
     "apps.core.CoreConfig",
     "apps.api.ApiConfig",
     "apps.pages.PagesConfig",
@@ -161,6 +162,7 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = "tastefulkit.wsgi.application"
+ASGI_APPLICATION = "tastefulkit.asgi.application"
 
 
 # Database
