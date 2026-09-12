@@ -1,38 +1,50 @@
 ---
 title: Design Library API
-description: Search real design examples and submit new entries as an administrator.
+description: Search published design references, paginate results, and fetch fresh screenshot links using the TastefulKit API.
 ---
 
-Use your personal API key from **Account** settings. Send it in the `Authorization: Bearer` header. Never put it in a URL.
+# Search the design library
 
-## Search designs
+Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.
 
 ```bash
 curl 'https://tastefulkit.com/api/v1/designs?q=warm%20minimal&kind=landing_page' \
   -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-Optional filters: `q`, `kind`, `tag`, `industry`, and `page`. Results contain title, description, source URL, tags, and signed screenshot URLs. Each page contains up to 24 designs. Signed image links expire after 15 minutes; fetch the design again for fresh links.
+## Filter and paginate
 
-## Submit an example
+All query parameters are optional:
 
-Only an active administrator account can submit examples. The endpoint queues a capture; it does not wait for the screenshot.
+| Parameter | Use |
+| --- | --- |
+| `q` | A text description, such as `warm minimal`. |
+| `kind` | An element type: `landing_page`, `pricing_page`, `hero`, `blog`, `navigation`, `footer`, `dashboard`, or `other`. |
+| `tag` | A style tag from the library. |
+| `industry` | An industry from the library. |
+| `page` | A page number, starting at `1`. |
+
+Filters combine, just as they do in Explore. URL-encode spaces and other special characters in parameter values.
+
+The response contains `items`, `page`, `pages`, `total`, and `search_mode`. Each page contains up to 24 designs. Use `pages` to decide whether to request another page. An empty search returns an empty `items` list.
+
+Each design includes its ID, title, description, source URL, tags, and screenshot links. Keep the ID if you want to fetch the same example again.
+
+## Fetch one design
+
+Replace `DESIGN_ID` with an ID returned by search:
 
 ```bash
-curl 'https://tastefulkit.com/api/v1/designs' \
-  -H "Authorization: Bearer $TASTEFULKIT_ADMIN_API_KEY" \
-  -H 'Content-Type: application/json' \
-  --data '{"title":"Example","source_url":"https://example.com/","description":"A minimal landing page with generous whitespace and expressive typography.","kind":"landing_page","tags":["minimal","editorial"]}'
+curl 'https://tastefulkit.com/api/v1/designs/DESIGN_ID' \
+  -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-Supported kinds: `landing_page`, `pricing_page`, `hero`, `blog`, `navigation`, `footer`, `dashboard`, `other`. Optional fields: `industry`, CSS `selector`, and `viewport_width` (320–2560; default 1440).
+Screenshot links expire after 15 minutes. Fetch the design again for fresh links instead of storing an image URL as a permanent reference.
 
-A new submission returns HTTP 201. The same URL, kind, selector, and viewport return the existing entry with HTTP 200. Only public HTTP(S) pages are accepted.
+## Handle errors
 
-## Check capture progress
+- **401:** Check your API key and request header.
+- **404:** The design does not exist or is not available to your account.
+- **422:** Check parameter types, including the page number or design ID.
 
-Fetch `GET /api/v1/designs/{id}` with your admin key. `capture_status` is `pending`, `processing`, `ready`, or `failed`. Only published, ready examples are visible to regular users.
-
-If a capture fails, inspect `capture_error`, then retry with `POST /api/v1/designs/{id}/retry`. If embedding generation fails, the screenshot remains available through text search. HTTP 401 means the key is missing, invalid, inactive, or lacks administrator access; HTTP 422 means the submitted data needs correction.
-
-The [interactive API schema](/api/docs) lists request fields and endpoints.
+Ordinary accounts only see published designs with ready screenshots. This read API does not manage your Saved list; use the website to save or remove references. The [interactive schema](/api/docs) provides the complete request details.

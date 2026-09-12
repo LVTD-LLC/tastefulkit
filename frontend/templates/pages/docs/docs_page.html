@@ -4,7 +4,7 @@
     <meta name="description"
           content="{% if meta_description %}{{ meta_description }}{% else %}{{ page_title }} documentation for TastefulKit{% endif %}" />
     {% if author %}<meta name="author" content="{{ author }}" />{% endif %}
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="index, follow" />
     {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
 {% endblock meta %}
 {% block docs_content %}

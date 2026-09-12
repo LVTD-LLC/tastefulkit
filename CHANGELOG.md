@@ -2,6 +2,9 @@
 
 ## 2026-09-12
 
+- Make all website documentation public and indexable, without changing library, account, or API authorization.
+- Replace starter/deployment docs with guides to shipped browsing, search/filtering, saved-design, account, and read-only API features; keep operator references outside website routes.
+
 - Adopt the approved reference-stack logo across public and app headers/footers, with theme-aware branding, matching browser/touch icons, and a first-party social preview.
 
 - Fix Qdrant SDK client lifecycle handling discovered during live rollout; verify actual SDK cleanup in regression coverage.

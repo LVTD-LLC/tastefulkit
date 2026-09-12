@@ -6,10 +6,8 @@ import markdown
 import yaml
 from allauth.account.views import SignupByPasskeyView, SignupView
 from django.conf import settings
-from django.contrib.auth.decorators import login_required
 from django.http import Http404
 from django.shortcuts import redirect, render
-from django.template import Context, Template
 from django.urls import reverse
 from django.views.generic import TemplateView
 
@@ -214,17 +212,15 @@ def get_previous_and_next_pages(navigation, current_category, current_page):
     return previous_page, next_page
 
 
-@login_required
 def docs_home_view(request):
     return redirect(
         reverse("docs_page", kwargs={"category": "getting-started", "page": "introduction"})
     )
 
 
-@login_required
 def docs_page_view(request, category, page):
     """
-    Render an authenticated documentation page from markdown with frontmatter and user context.
+    Render public, repository-tracked product documentation without user data.
     """
     markdown_file = DOCS_CONTENT_ROOT / category / f"{page}.md"
 
@@ -235,15 +231,7 @@ def docs_page_view(request, category, page):
         with open(markdown_file, encoding="utf-8") as file:
             post = frontmatter.load(file)
 
-        docs_template_context = {
-            "api_base_url": build_absolute_public_url("/api/").rstrip("/"),
-            "api_key_env_var": "TASTEFULKIT_API_KEY",
-            "api_docs_url": build_absolute_public_url("/api/docs"),
-            "site_url": build_absolute_public_url("/").rstrip("/"),
-            "user_email": request.user.email,
-        }
-        rendered_markdown = Template(post.content).render(Context(docs_template_context))
-        markdown_html = markdown.markdown(rendered_markdown, extensions=["fenced_code", "tables"])
+        markdown_html = markdown.markdown(post.content, extensions=["fenced_code", "tables"])
 
         navigation = get_docs_navigation()
         previous_page, next_page = get_previous_and_next_pages(navigation, category, page)
@@ -260,7 +248,9 @@ def docs_page_view(request, category, page):
             "category_title": default_category_title,
             "meta_description": post.get("description", ""),
             "author": post.get("author", ""),
-            "canonical_url": post.get("canonical_url", ""),
+            "canonical_url": build_absolute_public_url(
+                reverse("docs_page", kwargs={"category": category, "page": page})
+            ),
             "previous_page": previous_page,
             "next_page": next_page,
         }

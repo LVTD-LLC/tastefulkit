@@ -4,6 +4,8 @@ A searchable library of real-world UI design examples for people and their agent
 
 **Live:** https://tastefulkit.com
 
+**User docs:** https://tastefulkit.com/docs/ — public guides for browsing, search, saved designs, accounts, and the read-only API. Development and operations guidance stays in this repository; see [maintainer notes](docs/maintainers/README.md).
+
 ## What's included
 
 - Email-verified signup, login, passkeys, account settings, and personal API keys.
