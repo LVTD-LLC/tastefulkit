@@ -1,0 +1,5 @@
+<article class="design-card"><a href="{{ design.get_absolute_url }}" class="design-preview"><img src="{{ design.thumbnail.url }}"
+     alt="{{ design.title }} website screenshot"
+     loading="lazy"
+     width="720"
+     height="480"></a><h3><a href="{{ design.get_absolute_url }}">{{ design.title }} <span aria-hidden="true">↗</span></a></h3><p class="tk-muted">{{ design.get_kind_display }}{% if design.industry %} · {{ design.industry }}{% endif %}</p><div class="tk-tags">{% for item in design.tags.all|slice:':3' %}<a href="{% url 'library' %}?tag={{ item.name|urlencode }}">{{ item.name }}</a>{% endfor %}</div></article>

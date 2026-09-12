@@ -1,0 +1,18 @@
+{% extends "base_app.html" %}
+{% block content %}
+    <div class="mx-auto max-w-7xl px-6 py-14 lg:px-8 lg:py-18">
+        <div class="flex flex-col gap-6 border-b border-gray-950/10 pb-10 sm:flex-row sm:items-end sm:justify-between dark:border-white/10">
+            <div>
+                <h1 class="max-w-[20ch] text-4xl font-semibold tracking-tight text-balance">Welcome to TastefulKit</h1>
+                <p class="app-text-muted mt-4 max-w-[58ch] text-base/7 text-pretty">This is your product dashboard. Lead with the next useful action and keep project-specific setup close to where people need it.</p>
+            </div>
+            <a href="{% url 'docs_home' %}" class="app-button-secondary shrink-0">View docs</a>
+        </div>
+        <section class="py-10" aria-labelledby="next-steps-heading">
+            <div class="grid gap-6 md:grid-cols-[7fr_13fr]">
+                <h2 id="next-steps-heading" class="text-xl font-semibold">Next step</h2>
+                <p class="app-text-muted max-w-[58ch] text-base/7 text-pretty">Replace this guidance with the first high-value action in your product. Keep examples, API URLs, and implementation detail in docs instead of crowding the dashboard.</p>
+            </div>
+        </section>
+    </div>
+{% endblock content %}

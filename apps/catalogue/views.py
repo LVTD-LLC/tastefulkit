@@ -1,0 +1,75 @@
+from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
+from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.http import require_POST
+
+from apps.catalogue.models import Design, SavedDesign, Tag
+from apps.catalogue.services import search_designs, visible_designs
+
+
+def landing(request):
+    return render(
+        request,
+        "pages/landing-page.html",
+        {"designs": visible_designs().prefetch_related("tags")[:6]},
+    )
+
+
+@login_required
+def library(request):
+    query = request.GET.get("q", "")[:300]
+    kind = request.GET.get("kind", "")
+    tag = request.GET.get("tag", "")
+    industry = request.GET.get("industry", "")
+    saved = request.GET.get("saved") == "1"
+    designs, mode = search_designs(
+        query, kind, tag, industry, saved_by=request.user if saved else None
+    )
+    page = Paginator(designs, 24).get_page(request.GET.get("page"))
+    params = request.GET.copy()
+    params.pop("page", None)
+    return render(
+        request,
+        "catalogue/library.html",
+        {
+            "page": page,
+            "q": query,
+            "kind": kind,
+            "tag": tag,
+            "industry": industry,
+            "saved": saved,
+            "search_mode": mode,
+            "kinds": Design.Kind.choices,
+            "tags": Tag.objects.filter(designs__in=visible_designs()).distinct(),
+            "industries": visible_designs()
+            .exclude(industry="")
+            .values_list("industry", flat=True)
+            .order_by("industry")
+            .distinct(),
+            "query_params": params.urlencode(),
+        },
+    )
+
+
+@login_required
+def detail(request, pk):
+    design = get_object_or_404(visible_designs().prefetch_related("tags"), pk=pk)
+    return render(
+        request,
+        "catalogue/detail.html",
+        {
+            "design": design,
+            "is_saved": SavedDesign.objects.filter(user=request.user, design=design).exists(),
+        },
+    )
+
+
+@login_required
+@require_POST
+def save_design(request, pk):
+    design = get_object_or_404(visible_designs(), pk=pk)
+    if request.POST.get("action") == "remove":
+        SavedDesign.objects.filter(user=request.user, design=design).delete()
+    else:
+        SavedDesign.objects.get_or_create(user=request.user, design=design)
+    return redirect(design)

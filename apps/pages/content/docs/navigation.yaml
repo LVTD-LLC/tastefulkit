@@ -1,0 +1,28 @@
+# Documentation navigation configuration
+#
+# Define the order of categories and pages in the sidebar navigation.
+# If a category or page is not listed here, it will be added alphabetically
+# at the end of the respective section.
+
+navigation:
+  getting-started:
+    - introduction
+    - design-system
+    - frontend
+    - local-terminal-development
+
+  api-reference:
+    - introduction
+    - user
+    - design-library
+
+  features:
+    - example-feature
+
+
+  deployment:
+    - render-deployment
+    - fly-deployment
+
+    - docker-compose-deployment
+    - environment-variables
