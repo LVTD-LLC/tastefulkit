@@ -1,0 +1,42 @@
+[
+  {
+    "claim": "Search uses descriptive queries and existing filters",
+    "paths": [
+      "frontend/templates/pages/landing-page.html"
+    ],
+    "urls": [
+      "/"
+    ],
+    "must_match": [
+      "Search in your own words",
+      "element, style, or industry"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "Saved design shortlists are shipped",
+    "paths": [
+      "apps/pages/content/docs/using-tastefulkit/saved-designs.md"
+    ],
+    "urls": [
+      "/docs/using-tastefulkit/saved-designs/"
+    ],
+    "must_match": [
+      "save"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "Hosted MCP needs authentication",
+    "paths": [
+      "apps/pages/content/docs/api-reference/mcp.md"
+    ],
+    "urls": [
+      "/docs/api-reference/mcp/"
+    ],
+    "must_match": [
+      "API key"
+    ],
+    "flags": "i"
+  }
+]
