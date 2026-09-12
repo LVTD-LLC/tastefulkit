@@ -1,6 +1,7 @@
 """Qdrant owns live vectors; PostgreSQL remains the filter/visibility authority."""
 
 import math
+from contextlib import closing
 from itertools import batched
 from uuid import UUID
 
@@ -15,11 +16,13 @@ DIMENSIONS = 768
 def get_client():
     if not settings.QDRANT_URL:
         raise ValueError("Qdrant is not configured.")
-    return QdrantClient(
-        url=settings.QDRANT_URL,
-        api_key=settings.QDRANT_API_KEY or None,
-        timeout=settings.QDRANT_TIMEOUT_SECONDS,
-        check_compatibility=False,
+    return closing(
+        QdrantClient(
+            url=settings.QDRANT_URL,
+            api_key=settings.QDRANT_API_KEY or None,
+            timeout=settings.QDRANT_TIMEOUT_SECONDS,
+            check_compatibility=False,
+        )
     )
 
 

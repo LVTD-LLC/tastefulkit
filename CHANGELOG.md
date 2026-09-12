@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Fix Qdrant SDK client lifecycle handling discovered during live rollout; verify actual SDK cleanup in regression coverage.
+
 - Move live embedding storage and similarity ranking to an isolated internal Qdrant service.
 - Preserve authoritative catalogue filters, saved-design ownership, and visibility checks; retain keyword fallback.
 - Add idempotent legacy-vector backfill, explicit regeneration, bounded indexing retries, and Qdrant health checks.
