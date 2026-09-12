@@ -10,6 +10,7 @@ from PIL import Image
 
 from apps.catalogue.models import Design
 from apps.catalogue.providers import EMBEDDING_MODEL, RetryableProviderError, capture, embed
+from apps.catalogue.vector_store import upsert_vector
 
 logger = logging.getLogger(__name__)
 
@@ -72,6 +73,13 @@ def process_design(pk, attempt=0):
             "design.capture_failed", extra={"design_id": str(pk), "error.type": type(exc).__name__}
         )
         return
+    index_design(pk)
+
+
+def index_design(pk, attempt=0):
+    design = Design.objects.filter(pk=pk, capture_status=Design.Status.READY).first()
+    if design is None:
+        return
     try:
         text = " ".join(
             [
@@ -83,13 +91,28 @@ def process_design(pk, attempt=0):
             ]
         )
         vector = embed(text)
+        upsert_vector(pk, vector)
+        Design.objects.filter(pk=pk).update(embedding_model=EMBEDDING_MODEL, embedding_error="")
+    except Exception as exc:
         Design.objects.filter(pk=pk).update(
-            embedding=vector, embedding_model=EMBEDDING_MODEL, embedding_error=""
+            embedding_error="Vector indexing unavailable; text search still works."
         )
-    except Exception:
-        Design.objects.filter(pk=pk).update(
-            embedding_error="Embedding unavailable; text search still works."
+        logger.warning(
+            "design.index_failed", extra={"design_id": str(pk), "error.type": type(exc).__name__}
         )
+        if attempt < 3:
+            # A distinct name avoids overwriting the currently executing one-shot schedule.
+            Schedule.objects.update_or_create(
+                name=f"index-retry-{pk}-{attempt + 1}",
+                defaults={
+                    "func": "apps.catalogue.tasks.index_design",
+                    "args": repr(str(pk)),
+                    "kwargs": f"attempt={attempt + 1}",
+                    "schedule_type": Schedule.ONCE,
+                    "repeats": -1,
+                    "next_run": timezone.now() + timedelta(minutes=2**attempt),
+                },
+            )
 
 
 def schedule_capture_retry(pk, attempt, delay):

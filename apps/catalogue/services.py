@@ -1,5 +1,4 @@
 import hashlib
-import math
 
 from django.db import transaction
 from django.db.models import Q
@@ -7,7 +6,8 @@ from django.utils.text import slugify
 from django_q.tasks import async_task
 
 from apps.catalogue.models import Design, Tag
-from apps.catalogue.providers import EMBEDDING_MODEL, embed, public_url
+from apps.catalogue.providers import embed, public_url
+from apps.catalogue.vector_store import search_vectors
 
 
 def submit_design(payload, user):
@@ -38,7 +38,9 @@ def queue_capture(pk):
 
 
 def visible_designs():
-    return Design.objects.filter(published=True, capture_status=Design.Status.READY)
+    return Design.objects.filter(published=True, capture_status=Design.Status.READY).defer(
+        "embedding"
+    )
 
 
 def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
@@ -67,11 +69,9 @@ def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
     lexical_ids = list(lexical.values_list("id", flat=True).distinct())
     try:
         query_vector = embed(query)
+        ranked = search_vectors(designs, query_vector)
     except Exception:
         return lexical.distinct(), "text"
-    # V1 deliberately keeps vectors in the catch-all model. Move scoring to pgvector
-    # before the catalogue outgrows an in-memory scan; no silent top-N corpus truncation.
-    ranked = rank_vectors(designs, query_vector)
     ids = list(dict.fromkeys(lexical_ids + [pk for pk, _ in ranked]))
     by_id = {design.pk: design for design in designs.filter(pk__in=ids)}
     return [by_id[pk] for pk in ids if pk in by_id], "semantic"
@@ -97,22 +97,6 @@ def serialize_design(design, *, admin=False):
     if admin:
         result.update(capture_error=design.capture_error, embedding_error=design.embedding_error)
     return result
-
-
-def rank_vectors(designs, query_vector):
-    ranked = []
-    norm = math.sqrt(sum(x * x for x in query_vector)) or 1
-    for pk, vector in designs.filter(embedding_model=EMBEDDING_MODEL).values_list(
-        "pk", "embedding"
-    ):
-        if len(vector) != len(query_vector):
-            continue
-        denominator = norm * (math.sqrt(sum(x * x for x in vector)) or 1)
-        similarity = sum(a * b for a, b in zip(vector, query_vector, strict=True)) / denominator
-        if similarity >= 0.45:
-            ranked.append((pk, similarity))
-    ranked.sort(key=lambda item: item[1], reverse=True)
-    return ranked
 
 
 def clean_search_text(value):

@@ -529,3 +529,9 @@ SHELL_PLUS_IMPORTS = [
 # Screenshot and embedding calls use a project-scoped Cloudflare token.
 CF_ACCOUNT_ID = env("CF_ACCOUNT_ID", default="")
 CF_RENDER_TOKEN = env("CF_RENDER_TOKEN", default="")
+
+# Internal vector store. An unconfigured/unavailable service falls back to text search.
+QDRANT_URL = env("QDRANT_URL", default="")
+QDRANT_API_KEY = env("QDRANT_API_KEY", default="")
+QDRANT_COLLECTION = env("QDRANT_COLLECTION", default="tastefulkit-designs-bge-base-v1")
+QDRANT_TIMEOUT_SECONDS = env.int("QDRANT_TIMEOUT_SECONDS", default=5)
