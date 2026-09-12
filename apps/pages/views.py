@@ -95,9 +95,12 @@ def get_page_title(markdown_file, fallback):
 
 
 def get_category_title(category_slug):
-    if category_slug == "api-reference":
-        return "API Reference"
-    return category_slug.replace("-", " ").title()
+    titles = {
+        "getting-started": "Getting started",
+        "using-tastefulkit": "Using TastefulKit",
+        "api-reference": "API Reference",
+    }
+    return titles.get(category_slug, category_slug.replace("-", " ").title())
 
 
 def get_docs_navigation():  # noqa: C901

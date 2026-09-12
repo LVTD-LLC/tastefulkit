@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Fix docs link hover so only the hovered link is underlined; restyle docs navigation in the warm, compact product language with a native mobile menu and accessible current-page state.
+
 - Make all website documentation public and indexable, without changing library, account, or API authorization.
 - Replace starter/deployment docs with guides to shipped browsing, search/filtering, saved-design, account, and read-only API features; keep operator references outside website routes.
 
