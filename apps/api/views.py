@@ -1,5 +1,6 @@
 import logging
 
+from django.conf import settings
 from django.core.cache import cache
 from django.db import connection
 from django.http import HttpRequest
@@ -10,6 +11,7 @@ from apps.api.auth import api_key_auth, session_auth
 from apps.api.schemas import UserInfoOut, UserSettingsOut
 from apps.api.services import serialize_user_info
 from apps.catalogue.api import router as catalogue_router
+from apps.catalogue.vector_store import collection_healthy
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +32,7 @@ def healthcheck(request: HttpRequest):
     """
     Comprehensive healthcheck endpoint for monitoring and load balancers.
 
-    Checks database and Redis connectivity.
+    Checks database, Redis, and configured Qdrant collection connectivity.
 
     Returns:
     - 200 OK if all services are healthy
@@ -93,6 +95,9 @@ def healthcheck(request: HttpRequest):
             },
             exc_info=True,
         )
+
+    if settings.QDRANT_URL:
+        checks["qdrant"] = collection_healthy()
 
     healthy = all(checks.values())
     payload = {

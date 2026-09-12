@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-12
+
+- Move live embedding storage and similarity ranking to an isolated internal Qdrant service.
+- Preserve authoritative catalogue filters, saved-design ownership, and visibility checks; retain keyword fallback.
+- Add idempotent legacy-vector backfill, explicit regeneration, bounded indexing retries, and Qdrant health checks.
+- Document persistent CapRover provisioning, recovery, and rollback; retain legacy vectors without querying them.
+
 ## 0.1.1 — 2026-09-12
 
 - Pace screenshot captures and schedule bounded provider retries.

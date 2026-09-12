@@ -90,7 +90,7 @@ def test_submission_requires_admin_and_is_idempotent(
     assert client.get("/api/v1/designs", HTTP_X_API_KEY=key).status_code == 401
 
 
-def test_capture_creates_images_and_embedding(design):
+def test_capture_creates_images_and_embedding(design, qdrant_store):
     design.capture_status = "pending"
     design.save()
     image = io.BytesIO()
@@ -104,7 +104,13 @@ def test_capture_creates_images_and_embedding(design):
     assert design.capture_status == "ready"
     assert design.screenshot.storage.exists(design.screenshot.name)
     assert design.thumbnail.storage.exists(design.thumbnail.name)
-    assert len(design.embedding) == 768
+    assert design.embedding == []
+    assert (
+        len(
+            qdrant_store.retrieve("test-designs", ids=[str(design.pk)], with_vectors=True)[0].vector
+        )
+        == 768
+    )
     assert design.embedding_model == EMBEDDING_MODEL
 
 
@@ -129,11 +135,14 @@ def test_search_fallback_filters_and_hidden_designs(design):
         assert list(search_designs("warm")[0]) == []
 
 
-def test_semantic_results_include_related_designs(design):
-    design.embedding = [1.0, 0.0]
+def test_semantic_results_include_related_designs(design, qdrant_store):
+    from apps.catalogue.vector_store import upsert_vector
+
+    vector = [1.0] + [0.0] * 767
+    upsert_vector(design.pk, vector)
     design.embedding_model = EMBEDDING_MODEL
     design.save()
-    with patch("apps.catalogue.services.embed", return_value=[1.0, 0.0]):
+    with patch("apps.catalogue.services.embed", return_value=vector):
         matches, mode = search_designs("cozy")
     assert matches == [design] and mode == "semantic"
 

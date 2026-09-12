@@ -66,15 +66,33 @@ Required environment variables:
 
 Use a bucket-scoped R2 object read/write token and a separate rendering/inference token. Never use the Cloudflare administrative token in the app. R2 objects are private; signed URLs expire after 15 minutes. The capture worker stores full screenshots and thumbnail derivatives.
 
-Search combines literal matches with cosine similarity using `@cf/baai/bge-base-en-v1.5` (768 dimensions). If embeddings are unavailable, keyword search remains functional. V1 stores vectors as JSON and scores the filtered catalogue in memory; migrate scoring to indexed pgvector before scaling to a large corpus. Metadata edits do not currently regenerate embeddings; use the submission API for ingestion and admin mainly for moderation.
+Search combines literal matches with Qdrant cosine similarity using `@cf/baai/bge-base-en-v1.5` (768 dimensions, threshold 0.45). New vectors live only in Qdrant. PostgreSQL holds canonical metadata; legacy JSON vectors remain untouched as a migration/rollback archive and are never loaded or scored by search. Keyword search remains available if inference or Qdrant fails.
+
+Set `QDRANT_URL`, `QDRANT_API_KEY`, `QDRANT_COLLECTION` (default `tastefulkit-designs-bge-base-v1`), and `QDRANT_TIMEOUT_SECONDS` (default 5) on both web and worker. Leave the URL empty for local text-only development. For local semantic search, run Qdrant with a persistent `/qdrant/storage` volume and configure its HTTP endpoint and API key.
+
+Search applies current kind, tag, case-insensitive industry, saved-user and publication/capture restrictions in PostgreSQL before Qdrant ranking. It streams eligible UUIDs in batches of 256; every batch is searched, and records are rechecked before returning results. No vector scan or corpus truncation occurs in Django. Hidden/deleted designs cannot leak through stale Qdrant points. This avoids asynchronous permission replication; for very large catalogues, profile the metadata-ID transfer before adding indexed payload filters.
+
+Capture completion indexes the vector synchronously in the worker; failures schedule up to three independent indexing retries without recapturing screenshots. Errors remain visible in Django admin. Metadata edits do not automatically regenerate vectors; use the command below after edits. Backfill/recovery is idempotent:
+
+```sh
+python manage.py backfill_qdrant
+# Recompute from current metadata, including designs already indexed (Workers AI calls):
+python manage.py backfill_qdrant --regenerate
+```
+
+The default command creates/validates the collection, skips existing same-model points, imports valid legacy vectors, and regenerates missing/invalid vectors. It exits nonzero if any design fails. Neither command drops a collection or clears legacy vectors. A changed model/dimension requires a new collection and a full regeneration before switching the web app.
 
 ### CapRover / GitHub Actions
 
-Four isolated services: `tastefulkit`, `tastefulkit-workers`, `tastefulkit-postgres`, `tastefulkit-redis`. Postgres and Redis use CapRover-managed persistent volumes and expose no public ports. Deploy tokens are app-scoped.
+Five isolated services: `tastefulkit`, `tastefulkit-workers`, `tastefulkit-postgres`, `tastefulkit-redis`, `tastefulkit-qdrant`. Postgres and Redis use CapRover-managed persistent volumes and expose no public ports. Deploy tokens are app-scoped.
 
-Repository secrets: `CAPROVER_SERVER`, `APP_TOKEN`, `WORKERS_APP_TOKEN`. Repository variable: `WORKERS_APP_PROCESS_TYPE=worker`. A push to main builds the source SHA image in GHCR and deploys that image to both apps. The server waits for Postgres, applies migrations, and serves static assets. Worker process selection is explicit. Health endpoint: `/api/healthcheck` (database + Redis).
+Repository secrets: `CAPROVER_SERVER`, `APP_TOKEN`, `WORKERS_APP_TOKEN`. Repository variable: `WORKERS_APP_PROCESS_TYPE=worker`. A push to main builds the source SHA image in GHCR and deploys that image to both apps. The server waits for Postgres, applies migrations, and serves static assets. Worker process selection is explicit. Health endpoint: `/api/healthcheck` (database + Redis + configured Qdrant collection). Qdrant failures return 503 even though user searches degrade to keywords.
 
-Back up PostgreSQL and R2 independently; persistent volumes are not backups. Schema changes need backward-compatible migrations before rollback. Redeploy a previously tested SHA image for application rollback.
+Qdrant follows Citeguild's private CapRover layout: `notExposeAsWebApp=true`, no published ports, one replica pinned to its persistent-volume node, `/qdrant/storage` mounted from `tastefulkit-qdrant-data`, API-key authentication, telemetry disabled. App URL: `http://srv-captain--tastefulkit-qdrant:6333`. The server API key is a dedicated project credential, not Citeguild's key, and is stored in Infisical as `TASTEFULKIT_QDRANT_API_KEY`. The initial tested image is `qdrant/qdrant@sha256:0bd98fa7977f1e75694779359ca4e212822e5a71334e28421182f72f209d5286`.
+
+Rollout: provision Qdrant, configure both apps, create/backfill the collection, then deploy the code and run the backfill again to cover submissions during rollout. Verify all ready designs are indexed and health is green. Application rollback uses the previous immutable image and does not delete Qdrant or PostgreSQL data. Old code cannot semantically search new Qdrant-only vectors; regenerate/export those before relying on old-code semantic search.
+
+Back up PostgreSQL, R2, and Qdrant snapshots independently; persistent volumes are not backups. Schema changes need backward-compatible migrations before rollback. Redeploy a previously tested SHA image for application rollback.
 
 ## Verification
 
