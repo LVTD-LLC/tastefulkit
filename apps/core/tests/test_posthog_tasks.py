@@ -3,6 +3,7 @@ from apps.core import tasks
 
 def test_track_event_uses_event_first_posthog_capture_signature(monkeypatch):
     monkeypatch.setattr(tasks.settings, "POSTHOG_API_KEY", "phc_test")
+    monkeypatch.setattr(tasks.settings, "ENVIRONMENT", "dev")
     captures = []
     monkeypatch.setattr(
         tasks.posthog,
