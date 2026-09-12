@@ -87,7 +87,8 @@ def capture(design):
     payload = {
         "url": public_url(design.source_url),
         "viewport": {"width": design.viewport_width, "height": 900},
-        "gotoOptions": {"waitUntil": "networkidle2", "timeout": 40000},
+        "gotoOptions": {"waitUntil": "domcontentloaded", "timeout": 30000},
+        "waitForTimeout": 1500,
         "screenshotOptions": {"fullPage": True, "type": "jpeg", "quality": 82},
     }
     if design.selector:
