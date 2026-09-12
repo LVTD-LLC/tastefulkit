@@ -1,6 +1,5 @@
 import { posthogAttribution } from "./posthog-attribution.js";
 
-const consentCookie = "analytics_consent";
 const attributionCookie = "marketing_attribution";
 const maxAttributionCookieValueLength = 3800;
 const attributionSignalKeys = [
@@ -115,14 +114,8 @@ function personAttribution(attribution = readMarketingAttribution()) {
   return { current, first };
 }
 
-function showBanner(show) {
-  const banner = document.querySelector("[data-analytics-consent]");
-  if (banner) banner.hidden = !show;
-}
-
 function syncIdentityAndAttribution(attribution = readMarketingAttribution()) {
   const analytics = window.SaasAnalytics;
-  if (!analytics.hasConsent()) return;
   const identity = analytics.identity || {};
   if (identity.distinctId && window.posthog?.get_distinct_id?.() !== identity.distinctId) {
     window.posthog?.identify?.(identity.distinctId);
@@ -137,8 +130,6 @@ function syncIdentityAndAttribution(attribution = readMarketingAttribution()) {
 }
 
 function persistMarketingAttribution(touch) {
-  const analytics = window.SaasAnalytics;
-  if (!analytics.hasConsent()) return;
   const sanitized = sanitizeTouch(touch);
   if (Object.keys(sanitized).length === 0) return;
   const existing = readMarketingAttribution();
@@ -158,40 +149,11 @@ function persistMarketingAttribution(touch) {
   syncIdentityAndAttribution(attribution);
 }
 
-function choose(value) {
+export function initPosthogIdentity() {
   const analytics = window.SaasAnalytics;
-  analytics.consent = value;
-  setCookie(consentCookie, value, 60 * 60 * 24 * 365);
-  showBanner(false);
-  if (value === "granted") {
-    window.posthog?.opt_in_capturing?.();
-    syncIdentityAndAttribution();
-    window.dispatchEvent?.(new window.Event("saas:analytics-consent-granted"));
-  } else {
-    window.posthog?.opt_out_capturing?.();
-    setCookie(attributionCookie, "", 0);
-  }
-}
-
-export function initPosthogConsent() {
-  const analytics = window.SaasAnalytics;
-  analytics.consent = cookieValue(consentCookie);
-  analytics.hasConsent = () => analytics.consent === "granted";
   analytics.persistAttribution = persistMarketingAttribution;
 
-  document
-    .querySelector("[data-analytics-consent-accept]")
-    ?.addEventListener("click", () => choose("granted"));
-  document
-    .querySelector("[data-analytics-consent-decline]")
-    ?.addEventListener("click", () => choose("denied"));
-
-  if (analytics.hasConsent()) {
-    window.posthog?.opt_in_capturing?.();
-    syncIdentityAndAttribution();
-    showBanner(false);
-  } else {
-    window.posthog?.opt_out_capturing?.();
-    showBanner(analytics.consent !== "denied");
-  }
+  // Retire the previous banner's cookie; SDK state is cleared in its loaded callback.
+  setCookie("analytics_consent", "", 0);
+  syncIdentityAndAttribution();
 }

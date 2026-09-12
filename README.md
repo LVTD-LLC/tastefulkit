@@ -84,6 +84,17 @@ python manage.py backfill_qdrant --regenerate
 
 The default command creates/validates the collection, skips existing same-model points, imports valid legacy vectors, and regenerates missing/invalid vectors. It exits nonzero if any design fails. Neither command drops a collection or clears legacy vectors. A changed model/dimension requires a new collection and a full regeneration before switching the web app.
 
+### Product analytics
+
+Set `POSTHOG_API_KEY` to the project's public capture token (never a personal
+management key), `POSTHOG_HOST` to its ingestion host, and optionally
+`POSTHOG_BROWSER_HOST` on both web and worker apps. When configured, existing
+pageview, marketing CTA, signup, login, and account-deletion events run without
+an opt-in banner for anonymous and signed-in users. Old banner/SDK opt-out state
+is cleared on the next page load. Without a project token, analytics remains off.
+URL/property sanitization and logout identity reset remain in place; this change
+does not enable session recording, click autocapture, or new product-use events.
+
 ### CapRover / GitHub Actions
 
 Five isolated services: `tastefulkit`, `tastefulkit-workers`, `tastefulkit-postgres`, `tastefulkit-redis`, `tastefulkit-qdrant`. Postgres and Redis use CapRover-managed persistent volumes and expose no public ports. Deploy tokens are app-scoped.

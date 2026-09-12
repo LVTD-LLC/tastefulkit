@@ -73,7 +73,7 @@ rather than a plain `@pytest.mark.django_db` test.
 | Command | Purpose |
 | --- | --- |
 | `make python-quality` | Runs pre-commit across the repo, then `make pyscn-check`. |
-| `make frontend-check` | Runs `npm run lint` and `npm run build`. |
+| `make frontend-check` | Runs `npm run test:analytics`, `npm run lint`, and `npm run build`. |
 | `make migrations-check` | Runs `manage.py makemigrations --check --dry-run`. |
 | `make django-check` | Runs Django system checks. |
 | `make pytest-check -- <args>` | Runs pytest on the host with optional pytest args. |

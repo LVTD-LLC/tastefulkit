@@ -1,6 +1,6 @@
 function captureCta(element) {
   const analytics = window.SaasAnalytics;
-  if (!element || !analytics?.hasConsent?.()) return;
+  if (!element || !analytics) return;
 
   let destination = "";
   try {

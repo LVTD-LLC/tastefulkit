@@ -3,15 +3,44 @@ from types import SimpleNamespace
 import pytest
 
 from apps.core import tasks
-from apps.core.analytics import EVENT_PREFIX, has_analytics_consent, track_event
+from apps.core.analytics import EVENT_PREFIX, track_event
 from apps.core.context_processors import posthog_api_key
 
 
-def test_analytics_requires_explicit_consent():
-    assert has_analytics_consent(SimpleNamespace(COOKIES={"analytics_consent": "granted"}))
-    assert not has_analytics_consent(SimpleNamespace(COOKIES={"analytics_consent": "denied"}))
-    assert not has_analytics_consent(SimpleNamespace(COOKIES={}))
-    assert not has_analytics_consent(None)
+def test_analytics_stays_disabled_without_project_token(settings, monkeypatch):
+    settings.POSTHOG_API_KEY = ""
+    queued = []
+    monkeypatch.setattr("apps.core.analytics.async_task", lambda *a, **kw: queued.append(kw))
+
+    track_event(SimpleNamespace(id=7, state="signed_up"), "tastefulkit_user_logged_in")
+
+    assert queued == []
+
+
+@pytest.mark.parametrize("cookie", [None, "granted", "denied"])
+@pytest.mark.parametrize("method", ["password", "passkey"])
+def test_signup_tracks_success_without_consent(cookie, method, monkeypatch):
+    from apps.pages import views
+
+    captured = []
+    monkeypatch.setattr(views, "track_event", lambda *a, **kw: captured.append((a, kw)))
+
+    class SignupSuccess:
+        def form_valid(self, form):
+            return "signup succeeded"
+
+    class Signup(views.SignupTrackingMixin, SignupSuccess):
+        pass
+
+    view = Signup()
+    view.user = SimpleNamespace(profile=SimpleNamespace(id=7))
+    view.request = SimpleNamespace(COOKIES={} if cookie is None else {"analytics_consent": cookie})
+    view.tracking_source_name = method
+
+    assert view.form_valid(None) == "signup succeeded"
+    assert len(captured) == 1
+    assert captured[0][0][1] == "tastefulkit_signup_completed"
+    assert captured[0][0][2] == {"signup_method": method}
 
 
 def test_browser_identity_exposes_profile_id_without_email(settings):
@@ -95,3 +124,17 @@ def test_track_event_uses_profile_identity_without_email(profile, settings, monk
         "feature": "example",
     }
     assert profile.user.email not in repr(captures)
+
+
+@pytest.mark.parametrize("template", ["base_landing.html", "base_app.html"])
+@pytest.mark.parametrize("token", ["", "phc_test"])
+def test_page_shell_has_no_consent_banner_and_only_configured_analytics(template, token):
+    from django.template.loader import render_to_string
+
+    html = render_to_string(template, {"posthog_api_key": token})
+
+    assert "data-analytics-consent" not in html
+    assert "Allow analytics" not in html
+    assert ("posthog.init(" in html) is bool(token)
+    if token:
+        assert "opt_out_capturing_by_default: false" in html

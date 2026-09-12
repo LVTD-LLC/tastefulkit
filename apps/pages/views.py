@@ -11,7 +11,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import TemplateView
 
-from apps.core.analytics import SIGNUP_COMPLETED, has_analytics_consent, track_event
+from apps.core.analytics import SIGNUP_COMPLETED, track_event
 from apps.core.choices import ProfileStates
 from apps.core.views import build_absolute_public_url
 
@@ -34,14 +34,13 @@ class SignupTrackingMixin:
     def _track_signup(self):
         user = self.user
         profile = user.profile
-        if has_analytics_consent(self.request):
-            track_event(
-                profile,
-                SIGNUP_COMPLETED,
-                {"signup_method": self.tracking_source_name},
-                current_state=ProfileStates.SIGNED_UP,
-                source_function=f"{self.tracking_source_name} - form_valid",
-            )
+        track_event(
+            profile,
+            SIGNUP_COMPLETED,
+            {"signup_method": self.tracking_source_name},
+            current_state=ProfileStates.SIGNED_UP,
+            source_function=f"{self.tracking_source_name} - form_valid",
+        )
 
     def form_valid(self, form):
         response = super().form_valid(form)
