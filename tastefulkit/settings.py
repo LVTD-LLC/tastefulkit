@@ -19,7 +19,8 @@ import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-environ.Env.read_env(BASE_DIR / ".env")
+if os.environ.get("DJANGO_READ_DOT_ENV", "1") != "0":
+    environ.Env.read_env(BASE_DIR / ".env")
 
 env = environ.Env(
     # set casting, default value
@@ -71,8 +72,8 @@ SECURE_HSTS_INCLUDE_SUBDOMAINS = env.bool("SECURE_HSTS_INCLUDE_SUBDOMAINS", defa
 SECURE_HSTS_PRELOAD = env.bool("SECURE_HSTS_PRELOAD", default=False)
 
 # Keep production locked to the configured site hostname.
-ALLOWED_HOSTS = [SITE_HOST]
-CSRF_TRUSTED_ORIGINS = [SITE_URL]
+ALLOWED_HOSTS = env.list("ALLOWED_HOSTS", default=[SITE_HOST])
+CSRF_TRUSTED_ORIGINS = env.list("CSRF_TRUSTED_ORIGINS", default=[SITE_URL])
 
 if DEBUG:
     # Local integration work often runs through ephemeral tunnel hostnames.
