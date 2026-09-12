@@ -1,27 +1,30 @@
 ---
-title: Getting Started with TastefulKit
-description: Find and save design examples for your next project.
+title: Start here
+description: Find real website design references, explore their details, and save useful examples in TastefulKit.
 ---
 
-TastefulKit is a library of real websites and UI patterns. Use it to find a visual direction, collect examples you like, and give your agent concrete references.
+# Find your next design reference
 
-## Find a starting point
+TastefulKit is a library of real website screenshots. Use it to find examples of layouts, typography, colors, and interface elements, then save the ones you want to revisit.
 
-1. Open **Explore**.
-2. Describe what you have in mind, such as “warm minimal landing page”.
-3. Narrow the results by element, style, or industry.
-4. Open a design to inspect the full screenshot and visit its original website.
+## Take a first look
 
-Search combines text matches with related designs when semantic search is available. If there are no results, try fewer filters or a shorter description.
+You can view the featured examples on the [homepage](/) and read every page of these docs without an account. Sign in to open the full [Explore library](/explore/), view design details, and save designs.
 
-## Keep designs you like
+1. [Create an account](/accounts/signup/) and confirm your email.
+2. Open **Explore** to browse the library, newest first.
+3. Search for a description such as `minimal landing page with bold typography`.
+4. Open a result to see its full screenshot and visit the original website.
+5. Choose **Save design +** to keep it in your **Saved** list.
 
-Select **Save design** on a design's detail page. Your collection appears in the **Saved** tab. Saving is private to your account and is not a vote or a public ranking.
+## Choose a guide
 
-## Search with your agent
+- [Browse and inspect designs](/docs/using-tastefulkit/browsing/) — understand screenshots, tags, and source links.
+- [Search and filter](/docs/using-tastefulkit/search/) — narrow a visual idea into useful references.
+- [Save designs](/docs/using-tastefulkit/saved-designs/) — build and search your personal shortlist.
+- [Manage your account](/docs/getting-started/account/) — email confirmation, sign-in, and API keys.
+- [Use the API](/docs/api-reference/introduction/) — read catalogue results from a script or agent.
 
-Create an API key in **Account** settings, then give it to your agent through a secure credential store. Read the [Design Library API](/docs/api-reference/design-library/) for search and submission examples. Regular accounts can search; submissions require an administrator key.
+## Use references thoughtfully
 
-## What's next
-
-Community comparisons, global rankings, personalized taste profiles, and MCP integration are planned. They are not available in this release.
+Screenshots are inspiration, not downloadable website templates or a license to reuse someone else's design or assets. Study the choices that make an example work, then apply those ideas to your own project.

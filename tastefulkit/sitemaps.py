@@ -4,6 +4,8 @@ from django.conf import settings
 from django.contrib import sitemaps
 from django.urls import reverse
 
+from apps.pages.views import get_docs_navigation, get_flat_page_list
+
 
 def public_site_url():
     return settings.SITE_URL.rstrip("/")
@@ -64,6 +66,15 @@ class StaticViewSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
         return reverse(item)
 
 
+class DocumentationSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
+    def items(self):
+        return [page["url"] for page in get_flat_page_list(get_docs_navigation())]
+
+    def location(self, item):
+        return item
+
+
 sitemaps = {
     "static": StaticViewSitemap,
+    "docs": DocumentationSitemap,
 }

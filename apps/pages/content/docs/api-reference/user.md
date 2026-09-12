@@ -1,52 +1,28 @@
 ---
 title: User API
-description: Use the TastefulKit user endpoint to verify API access and inspect safe profile details.
-keywords: TastefulKit API, user API, profile API
+description: Verify a TastefulKit API key and check which account it belongs to.
 ---
 
-# User API
+# Check your API access
 
-Use the user endpoint to verify an API key and fetch safe account/profile details for the authenticated user.
-
-## Authentication
-
-```http
-Authorization: Bearer ${{ api_key_env_var }}
-```
-
-Your API base URL is:
-
-```text
-{{ api_base_url }}
-```
-
-## Get current user
-
-```http
-GET {{ api_base_url }}/user
-```
-
-Example:
+Use `GET /api/user` to verify a key before searching the catalogue. It returns the account associated with the supplied key, not any other user's account.
 
 ```bash
-curl -H "Authorization: Bearer ${{ api_key_env_var }}" "{{ api_base_url }}/user"
+curl 'https://tastefulkit.com/api/user' \
+  -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-Example response:
+An example response is shown below. The email is fictional; your response contains your own account's email.
 
 ```json
 {
-  "email": "{{ user_email }}",
+  "email": "you@example.com",
   "profile": {
     "state": "signed_up"
   }
 }
 ```
 
-The response does **not** include your API key or privileged admin flags.
+The response does not include your API key or administrator flags. A successful HTTP **200** confirms the key works. HTTP **401** means you should check the [authentication steps](/docs/api-reference/introduction/).
 
-## When to use this endpoint
-
-- Check that an integration is authenticated correctly.
-- Give an AI agent a low-risk connectivity test before it does product-specific work.
-- Confirm which TastefulKit account a key belongs to.
+Next, [search for designs](/docs/api-reference/design-library/).

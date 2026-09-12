@@ -1,44 +1,33 @@
 ---
-title: Introduction
-description: Learn how TastefulKit API authentication works and where to find generated API docs.
-keywords: TastefulKit API, API authentication, OpenAPI docs
+title: API basics
+description: Connect a script or agent to TastefulKit with a personal API key and read existing catalogue data.
 ---
 
-# Introduction
+# Read TastefulKit from a script or agent
 
-TastefulKit exposes authenticated REST endpoints for account checks and product-specific integrations.
+The API lets you search the design library, fetch a design, and check which account a key belongs to. You can read this documentation without signing in; API requests require a personal API key.
 
-## Base URL
+## Get a key
 
-```text
-{{ api_base_url }}
-```
+Sign in and open [Settings](/settings). Under **API access**, choose **Generate key** and store the key securely as `TASTEFULKIT_API_KEY` in your local environment. If a key already exists and you no longer have it, **Rotate key** creates a replacement and invalidates the previous one.
 
-## Authentication
+## Send the key in a header
 
-Generate an API key from **Settings**, store it in an environment variable, and send it as a header:
-
-```http
-Authorization: Bearer ${{ api_key_env_var }}
-```
-
-Example request:
+The API base URL is `https://tastefulkit.com/api`. Send the key using `Authorization: Bearer`, not a URL parameter.
 
 ```bash
-curl -H "Authorization: Bearer ${{ api_key_env_var }}" "{{ api_base_url }}/user"
+curl 'https://tastefulkit.com/api/user' \
+  -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-API keys are shown only once when generated or rotated. Treat them like passwords: do not put them in URLs, frontend code, public repos, shared screenshots, or logs.
+This request checks your key and returns basic details for its account. See the [User API](/docs/api-reference/user/) for the response shape.
 
-## Interactive API docs
+## Search and fetch designs
 
-TastefulKit also exposes generated API docs from the backend schema:
+Follow the [Design Library API guide](/docs/api-reference/design-library/) for filters, pagination, and screenshot links. The [interactive API schema](/api/docs) lists the available request fields and endpoints. Catalogue submission and capture retries are restricted to administrators; a regular account key grants no access to those operations.
 
-[Open generated API docs]({{ api_docs_url }})
+## Resolve authentication errors
 
-Use those generated docs when you want request/response schemas or to inspect lower-level endpoint details. Use this docs section for workflow-oriented guidance.
+HTTP **401** means the key is missing, invalid, inactive, or not authorized for the operation. Check that your environment variable is set, send the header, and replace an old key if you rotated it. Signing into the website alone does not authenticate a script's request.
 
-## Sections
-
-- **User API** — verify a key and inspect safe profile details.
-- **Design Library API** — search examples and submit captures as an administrator.
+Do not put keys in browser-side JavaScript, shared screenshots, public repositories, or logs.
