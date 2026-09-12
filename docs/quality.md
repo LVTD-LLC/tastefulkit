@@ -174,6 +174,32 @@ space; it does not replace endpoint-specific assertions.
 
 ## CI Mapping
 
+### AI pull request reviews
+
+`.github/workflows/reviewgate.yml` runs [ReviewGate](https://reviewgate.lvtd.dev/docs/github-actions/)
+on same-repository pull requests when opened, updated, reopened, or marked ready.
+Fork and Dependabot pull requests are skipped because repository secrets are not
+available to them. The workflow uses `LVTD-LLC/reviewgate@main` (the upstream
+default branch; there is no `master` branch) and the existing `OPENROUTER_API_KEY`
+Actions secret with `deepseek/deepseek-v4-flash`.
+
+The built-in general and adversarial angles are retained without a custom
+`.reviewgate.yml`. Each angle has a 300-second budget, with 660 seconds total
+inside a 20-minute job. Reviews publish a summary, inline findings, the
+`ReviewGate` check, and a structured result artifact. Before merging, verify the
+dedicated check is successful at the current PR head and the review score is
+5/5; workflow success alone does not mean the review passed. Model/provider
+errors are unavailable reviews, not approvals. This setup does not change
+GitHub branch-protection settings.
+
+After a review finishes, maintainers can comment exactly `@reviewgate review`
+to request a rerun for the current head. The separate command job verifies
+maintainer permissions through ReviewGate, never checks out PR code, and never
+receives the OpenRouter secret. Comment commands become available once the
+workflow is on the default branch.
+
+### Application checks
+
 The generated GitHub Actions workflow at `.github/workflows/ci.yml` calls the
 same Makefile targets:
 
