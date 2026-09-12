@@ -184,6 +184,20 @@ The default style is intentionally generic for a modern Django SaaS product: cle
 
 When the product direction is clearer, update this file before making broad UI changes. Keep the tokens and prose aligned so different agents and tools produce consistent interfaces.
 
+## Brand identity
+
+The approved logo is the reference stack: three ascending, slightly slanted cards
+representing a curated collection of real design references. The source vector is
+`frontend/static/brand/reference-stack.svg`; the shared `brand_mark.html` component
+pairs it with the existing bold, tightly tracked sans-serif TastefulKit wordmark.
+Use the ink-colored mark on light surfaces and its white inversion on dark
+surfaces. Keep the mark square and preserve the gaps between cards; never stretch
+it or add gradients or shadows. The header/footer icon is 36px, with a 10px gap
+before the wordmark. Browser/touch icons use the inverse mark on a dark tile.
+`frontend/static/brand/social-preview.svg` is the editable source of the PNG
+preview used for social sharing. Keep all brand variants consistent with the
+reference-stack silhouette.
+
 ## Colors
 
 The default palette uses practical SaaS neutrals with one confident primary color.

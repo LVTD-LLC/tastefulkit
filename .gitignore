@@ -141,3 +141,8 @@ dmypy.json
 
 # Other
 .DS_Store
+
+# Authored brand assets are source files, not collectstatic/build output.
+!frontend/static/
+!frontend/static/brand/
+!frontend/static/brand/**
