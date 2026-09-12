@@ -237,9 +237,9 @@
     "timezone": "UTC",
     "success_events": [],
     "site_search_events": [],
-    "web_vitals_enabled": false,
+    "web_vitals_enabled": null,
     "_comment": "This site's analytics source. Verify live event schema, host scope and success semantics; missing events are unmeasured. OpenSEO's optional GA4 bridge remains available for other explicitly configured sites, not a prerequisite for PostHog.",
-    "measurement_notes": "Launch-day sample only. Docs pathname is a route template, not a page identifier. No observed non-test success events; validate before conversion claims."
+    "measurement_notes": "Launch-day sample only. Docs pathname is a route template, not a page identifier. No observed non-test success events; validate before conversion claims. No $web_vitals samples observed; collection enablement is unverified."
   },
   "research_store": {
     "backend": "rowset",
