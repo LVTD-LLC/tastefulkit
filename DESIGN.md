@@ -305,3 +305,12 @@ Before shipping generated-project UI changes:
 ## TastefulKit library identity
 
 The public catalogue uses warm paper (#f8f7f3), dark ink (#242922), and terracotta (#b34424). Dark mode swaps to deep green-black and light warm text. Use system sans for product UI and Georgia italic for the hero's single “taste” accent. Catalogue screenshots provide the visual interest: no generated mock examples or invented activity counts. Shared rules live in frontend/src/styles/tastefulkit.css. The library grid is three/two/one columns at desktop/tablet/mobile; all controls retain keyboard focus states.
+
+### Documentation navigation
+
+Docs use the product's monospace navigation and warm `--tk-*` colors: sentence-case
+section labels, thin neutral separators, and compact 4px-radius links with a soft
+neutral current-page state. Avoid orange pills, shadows, and tracked uppercase
+labels. Keep the desktop list sticky and use a native, collapsed "Browse docs"
+disclosure below 1024px so article content stays near the top on mobile. Mark the
+current link with `aria-current="page"` and preserve keyboard focus indicators.
