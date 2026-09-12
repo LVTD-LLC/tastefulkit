@@ -18,10 +18,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, UpdateView
 
-from apps.core.analytics import (
-    has_analytics_consent,
-    track_account_deleted_event,
-)
+from apps.core.analytics import track_account_deleted_event
 from apps.core.forms import ProfileUpdateForm
 from apps.core.models import Profile
 
@@ -189,8 +186,7 @@ def delete_account(request):
     # Ensure we log the user out and remove data in a single flow.
     with transaction.atomic():
         user = request.user
-        if has_analytics_consent(request):
-            track_account_deleted_event(user.profile)
+        track_account_deleted_event(user.profile)
         logout(request)
         user.delete()
 

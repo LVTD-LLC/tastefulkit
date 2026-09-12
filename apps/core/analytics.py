@@ -6,17 +6,11 @@ from django_q.tasks import async_task
 
 from apps.core.models import Profile
 
-ANALYTICS_CONSENT_COOKIE = "analytics_consent"
 EVENT_PREFIX = "tastefulkit"
 SIGNUP_COMPLETED = f"{EVENT_PREFIX}_signup_completed"
 USER_LOGGED_IN = f"{EVENT_PREFIX}_user_logged_in"
 ACCOUNT_DELETED = f"{EVENT_PREFIX}_account_deleted"
 CHECKOUT_STARTED = f"{EVENT_PREFIX}_checkout_started"
-
-
-def has_analytics_consent(request) -> bool:
-    """Return whether this browser explicitly opted in to product analytics."""
-    return bool(request and request.COOKIES.get(ANALYTICS_CONSENT_COOKIE) == "granted")
 
 
 def track_event(

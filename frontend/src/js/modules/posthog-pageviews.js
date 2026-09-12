@@ -59,7 +59,7 @@ function referrerProperties() {
 function capturePosthogPageview(force = false) {
   const analytics = window.SaasAnalytics;
   const context = pageviewContext();
-  if (!context || !analytics.hasConsent?.() || typeof window.posthog?.capture !== "function") {
+  if (!context || typeof window.posthog?.capture !== "function") {
     return false;
   }
 
@@ -158,7 +158,4 @@ export function initPosthogPageviews() {
   window.addEventListener("popstate", () => {
     if (restoreContext()) capturePosthogPageview(true);
   });
-  window.addEventListener("saas:analytics-consent-granted", () =>
-    capturePosthogPageview(true),
-  );
 }

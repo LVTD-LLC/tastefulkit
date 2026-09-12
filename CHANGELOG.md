@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Enable configured PostHog analytics by default for visitors and signed-in users; remove the opt-in banner and account-event consent gates, migrate legacy opt-out state, and update analytics disclosures while preserving URL/property sanitization.
+
 - Fix docs link hover so only the hovered link is underlined; restyle docs navigation in the warm, compact product language with a native mobile menu and accessible current-page state.
 
 - Make all website documentation public and indexable, without changing library, account, or API authorization.

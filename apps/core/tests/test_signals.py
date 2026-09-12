@@ -37,9 +37,11 @@ def test_user_save_does_not_revert_profile_state(sync_state_transitions):
         (ProfileStates.SIGNED_UP, ProfileStates.SIGNED_UP),
     ],
 )
+@pytest.mark.parametrize("cookie", [None, "granted", "denied"])
 def test_login_analytics_snapshots_effective_lifecycle_state(
     profile_state,
     expected_state,
+    cookie,
     monkeypatch,
 ):
     captured = {}
@@ -52,7 +54,7 @@ def test_login_analytics_snapshots_effective_lifecycle_state(
         profile=SimpleNamespace(state=profile_state),
         backend="allauth.account.auth_backends.AuthenticationBackend",
     )
-    request = SimpleNamespace(COOKIES={"analytics_consent": "granted"})
+    request = SimpleNamespace(COOKIES={} if cookie is None else {"analytics_consent": cookie})
 
     signals.track_user_login(sender=None, request=request, user=user)
 

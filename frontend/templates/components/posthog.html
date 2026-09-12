@@ -26,7 +26,13 @@
       capture_pageleave: true,
       capture_pageview: false,
       defaults: "2026-05-30",
-      opt_out_capturing_by_default: true,
+      opt_out_capturing_by_default: false,
+      loaded: function (instance) {
+        // Clear the old banner's SDK state before the first pageview is sent.
+        instance.clear_opt_in_out_capturing();
+        window.SaasAnalytics.ready = true;
+        window.dispatchEvent(new Event("saas:analytics-ready"));
+      },
       person_profiles: "identified_only",
       properties_string_max_length: 200,
     });
