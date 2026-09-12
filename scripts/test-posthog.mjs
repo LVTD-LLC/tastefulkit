@@ -9,7 +9,7 @@ import { sanitizePosthogEvent } from "../frontend/src/js/modules/posthog-privacy
 import { initPosthog } from "../frontend/src/js/modules/posthog.js";
 
 const snippet = readFileSync(new URL("../frontend/templates/components/posthog.html", import.meta.url), "utf8");
-const loadedBody = snippet.match(/loaded: function \(instance\) \{([\s\S]*?)\n      \},/)[1];
+const loadedBody = snippet.match(/loaded: function \(instance\) \{([\s\S]*?)\n {6}\},/)[1];
 const sdkLoaded = runInThisContext(`(function (instance) {${loadedBody}})`);
 
 function browser(cookie, identity = "") {
