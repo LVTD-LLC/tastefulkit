@@ -64,7 +64,7 @@ def cloudflare_request(path, payload, *, binary=False):
             f"Cloudflare returned HTTP {exc.code}; retry or check provider access."
         ) from None
     except (URLError, TimeoutError, OSError):
-        raise ValueError("Cloudflare did not respond in time. Retry this entry.") from None
+        raise RetryableProviderError(60) from None
     if len(content) > 20 * 1024 * 1024:
         raise ValueError("Provider response exceeded the 20 MB limit.")
     if binary:
