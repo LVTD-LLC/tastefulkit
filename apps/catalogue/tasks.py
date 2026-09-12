@@ -5,15 +5,16 @@ from datetime import timedelta
 from django.core.files.base import ContentFile
 from django.db import transaction
 from django.utils import timezone
+from django_q.models import Schedule
 from PIL import Image
 
 from apps.catalogue.models import Design
-from apps.catalogue.providers import EMBEDDING_MODEL, capture, embed
+from apps.catalogue.providers import EMBEDDING_MODEL, RetryableProviderError, capture, embed
 
 logger = logging.getLogger(__name__)
 
 
-def process_design(pk):
+def process_design(pk, attempt=0):
     with transaction.atomic():
         design = Design.objects.select_for_update().get(pk=pk)
         if design.capture_status == Design.Status.READY:
@@ -49,6 +50,15 @@ def process_design(pk):
         design.save(
             update_fields=["screenshot", "thumbnail", "capture_status", "captured_at", "updated_at"]
         )
+    except RetryableProviderError as exc:
+        if attempt < 3:
+            schedule_capture_retry(design.pk, attempt + 1, exc.retry_after)
+        else:
+            Design.objects.filter(pk=pk).update(
+                capture_status=Design.Status.FAILED,
+                capture_error="Provider retries exhausted. Check quota and retry later.",
+            )
+        return
     except Exception as exc:
         for name in stored:
             design.screenshot.storage.delete(name)
@@ -79,4 +89,23 @@ def process_design(pk):
     except Exception:
         Design.objects.filter(pk=pk).update(
             embedding_error="Embedding unavailable; text search still works."
+        )
+
+
+def schedule_capture_retry(pk, attempt, delay):
+    with transaction.atomic():
+        Schedule.objects.update_or_create(
+            name=f"capture-retry-{pk}",
+            defaults={
+                "func": "apps.catalogue.tasks.process_design",
+                "args": repr(str(pk)),
+                "kwargs": f"attempt={attempt}",
+                "schedule_type": Schedule.ONCE,
+                "repeats": -1,
+                "next_run": timezone.now() + timedelta(seconds=delay * attempt),
+            },
+        )
+        Design.objects.filter(pk=pk).update(
+            capture_status=Design.Status.PENDING,
+            capture_error=f"Provider busy; automatic retry {attempt}/3 scheduled.",
         )

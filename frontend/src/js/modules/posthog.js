@@ -3,6 +3,7 @@ import { initPosthogCtas } from "./posthog-ctas.js";
 import { initPosthogPageviews } from "./posthog-pageviews.js";
 
 export function initPosthog() {
+  if (!window.SaasAnalytics) return;
   initPosthogConsent();
   initPosthogCtas();
   initPosthogPageviews();

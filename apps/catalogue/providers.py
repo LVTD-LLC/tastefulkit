@@ -4,6 +4,7 @@ import ipaddress
 import json
 import math
 import socket
+import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit, urlunsplit
 from urllib.request import Request, urlopen
@@ -12,6 +13,12 @@ from django.conf import settings
 from django.core.cache import cache
 
 EMBEDDING_MODEL = "@cf/baai/bge-base-en-v1.5"
+
+
+class RetryableProviderError(ValueError):
+    def __init__(self, retry_after=60):
+        super().__init__("Provider temporarily unavailable; automatic retry scheduled.")
+        self.retry_after = retry_after
 
 
 def public_url(value):
@@ -47,6 +54,12 @@ def cloudflare_request(path, payload, *, binary=False):
         with urlopen(request, timeout=55 if binary else 12) as response:
             content = response.read(20 * 1024 * 1024 + 1)
     except HTTPError as exc:
+        if exc.code in {429, 502, 503, 504}:
+            try:
+                delay = max(60, min(86400, int(exc.headers.get("Retry-After", "60"))))
+            except ValueError:
+                delay = 60
+            raise RetryableProviderError(delay) from None
         raise ValueError(
             f"Cloudflare returned HTTP {exc.code}; retry or check provider access."
         ) from None
@@ -63,6 +76,14 @@ def cloudflare_request(path, payload, *, binary=False):
 
 
 def capture(design):
+    # Shared Redis reservation respects the free-tier one-request-per-10s limit.
+    # Bounded waiting stays inside the task timeout and avoids a thundering herd.
+    for _ in range(30):
+        if cache.add("browser-capture-slot", True, timeout=11):
+            break
+        time.sleep(1)
+    else:
+        raise RetryableProviderError(60)
     payload = {
         "url": public_url(design.source_url),
         "viewport": {"width": design.viewport_width, "height": 900},

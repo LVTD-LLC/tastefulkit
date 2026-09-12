@@ -160,3 +160,22 @@ def test_control_characters_in_search_do_not_break_postgres(design):
         matches, mode = search_designs("warm\x00", tag="\x00")
     assert list(matches) == [design]
     assert mode == "text"
+
+
+def test_rate_limited_capture_is_scheduled_then_bounded(design):
+    from django_q.models import Schedule
+
+    from apps.catalogue.providers import RetryableProviderError
+
+    design.capture_status = "pending"
+    design.save()
+    with patch("apps.catalogue.tasks.capture", side_effect=RetryableProviderError(60)):
+        process_design(design.pk)
+        design.refresh_from_db()
+        assert design.capture_status == "pending"
+        scheduled = Schedule.objects.get(name=f"capture-retry-{design.pk}")
+        assert scheduled.kwargs == "attempt=1"
+        process_design(design.pk, attempt=3)
+    design.refresh_from_db()
+    assert design.capture_status == "failed"
+    assert "exhausted" in design.capture_error
