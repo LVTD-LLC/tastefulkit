@@ -2,6 +2,8 @@
 
 ## 2026-09-12
 
+- Clarify the homepage search and social preview metadata around the shipped design-reference library, search, saved designs, API, and MCP; establish private Rowset-backed SEO run tracking.
+
 - Rewrite the README for product users, move application engineering and operations details into AGENTS.md, and add contributor guidance requiring a current-head ReviewGate 5/5 before merge.
 
 - Enable ReviewGate pull request reviews from its `main` branch, with general/adversarial checks, structured results, and maintainer-requested rereviews using the existing OpenRouter secret.
