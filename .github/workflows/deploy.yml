@@ -88,6 +88,8 @@ jobs:
           token: ${{ secrets.WORKERS_APP_TOKEN }}
           image: ${{ steps.image.outputs.image_name }}:${{ github.sha }}
 
+      # For a failed notification, download the original indexnow-before-<sha> artifact.
+      # Retry without redeploying: python apps/pages/indexnow.py --site-url https://tastefulkit.com --previous indexnow-before.json
       - name: Verify live revision and notify IndexNow
         timeout-minutes: 15
         env:
