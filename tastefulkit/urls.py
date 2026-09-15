@@ -21,11 +21,13 @@ from django.contrib.sitemaps.views import sitemap
 from django.urls import include, path
 from django.views.generic import TemplateView
 
+from apps.pages.indexnow_views import indexnow_key
 from apps.pages.views import AccountSignupByPasskeyView, AccountSignupView
 from tastefulkit.sitemaps import sitemaps
 
 urlpatterns = [
     path("admin/", admin.site.urls),
+    path("indexnow-key.txt", indexnow_key, name="indexnow_key"),
 ]
 
 if settings.MFA_PASSKEY_SIGNUP_ENABLED:

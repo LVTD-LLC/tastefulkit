@@ -33,6 +33,7 @@ APP_PROCESS_TYPE = env("APP_PROCESS_TYPE", default="server")
 DEFAULT_SERVICE_NAME = "tastefulkit-worker" if APP_PROCESS_TYPE == "worker" else "tastefulkit-web"
 SERVICE_NAME = env("SERVICE_NAME", default=DEFAULT_SERVICE_NAME)
 SERVICE_VERSION = env("SERVICE_VERSION", default="")
+DEPLOYMENT_REVISION = env("DEPLOYMENT_REVISION", default="")
 
 POSTHOG_API_KEY = env("POSTHOG_API_KEY", default="")
 POSTHOG_HOST = env("POSTHOG_HOST", default="https://us.i.posthog.com").rstrip("/")
