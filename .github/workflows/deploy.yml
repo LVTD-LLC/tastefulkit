@@ -45,11 +45,22 @@ jobs:
           context: .
           push: true
           file: deployment/Dockerfile
+          build-args: DEPLOYMENT_REVISION=${{ github.sha }}
           labels: org.opencontainers.image.source=https://github.com/LVTD-LLC/tastefulkit
           cache-from: type=gha
           cache-to: type=gha,mode=max
           tags: |
             ${{ steps.image.outputs.image_name }}:${{ github.sha }}
+
+      - name: Snapshot public URLs before deployment
+        run: python apps/pages/indexnow.py --site-url https://tastefulkit.com --snapshot indexnow-before.json
+
+      - name: Retain URL snapshot for submission recovery
+        uses: actions/upload-artifact@v4
+        with:
+          name: indexnow-before-${{ github.sha }}
+          path: indexnow-before.json
+          retention-days: 90
 
       - name: Deploy server to CapRover
         uses: caprover/deploy-from-github@v1.2.0
@@ -76,3 +87,11 @@ jobs:
           app: ${{ env.CAPROVER_APP_NAME }}-workers
           token: ${{ secrets.WORKERS_APP_TOKEN }}
           image: ${{ steps.image.outputs.image_name }}:${{ github.sha }}
+
+      - name: Verify live revision and notify IndexNow
+        timeout-minutes: 15
+        env:
+          EXPECTED_REVISION: ${{ github.sha }}
+        run: >-
+          python apps/pages/indexnow.py --site-url https://tastefulkit.com
+          --previous indexnow-before.json --expected-revision "$EXPECTED_REVISION"

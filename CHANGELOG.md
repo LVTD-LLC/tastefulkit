@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-15
+
+- Enable IndexNow verification and public-sitemap submission after verified deployments, including removed URLs from a retained pre-deploy snapshot, bounded retries, and a manual recovery command.
+
 ## 2026-09-12
 
 - Clarify the homepage search and social preview metadata around the shipped design-reference library, search, saved designs, API, and MCP; establish private Rowset-backed SEO run tracking.
