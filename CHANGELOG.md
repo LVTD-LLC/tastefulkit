@@ -2,6 +2,8 @@
 
 ## 2026-09-15
 
+- Remove the separate IndexNow operations runbook; keep the manual notification recovery hint next to the automated deployment step.
+
 - Enable IndexNow verification and public-sitemap submission after verified deployments, including removed URLs from a retained pre-deploy snapshot, bounded retries, and a manual recovery command.
 
 ## 2026-09-12
