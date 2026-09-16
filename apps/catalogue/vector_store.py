@@ -114,3 +114,30 @@ def collection_healthy():
         return True
     except Exception:
         return False
+
+
+def snapshot_vector(pk):
+    with get_client() as client:
+        ensure_collection(client)
+        records = client.retrieve(settings.QDRANT_COLLECTION, ids=[str(pk)], with_vectors=True)
+    return records[0] if records else None
+
+
+def restore_vector(record):
+    with get_client() as client:
+        client.upsert(
+            settings.QDRANT_COLLECTION,
+            points=[
+                models.PointStruct(
+                    id=record.id,
+                    vector=record.vector,
+                    payload=record.payload,
+                )
+            ],
+            wait=True,
+        )
+
+
+def remove_vector(pk):
+    with get_client() as client:
+        client.delete(settings.QDRANT_COLLECTION, points_selector=[str(pk)], wait=True)

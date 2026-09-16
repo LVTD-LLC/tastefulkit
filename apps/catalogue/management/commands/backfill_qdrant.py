@@ -2,7 +2,7 @@ from django.conf import settings
 from django.core.management.base import BaseCommand, CommandError
 
 from apps.catalogue.models import Design
-from apps.catalogue.providers import EMBEDDING_MODEL, embed
+from apps.catalogue.providers import EMBEDDING_MODEL
 from apps.catalogue.vector_store import (
     ensure_collection,
     get_client,
@@ -12,14 +12,7 @@ from apps.catalogue.vector_store import (
 
 
 class Command(BaseCommand):
-    help = "Idempotently backfill Qdrant from legacy vectors; regenerate missing/invalid vectors."
-
-    def add_arguments(self, parser):
-        parser.add_argument(
-            "--regenerate",
-            action="store_true",
-            help="Regenerate all ready designs from current metadata (uses Workers AI).",
-        )
+    help = "Import existing legacy vectors only; missing vectors must be prepared by an agent."
 
     def handle(self, *args, **options):
         try:
@@ -32,34 +25,20 @@ class Command(BaseCommand):
             chunk_size=100
         ):
             try:
-                if not options["regenerate"]:
-                    with get_client() as client:
-                        existing = client.retrieve(
-                            settings.QDRANT_COLLECTION, ids=[str(design.pk)], with_payload=True
-                        )
-                    if (
-                        existing
-                        and (existing[0].payload or {}).get("embedding_model") == EMBEDDING_MODEL
-                    ):
-                        skipped += 1
-                        continue
-                vector = design.embedding
-                try:
-                    validate_vector(vector)
-                    if options["regenerate"] or design.embedding_model != EMBEDDING_MODEL:
-                        raise ValueError("Different model")
-                except (ValueError, TypeError):
-                    vector = embed(
-                        " ".join(
-                            [
-                                design.title,
-                                design.kind,
-                                design.industry,
-                                design.description,
-                                " ".join(design.tags.values_list("name", flat=True)),
-                            ]
-                        )
+                with get_client() as client:
+                    existing = client.retrieve(
+                        settings.QDRANT_COLLECTION, ids=[str(design.pk)], with_payload=True
                     )
+                if (
+                    existing
+                    and (existing[0].payload or {}).get("embedding_model") == EMBEDDING_MODEL
+                ):
+                    skipped += 1
+                    continue
+                vector = design.embedding
+                validate_vector(vector)
+                if design.embedding_model != EMBEDDING_MODEL:
+                    raise ValueError("Resubmit a prepared vector using the current model.")
                 upsert_vector(design.pk, vector)
                 Design.objects.filter(pk=design.pk).update(
                     embedding_model=EMBEDDING_MODEL, embedding_error=""
@@ -70,4 +49,6 @@ class Command(BaseCommand):
                 self.stderr.write(f"Index failed for {design.pk} ({type(exc).__name__}).")
         self.stdout.write(f"Indexed: {indexed}; existing: {skipped}; failed: {failed}.")
         if failed:
-            raise CommandError("Backfill incomplete; correct provider access and rerun.")
+            raise CommandError(
+                "Backfill incomplete; resubmit complete prepared examples through the admin POST."
+            )

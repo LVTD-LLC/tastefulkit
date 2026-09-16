@@ -26,6 +26,8 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 - **Narrow the search.** Filter by interface element, style tag, or industry.
 - **Look beyond the thumbnail.** Open full screenshots, read descriptions, and
   visit the original websites.
+- **Take a design direction with you.** View, copy or download an example’s DESIGN.md
+  when available, or retrieve its text through MCP/API.
 - **Keep a shortlist.** Save designs and revisit them when you're ready to build.
 - **Bring your assistant.** Search and retrieve references through MCP or the API.
 

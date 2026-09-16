@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-16
+
+- Accept complete, agent-prepared examples through the admin-only multipart POST: supplied screenshots, thumbnails, DESIGN.md, capture timestamp and compatible embedding are validated, stored and indexed without application-side generation.
+- Add protected DESIGN.md viewing, copying, downloads and REST/MCP detail retrieval. Preserve existing references and support explicit complete-bundle replacement for external backfills.
+- Retire capture/retry entry points and MCP writes; old queued jobs are inert and vector backfill no longer invokes inference. Search-time query embeddings remain supported.
+
 ## 2026-09-15
 
 - Remove the separate IndexNow operations runbook; keep the manual notification recovery hint next to the automated deployment step.

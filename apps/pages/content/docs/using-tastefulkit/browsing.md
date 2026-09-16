@@ -29,3 +29,11 @@ Use [Save design +](/docs/using-tastefulkit/saved-designs/) to keep the referenc
 ## If an image does not load
 
 Reload the detail page to request a fresh image link. If you copied an image URL earlier, reopen the design instead: screenshot links expire. Bookmark the design page, not its image URL.
+
+## Reuse a design guide
+
+When an example includes DESIGN.md, its detail page lets you view, copy, or download
+the same file. Place it in your project's repository and ask your coding agent to
+follow that visual direction alongside the screenshot. Review inferred values
+against the original reference. This guide does not transfer ownership of the
+original site's assets. Some older examples do not have a guide yet.

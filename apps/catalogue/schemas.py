@@ -1,10 +1,27 @@
+from typing import Literal
+
 from ninja import Schema
-from pydantic import Field, field_validator
+from pydantic import AwareDatetime, ConfigDict, Field, field_validator
 
 from apps.catalogue.models import Design
+from apps.catalogue.providers import EMBEDDING_MODEL
+from apps.catalogue.vector_store import validate_vector
 
 
 class DesignIn(Schema):
+    model_config = ConfigDict(extra="forbid")
+
+    captured_at: AwareDatetime
+    embedding_model: Literal[EMBEDDING_MODEL]
+    embedding: list[float] = Field(min_length=768, max_length=768)
+    replace_existing: bool = False
+
+    @field_validator("embedding")
+    @classmethod
+    def valid_embedding(cls, value):
+        validate_vector(value)
+        return value
+
     title: str = Field(min_length=2, max_length=160)
     source_url: str = Field(max_length=2048)
     description: str = Field(min_length=10, max_length=5000)

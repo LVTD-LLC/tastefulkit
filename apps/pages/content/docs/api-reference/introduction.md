@@ -24,7 +24,7 @@ This request checks your key and returns basic details for its account. See the 
 
 ## Search and fetch designs
 
-Follow the [Design Library API guide](/docs/api-reference/design-library/) for filters, pagination, and screenshot links. The [interactive API schema](/api/docs) lists the available request fields and endpoints. Catalogue submission and capture retries are restricted to administrators; a regular account key grants no access to those operations.
+Follow the [Design Library API guide](/docs/api-reference/design-library/) for filters, pagination, and screenshot links. The [interactive API schema](/api/docs) lists the available request fields and endpoints. Complete prepared catalogue submissions are restricted to administrators; a regular account key grants no write access. The app does not capture or enrich submitted examples.
 
 ## Resolve authentication errors
 

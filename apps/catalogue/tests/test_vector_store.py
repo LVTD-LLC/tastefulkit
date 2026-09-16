@@ -4,13 +4,11 @@ from unittest.mock import patch
 import pytest
 from django.contrib.auth.models import User
 from django.core.management import call_command
-from django_q.models import Schedule
 from qdrant_client import models
 
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.providers import EMBEDDING_MODEL
 from apps.catalogue.services import search_designs
-from apps.catalogue.tasks import index_design
 from apps.catalogue.vector_store import collection_healthy, ensure_collection, upsert_vector
 
 pytestmark = pytest.mark.django_db
@@ -87,29 +85,11 @@ def test_qdrant_outage_and_bad_query_fall_back_to_text(user, qdrant_store):
 def test_backfill_reuses_legacy_vectors_and_is_idempotent(user, qdrant_store):
     design = make_design(user, embedding=VECTOR, embedding_model=EMBEDDING_MODEL)
     for _ in range(2):
-        with patch("apps.catalogue.management.commands.backfill_qdrant.embed") as embed:
-            call_command("backfill_qdrant", stdout=StringIO())
-            embed.assert_not_called()
+        call_command("backfill_qdrant", stdout=StringIO())
     assert qdrant_store.get_collection("test-designs").points_count == 1
     assert qdrant_store.retrieve("test-designs", ids=[str(design.pk)])[0].id == str(design.pk)
     design.refresh_from_db()
     assert design.embedding == VECTOR  # rollback archive, never read by search
-
-
-def test_indexing_retries_without_recapturing_and_stores_only_in_qdrant(user, qdrant_store):
-    design = make_design(user)
-    with patch("apps.catalogue.tasks.embed", side_effect=ValueError("offline")):
-        index_design(design.pk)
-        index_design(design.pk)
-        index_design(design.pk, attempt=3)
-    assert Schedule.objects.filter(name__startswith=f"index-retry-{design.pk}").count() == 1
-    design.refresh_from_db()
-    assert design.capture_status == "ready" and design.embedding_error
-    with patch("apps.catalogue.tasks.embed", return_value=VECTOR):
-        index_design(design.pk, attempt=1)
-    design.refresh_from_db()
-    assert design.embedding == [] and not design.embedding_error
-    assert qdrant_store.get_collection("test-designs").points_count == 1
 
 
 def test_collection_contract_fails_closed(qdrant_store):
@@ -148,34 +128,6 @@ def test_all_eligible_batches_are_searched(user, qdrant_store):
     upsert_vector(designs[-1].pk, VECTOR)
     with patch("apps.catalogue.services.embed", return_value=VECTOR):
         assert search_designs("cozy")[0] == [designs[-1]]
-
-
-def test_backfill_regenerates_missing_and_explicitly_refreshes_existing(user, qdrant_store):
-    design = make_design(user)
-    with patch("apps.catalogue.management.commands.backfill_qdrant.embed", return_value=VECTOR):
-        call_command("backfill_qdrant", stdout=StringIO())
-    replacement = [0.0, 1.0] + [0.0] * 766
-    with patch(
-        "apps.catalogue.management.commands.backfill_qdrant.embed", return_value=replacement
-    ) as embed:
-        call_command("backfill_qdrant", stdout=StringIO())
-        embed.assert_not_called()
-        call_command("backfill_qdrant", regenerate=True, stdout=StringIO())
-        embed.assert_called_once()
-    stored = qdrant_store.retrieve("test-designs", ids=[str(design.pk)], with_vectors=True)[0]
-    assert stored.vector == replacement
-
-
-def test_qdrant_write_failure_schedules_retry(user, qdrant_store):
-    design = make_design(user)
-    with (
-        patch("apps.catalogue.tasks.embed", return_value=VECTOR),
-        patch("apps.catalogue.tasks.upsert_vector", side_effect=TimeoutError),
-    ):
-        index_design(design.pk)
-    design.refresh_from_db()
-    assert design.embedding_error and design.embedding_model == ""
-    assert Schedule.objects.filter(func="apps.catalogue.tasks.index_design").exists()
 
 
 def test_client_factory_closes_real_sdk_client(settings, monkeypatch):

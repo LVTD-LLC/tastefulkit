@@ -102,7 +102,6 @@ def test_public_docs_do_not_open_protected_website_actions(client, method, path)
         ("get", "/api/v1/designs"),
         ("get", "/api/v1/designs/00000000-0000-0000-0000-000000000001"),
         ("post", "/api/v1/designs"),
-        ("post", "/api/v1/designs/00000000-0000-0000-0000-000000000001/retry"),
     ],
 )
 def test_public_docs_do_not_open_authenticated_api(client, method, path):

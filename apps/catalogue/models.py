@@ -50,6 +50,7 @@ class Design(models.Model):
         max_length=16, choices=Status.choices, default=Status.PENDING, db_index=True
     )
     capture_error = models.CharField(max_length=200, blank=True)
+    design_markdown = models.TextField(blank=True)
     embedding = models.JSONField(default=list, blank=True)
     embedding_model = models.CharField(max_length=100, blank=True)
     embedding_error = models.CharField(max_length=200, blank=True)

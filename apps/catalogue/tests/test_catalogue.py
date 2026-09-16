@@ -1,14 +1,11 @@
-import io
 from unittest.mock import patch
 
 import pytest
 from django.contrib.auth.models import User
-from PIL import Image
 
 from apps.catalogue.models import Design, SavedDesign
 from apps.catalogue.providers import EMBEDDING_MODEL, public_url
 from apps.catalogue.services import search_designs
-from apps.catalogue.tasks import process_design
 
 pytestmark = pytest.mark.django_db
 
@@ -45,83 +42,6 @@ def test_first_signup_is_not_admin(user):
 def test_private_or_unsafe_sources_rejected(url):
     with pytest.raises(ValueError):
         public_url(url)
-
-
-def test_submission_requires_admin_and_is_idempotent(
-    client, user, django_capture_on_commit_callbacks
-):
-    key = user.profile.rotate_api_key()
-    payload = {
-        "title": "Example site",
-        "source_url": "https://example.com/",
-        "description": "A warm, minimal landing page.",
-        "tags": ["Warm", "minimal"],
-    }
-    assert (
-        client.post("/api/v1/designs", payload, content_type="application/json").status_code == 401
-    )
-    assert (
-        client.post(
-            "/api/v1/designs", payload, content_type="application/json", HTTP_X_API_KEY=key
-        ).status_code
-        == 401
-    )
-    user.is_superuser = True
-    user.save()
-    with (
-        patch("apps.catalogue.services.public_url", return_value="https://example.com/"),
-        patch("apps.catalogue.services.async_task") as enqueue,
-    ):
-        with django_capture_on_commit_callbacks(execute=True):
-            first = client.post(
-                "/api/v1/designs", payload, content_type="application/json", HTTP_X_API_KEY=key
-            )
-        assert first.status_code == 201, first.content
-        second = client.post(
-            "/api/v1/designs", payload, content_type="application/json", HTTP_X_API_KEY=key
-        )
-        assert second.status_code == 200
-        assert first.json()["id"] == second.json()["id"]
-        assert enqueue.call_count == 1
-    assert Design.objects.count() == 1
-    assert set(Design.objects.get().tags.values_list("name", flat=True)) == {"warm", "minimal"}
-    user.is_active = False
-    user.save()
-    assert client.get("/api/v1/designs", HTTP_X_API_KEY=key).status_code == 401
-
-
-def test_capture_creates_images_and_embedding(design, qdrant_store):
-    design.capture_status = "pending"
-    design.save()
-    image = io.BytesIO()
-    Image.new("RGB", (1440, 1800), "white").save(image, "JPEG")
-    with (
-        patch("apps.catalogue.tasks.capture", return_value=image.getvalue()),
-        patch("apps.catalogue.tasks.embed", return_value=[0.1] * 768),
-    ):
-        process_design(design.pk)
-    design.refresh_from_db()
-    assert design.capture_status == "ready"
-    assert design.screenshot.storage.exists(design.screenshot.name)
-    assert design.thumbnail.storage.exists(design.thumbnail.name)
-    assert design.embedding == []
-    assert (
-        len(
-            qdrant_store.retrieve("test-designs", ids=[str(design.pk)], with_vectors=True)[0].vector
-        )
-        == 768
-    )
-    assert design.embedding_model == EMBEDDING_MODEL
-
-
-def test_capture_failure_not_published(design):
-    design.capture_status = "pending"
-    design.save()
-    with patch("apps.catalogue.tasks.capture", side_effect=ValueError("Provider unavailable")):
-        process_design(design.pk)
-    design.refresh_from_db()
-    assert design.capture_status == "failed"
-    assert list(search_designs()[0]) == []
 
 
 def test_search_fallback_filters_and_hidden_designs(design):
@@ -169,22 +89,3 @@ def test_control_characters_in_search_do_not_break_postgres(design):
         matches, mode = search_designs("warm\x00", tag="\x00")
     assert list(matches) == [design]
     assert mode == "text"
-
-
-def test_rate_limited_capture_is_scheduled_then_bounded(design):
-    from django_q.models import Schedule
-
-    from apps.catalogue.providers import RetryableProviderError
-
-    design.capture_status = "pending"
-    design.save()
-    with patch("apps.catalogue.tasks.capture", side_effect=RetryableProviderError(60)):
-        process_design(design.pk)
-        design.refresh_from_db()
-        assert design.capture_status == "pending"
-        scheduled = Schedule.objects.get(name=f"capture-retry-{design.pk}")
-        assert scheduled.kwargs == "attempt=1"
-        process_design(design.pk, attempt=3)
-    design.refresh_from_db()
-    assert design.capture_status == "failed"
-    assert "exhausted" in design.capture_error

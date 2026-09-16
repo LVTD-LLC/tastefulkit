@@ -1,10 +1,9 @@
-"""Outbound rendering happens at Cloudflare, never inside the application network."""
+"""Source URL validation and search-time query embeddings only."""
 
 import ipaddress
 import json
 import math
 import socket
-import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlsplit, urlunsplit
 from urllib.request import Request, urlopen
@@ -17,7 +16,7 @@ EMBEDDING_MODEL = "@cf/baai/bge-base-en-v1.5"
 
 class RetryableProviderError(ValueError):
     def __init__(self, retry_after=60):
-        super().__init__("Provider temporarily unavailable; automatic retry scheduled.")
+        super().__init__("Search embedding provider temporarily unavailable.")
         self.retry_after = retry_after
 
 
@@ -32,15 +31,15 @@ def public_url(value):
     except (OSError, UnicodeError) as exc:
         raise ValueError("The source hostname could not be resolved.") from exc
     if not addresses or any(not ipaddress.ip_address(a[4][0]).is_global for a in addresses):
-        raise ValueError("Only public Internet websites can be captured.")
+        raise ValueError("Use a public Internet source URL.")
     return urlunsplit(
         (parts.scheme.lower(), parts.netloc.lower(), parts.path or "/", parts.query, "")
     )
 
 
-def cloudflare_request(path, payload, *, binary=False):
+def cloudflare_request(path, payload):
     if not settings.CF_RENDER_TOKEN or not settings.CF_ACCOUNT_ID:
-        raise ValueError("Screenshot and embedding provider is not configured.")
+        raise ValueError("Search embedding provider is not configured.")
     request = Request(
         f"https://api.cloudflare.com/client/v4/accounts/{settings.CF_ACCOUNT_ID}/{path}",
         data=json.dumps(payload).encode(),
@@ -51,7 +50,7 @@ def cloudflare_request(path, payload, *, binary=False):
         method="POST",
     )
     try:
-        with urlopen(request, timeout=55 if binary else 12) as response:
+        with urlopen(request, timeout=12) as response:
             content = response.read(20 * 1024 * 1024 + 1)
     except HTTPError as exc:
         if exc.code in {429, 502, 503, 504}:
@@ -67,33 +66,10 @@ def cloudflare_request(path, payload, *, binary=False):
         raise RetryableProviderError(60) from None
     if len(content) > 20 * 1024 * 1024:
         raise ValueError("Provider response exceeded the 20 MB limit.")
-    if binary:
-        return content
     result = json.loads(content)
     if not result.get("success"):
         raise ValueError("The embedding provider could not complete this request.")
     return result["result"]
-
-
-def capture(design):
-    # Shared Redis reservation respects the free-tier one-request-per-10s limit.
-    # Bounded waiting stays inside the task timeout and avoids a thundering herd.
-    for _ in range(30):
-        if cache.add("browser-capture-slot", True, timeout=11):
-            break
-        time.sleep(1)
-    else:
-        raise RetryableProviderError(60)
-    payload = {
-        "url": public_url(design.source_url),
-        "viewport": {"width": design.viewport_width, "height": 900},
-        "gotoOptions": {"waitUntil": "domcontentloaded", "timeout": 30000},
-        "waitForTimeout": 1500,
-        "screenshotOptions": {"fullPage": True, "type": "jpeg", "quality": 82},
-    }
-    if design.selector:
-        payload["selector"] = design.selector
-    return cloudflare_request("browser-rendering/screenshot", payload, binary=True)
 
 
 def embed(text):

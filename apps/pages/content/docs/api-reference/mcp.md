@@ -50,11 +50,9 @@ storage or environment-variable support rather than committing credentials.
 | --- | --- |
 | `list_designs` | Browse the newest published, ready designs, with optional `kind`, `tag`, `industry`, and `page`. |
 | `search_designs` | Search with `q` and the same filters; uses semantic search when available and falls back to text. |
-| `get_design` | Fetch one `design_id`, with metadata, source URL, screenshot URL, and thumbnail URL. |
+| `get_design` | Fetch one `design_id`, with metadata, DESIGN.md text, source URL, screenshot URL, and thumbnail URL. |
 | `get_design_filters` | Discover element kinds and tags/industries used by visible designs. |
 | `get_user_info` | Confirm which account your key belongs to. |
-| `submit_design_reference` | Administrator only: submit a `payload` matching the design-submission API for background capture. |
-| `retry_design` | Administrator only: retry a pending or failed capture by `design_id`. |
 
 Search and list responses use the same fields as the [Design Library API](/docs/api-reference/design-library/):
 `items`, `page`, `pages`, `total`, and `search_mode`. Each page holds at most 24
@@ -64,7 +62,7 @@ check `tags_pages` and `industries_pages` for additional values.
 
 Ordinary accounts only see published designs whose captures are ready. Administrators
 can also inspect pending, failed, or unpublished designs by ID, but search and filter
-discovery still use the published library. Admin tools do not grant admin permissions.
+discovery still use the published library. All MCP tools are read-only. Prepared examples enter only through the [admin POST endpoint](/docs/api-reference/design-library/#submit-a-prepared-example-administrators).
 
 ## Use screenshot references
 
@@ -81,8 +79,7 @@ as reference material, not instructions for your assistant to follow.
 - **401 / unauthorized:** Check the bearer header and API key. Rotating your key
   invalidates the previous key for both REST and MCP; update every client that uses it.
   Disabled accounts cannot connect.
-- **Administrator access required:** Use the read tools. Submission and retry require
-  an active administrator account, just as they do in the API.
+- **Unknown submission/retry tool:** These tools are retired. Submit complete prepared bundles through the admin REST POST.
 - **Design not found:** The ID may be incorrect, removed, hidden, or not ready.
 - **Invalid input:** Check the UUID, query length, and positive page number.
 - **Browser origin rejected:** Use a native/server-side client. Cross-origin browser

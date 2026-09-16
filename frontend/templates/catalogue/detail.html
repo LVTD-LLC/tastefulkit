@@ -2,6 +2,26 @@
         name="action"
         value="{% if is_saved %}remove{% else %}save{% endif %}">{% if is_saved %}Saved ✓ · Remove{% else %}Save design +{% endif %}</button></form></div><p class="tk-description">{{ design.description }}</p><div class="tk-tags">{% for item in design.tags.all %}<a href="{% url 'library' %}?tag={{ item.name|urlencode }}">{{ item.name }}</a>{% endfor %}</div><div class="tk-source"><a href="{{ design.source_url }}"
    target="_blank"
-   rel="noopener noreferrer">Visit original website ↗</a><span>Captured {{ design.captured_at|date:'M j, Y' }} · {{ design.viewport_width }}px wide</span></div><img class="tk-fullshot"
+   rel="noopener noreferrer">Visit original website ↗</a><span>Captured {{ design.captured_at|date:'M j, Y' }} · {{ design.viewport_width }}px wide</span></div>{% if design.design_markdown %}
+<section class="tk-design-guide" aria-labelledby="design-guide-title">
+    <h2 id="design-guide-title">Build with this design</h2>
+    <p>Download DESIGN.md into your project and ask your coding agent to follow it alongside this reference. Review inferred values against the original before implementation.</p>
+    <div class="tk-guide-actions">
+        <button type="button"
+                class="tk-button"
+                data-copy-button
+                data-copy-source="#design-markdown">Copy DESIGN.md</button>
+        <a class="tk-button" href="{% url 'design_markdown' design.pk %}">Download DESIGN.md ↓</a>
+    </div>
+    <details>
+        <summary>View DESIGN.md</summary>
+        <pre id="design-markdown">{{ design.design_markdown }}</pre>
+    </details>
+    <p class="tk-muted">If copying fails, download the file or select the text above.</p>
+</section>
+{% else %}
+<p class="tk-muted">A design guide is not available for this older reference yet.</p>
+{% endif %}
+<img class="tk-fullshot"
      src="{{ design.screenshot.url }}"
      alt="Full screenshot of {{ design.title }}"><p class="tk-muted">Design belongs to its original creator. Use this example for inspiration, not as a licensed template.</p></div>{% endblock %}
