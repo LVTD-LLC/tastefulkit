@@ -102,11 +102,12 @@ is the contribution and merge contract.
 ## Application contracts
 
 - The catalogue uses one design model for landing pages, pricing pages, heroes,
-  blogs, dashboards, and other UI elements. The background worker captures
-  screenshots and generates embeddings; Django admin handles moderation and retries.
+  blogs, dashboards, and other UI elements. External agents prepare metadata, screenshots,
+  thumbnails, DESIGN.md and embeddings; the admin-only multipart POST validates, stores
+  and indexes them synchronously. Django admin handles visibility, not content creation.
 - Signup requires email verification. Account settings support passkeys and
   personal API keys. Only explicitly provisioned active superusers may ingest
-  designs or retry captures; never grant admin rights to the first signup.
+  complete prepared designs; never grant admin rights to the first signup.
 - Pairwise voting, Elo rankings, and learned taste profiles are roadmap items,
   not shipped behavior. The daily research agent is external and submits via
   the ingestion API. No catalogue entries are hardcoded or seeded by migrations.
@@ -129,25 +130,38 @@ DJANGO_SETTINGS_MODULE=tastefulkit.local_settings uv run python manage.py runser
 DJANGO_SETTINGS_MODULE=tastefulkit.local_settings uv run python manage.py qcluster
 ```
 
-Local settings use the database-backed task queue and in-memory cache. Production uses Redis. Email verification is required. With Mailgun/SMTP unset, the console email backend prints verification messages; do not use production email credentials for local development. To capture real pages locally, supply the Cloudflare settings below.
+Local settings use the database-backed task queue and in-memory cache. Production uses Redis. Email verification is required. With Mailgun/SMTP unset, the console email backend prints verification messages; do not use production email credentials for local development. Prepare assets outside the app; Cloudflare is used only for query embeddings.
 
 ## Agent API
 
-Create an API key in Account settings. Keys are shown once and stored hashed. Standard accounts can search; only active superusers can submit/retry. Provision admins explicitly with `createsuperuser`; the first signup does **not** receive admin rights.
+Create an API key in Account settings. Keys are shown once and stored hashed.
+Only active superusers may submit; staff status and the first signup confer no
+write access. All catalogue creation/refreshes use `POST /api/v1/designs` as multipart:
+JSON `payload`, binary `screenshot`, `thumbnail`, and UTF-8 `design_md`.
+See [the submission contract](apps/pages/content/docs/api-reference/design-library.md)
+for exact preparation requirements, limits, a curl example and the pinned DESIGN.md format.
 
-```sh
-curl 'https://tastefulkit.com/api/v1/designs?q=warm%20minimal&kind=landing_page' \
-  -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
+The payload supplies a timestamp and a finite nonzero 768-value embedding from
+`@cf/baai/bge-base-en-v1.5`. No source fetching, rendering, resizing, content generation,
+example embedding inference or asynchronous processing occurs in the app. Images are
+validated but stored byte-for-byte. DESIGN.md is stored durably in PostgreSQL, escaped
+in the detail page, available as a protected download and included in REST/MCP detail.
 
-curl 'https://tastefulkit.com/api/v1/designs' \
-  -H "Authorization: Bearer $TASTEFULKIT_ADMIN_API_KEY" \
-  -H 'Content-Type: application/json' \
-  --data '{"title":"Example","source_url":"https://example.com/","description":"Describe the layout, typography, palette, and useful patterns.","kind":"landing_page","tags":["minimal","editorial"],"industry":"software"}'
-```
+New submissions return 201 ready/published. Same URL + kind + selector + viewport width
+returns 200 unchanged; `replace_existing: true` replaces the full bundle while preserving
+ID, saves, submitter and moderation visibility. Files use unique names; DB changes are
+transactional and old files are cleaned after commit. Qdrant uses synchronous writes
+and best-effort compensation on errors (cross-service transactions are not available).
+Storage/index failure returns 503; failed compensations log stable events for recovery.
+No secrets or user content are logged. Retry the complete bundle externally.
 
-POST returns 201 (new) or 200 (existing), identified by URL + kind + selector + viewport width. Screenshot requests are paced for the Cloudflare free tier; transient provider errors retry automatically up to three times. Capture is asynchronous: poll `GET /api/v1/designs/{id}` for `capture_status=ready`. Admins can see pending/failed entries; other users only see published, ready designs. Retry failures with `POST /api/v1/designs/{id}/retry`. An optional CSS `selector` captures a component; `viewport_width` defaults to 1440. Screenshots belong to their original creators, not to this project.
+The old retry endpoint and MCP writes are removed. Legacy task import paths are inert
+compatibility sinks so already-queued capture/index jobs cannot generate content after
+rollout. Legacy entries stay visible; agents backfill them through explicit replacement
+POSTs. Do not hide or delete the catalogue as a migration shortcut.
 
-Interactive API schema: `/api/docs`. Source URLs must resolve to public HTTP(S) addresses. Rendering takes place at Cloudflare, not inside the app's private network. Submission does not fetch an arbitrary user-supplied screenshot URL.
+Interactive API schema: `/api/docs`. Search/read permissions and signed asset URLs remain
+unchanged. No externally supplied asset URL is fetched by the app.
 
 ## Hosted MCP
 
@@ -157,7 +171,7 @@ by REST; there is no separate OAuth flow. See the [connection guide](https://tas
 for setup, tool arguments, and troubleshooting.
 
 The `apps/hosted_mcp/` Django app exposes list/search/detail, filter discovery, account
-info, and administrator-only submit/retry tools. Catalogue services and API-key
+info tools, all read-only. Catalogue services and API-key
 verification are shared with REST. Key rotation and account deactivation take
 effect on the next request. Screenshot references expire after 15 minutes.
 
@@ -186,10 +200,10 @@ Required environment variables:
 - `ENVIRONMENT=prod`, `DEBUG=False`, `SECRET_KEY`, `SITE_URL`, `ALLOWED_HOSTS`, `CSRF_TRUSTED_ORIGINS`
 - `DATABASE_URL`, `REDIS_URL`, `APP_PROCESS_TYPE=server|worker`
 - `AWS_S3_ENDPOINT_URL`, `AWS_S3_BUCKET_NAME`, `AWS_S3_REGION_NAME=auto`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-- `CF_ACCOUNT_ID`, `CF_RENDER_TOKEN` with Browser Run Write and Workers AI Read
+- `CF_ACCOUNT_ID`, `CF_RENDER_TOKEN` with Workers AI Read for search query embeddings only
 - `MAILGUN_API_KEY`, `MAILGUN_SENDER_DOMAIN`, `DEFAULT_FROM_EMAIL` (or SMTP settings)
 
-Use a bucket-scoped R2 object read/write token and a separate rendering/inference token. Never use the Cloudflare administrative token in the app. R2 objects are private; signed URLs expire after 15 minutes. The capture worker stores full screenshots and thumbnail derivatives.
+Use a bucket-scoped R2 object read/write token and a separate query-inference token. Never use the Cloudflare administrative token in the app. R2 objects are private; signed URLs expire after 15 minutes. External agents supply both full screenshots and prepared thumbnails.
 
 Search combines literal matches with Qdrant cosine similarity using `@cf/baai/bge-base-en-v1.5` (768 dimensions, threshold 0.45). New vectors live only in Qdrant. PostgreSQL holds canonical metadata; legacy JSON vectors remain untouched as a migration/rollback archive and are never loaded or scored by search. Keyword search remains available if inference or Qdrant fails.
 
@@ -197,15 +211,12 @@ Set `QDRANT_URL`, `QDRANT_API_KEY`, `QDRANT_COLLECTION` (default `tastefulkit-de
 
 Search applies current kind, tag, case-insensitive industry, saved-user and publication/capture restrictions in PostgreSQL before Qdrant ranking. It streams eligible UUIDs in batches of 256; every batch is searched, and records are rechecked before returning results. No vector scan or corpus truncation occurs in Django. Hidden/deleted designs cannot leak through stale Qdrant points. This avoids asynchronous permission replication; for very large catalogues, profile the metadata-ID transfer before adding indexed payload filters.
 
-Capture completion indexes the vector synchronously in the worker; failures schedule up to three independent indexing retries without recapturing screenshots. Errors remain visible in Django admin. Metadata edits do not automatically regenerate vectors; use the command below after edits. Backfill/recovery is idempotent:
-
-```sh
-python manage.py backfill_qdrant
-# Recompute from current metadata, including designs already indexed (Workers AI calls):
-python manage.py backfill_qdrant --regenerate
-```
-
-The default command creates/validates the collection, skips existing same-model points, imports valid legacy vectors, and regenerates missing/invalid vectors. It exits nonzero if any design fails. Neither command drops a collection or clears legacy vectors. A changed model/dimension requires a new collection and a full regeneration before switching the web app.
+Submission indexes the supplied vector synchronously before returning success; there
+are no automatic indexing retries. Search query embedding generation stays separate.
+The `backfill_qdrant` command imports valid existing legacy vectors and skips indexed
+records; it never regenerates missing vectors. Agents must resubmit complete bundles
+for missing vectors or metadata refreshes. `--regenerate` is retired. A changed model
+requires a new collection and externally prepared compatible vectors before switching.
 
 ### Product analytics
 

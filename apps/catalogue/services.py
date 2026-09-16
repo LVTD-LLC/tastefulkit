@@ -1,42 +1,10 @@
-import hashlib
-
 from django.core.paginator import Paginator
-from django.db import transaction
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
-from django.utils.text import slugify
-from django_q.tasks import async_task
 
 from apps.catalogue.models import Design, Tag
-from apps.catalogue.providers import embed, public_url
+from apps.catalogue.providers import embed
 from apps.catalogue.vector_store import search_vectors
-
-
-def submit_design(payload, user):
-    data = payload.model_dump()
-    tags = sorted({slugify(tag) for tag in data.pop("tags") if slugify(tag)})
-    data["source_url"] = public_url(data["source_url"])
-    identity = "\n".join(str(data[k]) for k in ("source_url", "kind", "selector", "viewport_width"))
-    fingerprint = hashlib.sha256(identity.encode()).hexdigest()
-    with transaction.atomic():
-        design, created = Design.objects.get_or_create(
-            fingerprint=fingerprint, defaults={**data, "submitted_by": user}
-        )
-        if created:
-            design.tags.set([Tag.objects.get_or_create(name=tag)[0] for tag in tags])
-            transaction.on_commit(lambda: queue_capture(design.pk))
-    return design, created
-
-
-def queue_capture(pk):
-    # A failed enqueue leaves a visible pending entry, recoverable by the admin retry action.
-    try:
-        async_task("apps.catalogue.tasks.process_design", str(pk), task_name=f"capture-{pk}")
-    except Exception:
-        Design.objects.filter(pk=pk).update(
-            capture_status=Design.Status.FAILED,
-            capture_error="Could not queue the capture. Check the worker and retry.",
-        )
 
 
 def visible_designs():
@@ -79,7 +47,7 @@ def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
     return [by_id[pk] for pk in ids if pk in by_id], "semantic"
 
 
-def serialize_design(design, *, admin=False):
+def serialize_design(design, *, admin=False, detail=False):
     result = {
         "id": str(design.pk),
         "title": design.title,
@@ -96,6 +64,8 @@ def serialize_design(design, *, admin=False):
         "created_at": design.created_at.isoformat(),
         "captured_at": design.captured_at.isoformat() if design.captured_at else None,
     }
+    if detail:
+        result["design_markdown"] = design.design_markdown or None
     if admin:
         result.update(capture_error=design.capture_error, embedding_error=design.embedding_error)
     return result
@@ -123,16 +93,7 @@ def design_detail(design_id, user):
     admin = user.is_active and user.is_superuser
     designs = Design.objects.all().defer("embedding") if admin else visible_designs()
     design = get_object_or_404(designs.prefetch_related("tags"), pk=design_id)
-    return serialize_design(design, admin=admin)
-
-
-def retry_design_capture(design_id):
-    """Retry an eligible capture after the caller has enforced admin authorization."""
-    design = get_object_or_404(Design, pk=design_id)
-    if design.capture_status not in {Design.Status.FAILED, Design.Status.PENDING}:
-        raise ValueError("Only pending or failed entries can be retried.")
-    queue_capture(design.pk)
-    return {"queued": True, "id": str(design.pk)}
+    return serialize_design(design, admin=admin, detail=True)
 
 
 def design_filters(page=1):

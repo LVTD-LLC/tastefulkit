@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
@@ -73,3 +74,13 @@ def save_design(request, pk):
     else:
         SavedDesign.objects.get_or_create(user=request.user, design=design)
     return redirect(design)
+
+
+@login_required
+def design_markdown(request, pk):
+    design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
+    response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")
+    response["Content-Disposition"] = 'attachment; filename="DESIGN.md"'
+    response["Cache-Control"] = "private, no-store"
+    response["X-Content-Type-Options"] = "nosniff"
+    return response

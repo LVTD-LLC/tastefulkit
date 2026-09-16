@@ -88,8 +88,6 @@ def test_initialize_discovery_and_django_routes(http):
         "get_design",
         "get_design_filters",
         "get_user_info",
-        "submit_design_reference",
-        "retry_design",
     }
     for tool in tools:
         assert not {"user_id", "profile_id", "api_key", "is_superuser"} & set(
@@ -202,38 +200,6 @@ def test_host_and_origin_protection(http):
     assert http.post("/mcp/", headers={"Origin": "http://testserver"}, json={}).status_code != 403
 
 
-def test_admin_only_submission_retry_and_detail(http, user, design):
-    payload = {
-        "title": "Example site",
-        "source_url": "https://example.com/new",
-        "description": "A warm, minimal landing page.",
-        "tags": ["Warm"],
-    }
-    with patch("apps.catalogue.services.async_task") as enqueue:
-        assert call(http, "submit_design_reference", payload=payload)["isError"]
-        assert call(http, "retry_design", design_id=str(design.pk))["isError"]
-        enqueue.assert_not_called()
-    user.is_superuser = True
-    user.save()
-    with (
-        patch("apps.catalogue.services.public_url", return_value=payload["source_url"]),
-        patch("apps.catalogue.services.async_task") as enqueue,
-    ):
-        first = data(http, "submit_design_reference", payload=payload)
-        second = data(http, "submit_design_reference", payload=payload)
-        assert first["created"] and not second["created"]
-        assert first["design"]["id"] == second["design"]["id"]
-        assert first["design"]["capture_status"] == "pending"
-        assert enqueue.call_count == 1
-        pending_id = first["design"]["id"]
-        assert data(http, "get_design", design_id=pending_id)["capture_status"] == "pending"
-        assert data(http, "retry_design", design_id=pending_id)["queued"]
-        assert enqueue.call_count == 2
-        assert call(http, "retry_design", design_id=str(design.pk))["isError"]
-        assert enqueue.call_count == 2
-        assert len(data(http, "list_designs")["items"]) == 1
-
-
 def test_signed_screenshot_links_are_refreshed(http, design):
     with patch.object(
         design.screenshot.storage,
@@ -265,7 +231,7 @@ def test_real_mcp_client_over_http(key, design):
 
             async def check():
                 async with Client(url, auth=key) as client:
-                    assert len(await client.list_tools()) == 7
+                    assert len(await client.list_tools()) == 5
                     result = await client.call_tool("get_design", {"design_id": str(design.pk)})
                     assert result.data["id"] == str(design.pk)
                     assert result.data["screenshot_url"]
@@ -301,3 +267,11 @@ def test_user_identity_comes_from_key_not_tool_arguments(http, django_user_model
     other = django_user_model.objects.create_user(username="other", email="other@example.com")
     http.headers["Authorization"] = f"Bearer {other.profile.rotate_api_key()}"
     assert data(http, "get_user_info")["id"] == other.pk
+
+
+@pytest.mark.parametrize("admin", [False, True])
+def test_mcp_is_read_only_even_for_admins(http, user, admin):
+    user.is_superuser = admin
+    user.save()
+    assert call(http, "submit_design_reference", payload={})["isError"]
+    assert call(http, "retry_design", design_id=str(uuid4()))["isError"]

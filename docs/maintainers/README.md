@@ -2,7 +2,7 @@
 
 These repository-only notes are not served by the website documentation routes.
 
-For the current development commands, production configuration, capture ingestion,
+For the current development commands, production configuration, prepared-example ingestion,
 Qdrant recovery, and CapRover deployment/rollback procedure, use the
 [application engineering guide](../../AGENTS.md#production-configuration). See also the
 [quality command guide](../quality.md).
