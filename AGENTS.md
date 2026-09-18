@@ -108,9 +108,23 @@ is the contribution and merge contract.
 - Signup requires email verification. Account settings support passkeys and
   personal API keys. Only explicitly provisioned active superusers may ingest
   complete prepared designs; never grant admin rights to the first signup.
-- Pairwise voting, Elo rankings, and learned taste profiles are roadmap items,
-  not shipped behavior. The daily research agent is external and submits via
-  the ingestion API. No catalogue entries are hardcoded or seeded by migrations.
+- The authenticated arena compares published ready references within the same kind
+  and viewport family (<768px mobile, otherwise desktop). Signed one-hour pair
+  tokens bind user and taste generation; POSTs enforce CSRF, current visibility,
+  pair compatibility, one vote per pair/generation and 30 actions/minute/account.
+- ArenaState serializes ballots and global Elo writes in one transaction. First
+  votes per account/pair count globally (initial 1000, K=32); resetting personal
+  taste never duplicates global weight. UUID snapshots retain exact replay after
+  design deletion; account deletion unlinks ballots. Rebuild under the same lock
+  with `python manage.py rebuild_arena_ratings` (not a scheduled operation).
+- Personal rankings replay current-generation choices, then add normalized metadata
+  affinity from tags/kinds/industries and saves. They use no catalogue inference,
+  query embeddings, or other accounts' taste. No personal signal falls back to
+  global Elo. Reset starts a new generation and excludes older saves without
+  removing the collection. Rankings and profile operations remain session-only;
+  REST/MCP catalogue contracts are unchanged.
+- The daily research agent is external and submits via the ingestion API.
+  No catalogue entries are hardcoded or seeded by migrations.
 
 ## Local development
 

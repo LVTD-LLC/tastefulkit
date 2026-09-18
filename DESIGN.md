@@ -314,3 +314,14 @@ neutral current-page state. Avoid orange pills, shadows, and tracked uppercase
 labels. Keep the desktop list sticky and use a native, collapsed "Browse docs"
 disclosure below 1024px so article content stays near the top on mobile. Mark the
 current link with `aria-current="page"` and preserve keyboard focus indicators.
+
+## Voting arena and rankings
+
+Continue the catalogue's warm `--tk-*` palette, compact buttons, and restrained
+10px image corners. Compare two equal-width screenshot panels on desktop and
+stack them on narrow screens. Use the same preview height for both candidates,
+with full screenshots accessible independently of voting. Never show global
+scores beside a live comparison. Rankings use compact ordered rows with thumbnails,
+visible sample counts, provisional labels, and distinct Global / For you tabs.
+Personal-fit scores are relative, never percentages. Reset is an explicit,
+confirmed action. All screens support keyboard input, no-JS forms, and dark mode.

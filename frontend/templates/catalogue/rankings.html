@@ -1,0 +1,40 @@
+{% extends "base_landing.html" %}
+{% block meta %}<title>{% if mode == "personal" %}Your ranking{% else %}Global ranking{% endif %} · TastefulKit</title><meta name="robots" content="noindex, nofollow">{% endblock %}
+{% block default_messages %}{% endblock %}
+{% block content %}
+    <div class="tk-container library-page tk-arena-page">
+        {% for message in messages %}<p class="tk-arena-feedback" role="status">{{ message }}</p>{% endfor %}
+        <div class="tk-arena-heading"><div><h1>{% if mode == "personal" %}Good, according to you.{% else %}The community's favorites.{% endif %}</h1><p class="tk-arena-intro">{% if mode == "personal" %}Your choices shape a ranking that is yours alone.{% else %}Real comparisons. Shared favorites. A ranking that grows with every vote.{% endif %}</p></div><a class="tk-button" href="{% url 'voting_arena' %}">Compare designs →</a></div>
+        {% include "catalogue/arena_nav.html" %}
+        {% if mode == "personal" %}
+            <div class="tk-taste-summary">
+                {% if summary.has_taste %}<p>Based on <strong>{{ summary.votes }} comparison{{ summary.votes|pluralize }}</strong> and <strong>{{ summary.saves }} saved reference{{ summary.saves|pluralize }}</strong>.</p><p>Your votes lead; shared styles, element types, industries and saves help suggest designs you haven't compared.</p>
+{% else %}<p><strong>Your taste starts here.</strong> This is the global ranking for now. Compare a pair or save a reference to make it yours.</p>{% endif %}
+    </div>
+{% endif %}
+<form class="tk-search tk-arena-filter" method="get">
+    <input type="hidden" name="mode" value="{{ mode }}"><label for="kind">Element</label><select id="kind" name="kind"><option value="">All elements</option>{% for value,label in kinds %}<option value="{{ value }}" {% if kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select><button type="submit" class="tk-button tk-button-quiet">Apply</button>
+</form>
+<p class="tk-arena-note">{% if mode == "personal" and summary.has_taste %}Personal fit is a relative score, not a percentage or the community's Elo. Keep voting to refine it.{% else %}Elo starts at 1,000. Early scores are provisional; check the comparison count. Equal scores share a rank. Comparisons stay within an element and mobile/desktop format, so category rankings are the fairest view.{% endif %}</p>
+<ol class="tk-ranking-list">
+    {% for design in page %}
+        <li class="tk-ranking-row">
+            <span class="tk-ranking-position" aria-label="Rank {{ design.rank }}">{{ design.rank }}</span>
+            <a class="tk-ranking-image" href="{{ design.get_absolute_url }}">
+                <img src="{{ design.thumbnail.url }}"
+                     alt="{{ design.title }} screenshot"
+                     width="160"
+                     height="110"
+                     loading="lazy">
+            </a>
+            <div class="tk-ranking-copy"><h2><a href="{{ design.get_absolute_url }}">{{ design.title }} ↗</a></h2><p>{{ design.get_kind_display }}{% if design.industry %} · {{ design.industry }}{% endif %}</p><div class="tk-tags">{% for tag in design.tags.all|slice:':3' %}<a href="{% url 'library' %}?tag={{ tag.name|urlencode }}">{{ tag.name }}</a>{% endfor %}</div></div>
+            <div class="tk-ranking-score">{% if mode == "personal" and summary.has_taste %}<strong>{{ design.personal_score|floatformat:1 }}</strong><span>personal fit</span><span>{{ design.personal_comparisons }} of your comparisons</span>{% else %}<strong>{{ design.elo|floatformat:1 }}</strong><span>Elo · {% if not design.comparisons %}not yet rated{% elif design.comparisons < 10 %}provisional{% else %}community{% endif %}</span><span>{{ design.comparisons }} comparison{{ design.comparisons|pluralize }} · {{ design.wins }} win{{ design.wins|pluralize }}</span>{% endif %}</div>
+        </li>
+    {% empty %}<li class="tk-empty"><h2>No references in this selection yet.</h2><p>Try another element or come back as the collection grows.</p></li>{% endfor %}
+</ol>
+{% if page.has_other_pages %}<nav class="tk-pagination" aria-label="Ranking pages">{% if page.has_previous %}<a href="?{{ query_params }}&page={{ page.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a href="?{{ query_params }}&page={{ page.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}
+{% if mode == "personal" %}
+    <details class="tk-taste-reset"><summary>Start your personal taste over</summary><p>This stops using your previous choices and existing saves for recommendations. Your saved collection and original global votes stay intact. New comparisons and new saves build your next profile.</p><form method="post" action="{% url 'reset_taste' %}">{% csrf_token %}<label><input type="checkbox" name="confirm" value="reset" required> Reset my personal taste</label><button type="submit" class="tk-button tk-button-quiet">Start over</button></form></details>
+{% endif %}
+</div>
+{% endblock %}

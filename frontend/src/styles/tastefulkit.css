@@ -95,3 +95,68 @@
 .tk-guide-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin: 1rem 0; }
 .tk-design-guide summary { cursor: pointer; padding: 0.75rem 0; }
 .tk-design-guide pre { max-height: 32rem; overflow: auto; padding: 1rem; border: 1px solid var(--tk-line); border-radius: 0.5rem; font-size: 0.875rem; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Arena and rankings keep the catalogue's warm, restrained visual language. */
+.tk-tabs { flex-wrap: wrap; gap: 12px 24px; }
+.tk-arena-page h1 { font-size: 36px; letter-spacing: -1.2px; }
+.tk-arena-heading { display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+.tk-arena-intro { margin-top: 14px; color: var(--tk-muted); font-size: 16px; line-height: 1.6; }
+.tk-arena-count { font-size: 14px; color: var(--tk-muted); max-width: 190px; }
+.tk-arena-filter { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin: 24px 0; }
+.tk-arena-filter select { min-width: 180px; max-width: 100%; }
+.tk-button-quiet { background: transparent; color: var(--tk-ink)!important; border-color: var(--tk-line); }
+.tk-button-quiet:hover { background: var(--tk-soft); opacity: 1; }
+.tk-arena-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px; }
+.tk-arena-candidate { min-width: 0; }
+.tk-arena-preview { display: block; height: 420px; overflow-y: auto; border: 1px solid var(--tk-line); border-radius: 10px; background: var(--tk-soft); }
+.tk-arena-preview img { display: block; width: 100%; height: auto; min-height: 100%; object-fit: contain; object-position: top; }
+.tk-arena-caption { margin: 18px 0 14px; }
+.tk-arena-caption h2 { font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }
+.tk-arena-caption p { font-size: 14px; color: var(--tk-muted); margin-top: 5px; }
+.tk-arena-pick { width: 100%; white-space: normal; overflow-wrap: anywhere; }
+.tk-arena-inspect { display: inline-flex; align-items: center; min-height: 44px; font-size: 14px; text-decoration: underline; text-underline-offset: 4px; }
+.tk-arena-bottom { display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 20px; padding: 22px 0; border-top: 1px solid var(--tk-line); }
+.tk-arena-bottom p,.tk-arena-note { font-size: 14px; line-height: 1.6; color: var(--tk-muted); }
+.tk-arena-note { margin: 20px 0; max-width: 850px; }
+.tk-arena-revisit { margin: 20px 0; }
+.tk-arena-empty-actions { justify-content: center; margin-top: 24px; }
+.tk-taste-summary { background: var(--tk-soft); padding: 20px 24px; border-radius: 10px; font-size: 15px; line-height: 1.7; }
+.tk-taste-summary p+p { color: var(--tk-muted); margin-top: 4px; }
+.tk-ranking-list { list-style: none; margin-top: 28px; padding: 0; }
+.tk-ranking-row { display: grid; grid-template-columns: 40px 160px minmax(0,1fr) 180px; align-items: center; gap: 24px; padding: 24px 0; border-top: 1px solid var(--tk-line); }
+.tk-ranking-position { font-size: 24px; color: var(--tk-muted); font-variant-numeric: tabular-nums; }
+.tk-ranking-image { display: block; overflow: hidden; border: 1px solid var(--tk-line); border-radius: 6px; }
+.tk-ranking-image img { width: 100%; height: 110px; object-fit: cover; object-position: top; }
+.tk-ranking-copy { min-width: 0; }
+.tk-ranking-copy h2 { font-size: 18px; font-weight: 600; overflow-wrap: anywhere; }
+.tk-ranking-copy>p { font-size: 14px; margin-top: 6px; color: var(--tk-muted); }
+.tk-ranking-score { text-align: right; font-variant-numeric: tabular-nums; }
+.tk-ranking-score strong { display: block; font-size: 24px; font-weight: 500; }
+.tk-ranking-score span { display: block; color: var(--tk-muted); font-size: 13px; line-height: 1.8; }
+.tk-taste-reset { margin-top: 48px; padding-top: 24px; border-top: 1px solid var(--tk-line); font-size: 14px; }
+.tk-taste-reset summary { cursor: pointer; min-height: 44px; }
+.tk-taste-reset p { max-width: 700px; color: var(--tk-muted); line-height: 1.7; margin: 10px 0 18px; }
+.tk-taste-reset form { display: flex; flex-wrap: wrap; align-items: center; gap: 20px; }
+.tk-taste-reset input { margin-right: 8px; }
+@media(max-width:800px) {
+  .tk-ranking-row { grid-template-columns: 28px 100px minmax(0,1fr); gap: 16px; }
+  .tk-ranking-image img { height: 90px; }
+  .tk-ranking-score { grid-column: 3; text-align: left; }
+  .tk-arena-preview { height: 300px; }
+}
+@media(max-width:600px) {
+  .tk-arena-page h1 { font-size: 30px; }
+  .tk-arena-heading,.tk-arena-bottom { align-items: flex-start; flex-direction: column; }
+  .tk-arena-count { max-width: none; }
+  .tk-arena-pair { grid-template-columns: minmax(0,1fr); gap: 28px; }
+  .tk-arena-preview { height: 280px; }
+  .tk-arena-filter select { min-width: 0; flex: 1; }
+  .tk-ranking-row { grid-template-columns: 24px 76px minmax(0,1fr); gap: 12px; }
+  .tk-ranking-image img { height: 76px; }
+  .tk-ranking-copy h2 { font-size: 16px; }
+  .tk-ranking-score { grid-column: 2 / -1; }
+  .tk-ranking-score strong { display: inline; margin-right: 8px; font-size: 22px; }
+  .tk-ranking-score span { display: inline; margin-right: 8px; }
+}
+.tk-arena-feedback { padding: 16px 20px; margin-bottom: 24px; background: var(--tk-soft); border-radius: 8px; font-size: 15px; line-height: 1.6; }
+[data-arena-form][aria-busy="true"] button { opacity: .6; cursor: wait; }

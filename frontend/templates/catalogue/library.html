@@ -1,6 +1,6 @@
 {% extends "base_landing.html" %}{% block meta %}<title>Explore designs · TastefulKit</title><meta name="robots" content="noindex">{% endblock %}{% block content %}<div class="tk-container library-page"><p class="tk-kicker">YOUR NEXT STARTING POINT</p><h1>{% if saved %}The keepers.{% else %}Find your kind of good.{% endif %}</h1><nav class="tk-tabs" aria-label="Library"><a href="{% url 'library' %}"
    {% if not saved %}aria-current="page"{% endif %}>Explore</a><a href="{% url 'library' %}?saved=1"
-   {% if saved %}aria-current="page"{% endif %}>Saved</a><a href="{% url 'settings' %}">Account</a></nav><form class="tk-search" method="get">{% if saved %}<input type="hidden" name="saved" value="1">{% endif %}<label for="query">Describe the design you have in mind</label><div class="tk-search-row"><input id="query"
+   {% if saved %}aria-current="page"{% endif %}>Saved</a><a href="{% url 'voting_arena' %}">Arena</a><a href="{% url 'design_rankings' %}">Rankings</a><a href="{% url 'design_rankings' %}?mode=personal">For you</a><a href="{% url 'settings' %}">Account</a></nav><form class="tk-search" method="get">{% if saved %}<input type="hidden" name="saved" value="1">{% endif %}<label for="query">Describe the design you have in mind</label><div class="tk-search-row"><input id="query"
        name="q"
        value="{{ q }}"
        maxlength="300"
