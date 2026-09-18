@@ -111,6 +111,8 @@ def update_global(ballot):
 @transaction.atomic
 def submit_comparison(user, token, choice):
     generation, ids = parse_token(user, token)
+    # This row lock is held until commit, including profile rate checks/increments.
+    # All vote/reset writers use it, so concurrent requests cannot read a stale counter.
     lock_arena()
     profile, _ = TasteProfile.objects.get_or_create(user=user)
     if generation != profile.generation:

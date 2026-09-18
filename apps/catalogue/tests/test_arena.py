@@ -254,3 +254,27 @@ def test_concurrent_duplicate_submissions_do_not_double_count(user, designs):
     assert sorted(outcomes) == ["duplicate", "saved"]
     assert ArenaBallot.objects.count() == 1
     assert sum(DesignRating.objects.values_list("comparisons", flat=True)) == 2
+
+
+@pytest.mark.django_db(transaction=True)
+def test_concurrent_distinct_votes_cannot_exceed_account_rate_limit(user, designs):
+    TasteProfile.objects.create(user=user, rate_window=timezone.now(), rate_count=29)
+    pairs = [designs[:2], designs[1:]]
+    signed_pairs = [(token(user, pair), str(pair[0].pk)) for pair in pairs]
+
+    def submit(signed_pair):
+        close_old_connections()
+        try:
+            return arena.submit_comparison(user, *signed_pair)[0]
+        except arena.ArenaError as exc:
+            assert "wait a minute" in str(exc)
+            return "rate_limited"
+        finally:
+            close_old_connections()
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        outcomes = list(pool.map(submit, signed_pairs))
+    assert sorted(outcomes) == ["rate_limited", "saved"]
+    assert TasteProfile.objects.get(user=user).rate_count == 30
+    assert ArenaBallot.objects.count() == 1
+    assert sum(DesignRating.objects.values_list("comparisons", flat=True)) == 2
