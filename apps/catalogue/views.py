@@ -12,14 +12,18 @@ def landing(request):
     return render(
         request,
         "pages/landing-page.html",
-        {"designs": visible_designs().prefetch_related("tags")[:6]},
+        {
+            "designs": visible_designs()
+            .filter(kind=Design.Kind.LANDING)
+            .prefetch_related("tags")[:6]
+        },
     )
 
 
 @login_required
 def library(request):
     query = request.GET.get("q", "")[:300]
-    kind = request.GET.get("kind", "")
+    kind = Design.Kind.LANDING
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")
     saved = request.GET.get("saved") == "1"
