@@ -437,7 +437,9 @@ npm run lint
 - `apps/billing/` owns the single USD $10/month plan, hosted Checkout, customer portal,
   signed webhooks, and shared access checks. Admin ingestion remains exempt.
 - Credentials and the price/account/portal IDs are environment driven. Pin Stripe API
-  version `2024-06-20`, including webhook payloads; organization keys require account context.
+  client version `2025-03-31.basil`; organization keys require account context.
+  Webhook snapshots may remain on `2024-06-20`: only customer identity is consumed,
+  and current subscription state is fetched using the pinned client version.
 - Entitlement requires `active` status and a future paid-through timestamp. No trials.
   Reconcile current Stripe subscriptions under the account lock, never trust browser
   success parameters or stale event snapshots. Webhook retries are idempotent.

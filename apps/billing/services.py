@@ -37,11 +37,17 @@ def sync_account(account, api):
     account.subscription_id = chosen["id"] if chosen else ""
     account.status = chosen["status"] if chosen else ""
     account.cancel_at_period_end = bool(chosen and chosen.get("cancel_at_period_end"))
-    account.paid_until = (
-        datetime.fromtimestamp(chosen["current_period_end"], UTC)
+    # Basil models billing periods per subscription item. Keep legacy snapshots readable.
+    period_ends = (
+        [
+            item.get("current_period_end", chosen.get("current_period_end", 0))
+            for item in chosen["items"]["data"]
+            if item["price"]["id"] == settings.STRIPE_PRICE_ID
+        ]
         if chosen and chosen["status"] == "active"
-        else None
+        else []
     )
+    account.paid_until = datetime.fromtimestamp(max(period_ends), UTC) if period_ends else None
     account.save()
     return subscriptions
 
@@ -94,7 +100,6 @@ def checkout_url(user):
                 "customer": account.customer_id,
                 "client_reference_id": str(user.pk),
                 "line_items": [{"price": settings.STRIPE_PRICE_ID, "quantity": 1}],
-                "payment_method_types": ["card"],
                 "subscription_data": {"metadata": {"tastefulkit_user_id": str(user.pk)}},
                 "success_url": site_url("billing_return"),
                 "cancel_url": site_url("pricing") + "?checkout=canceled",

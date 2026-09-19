@@ -17,7 +17,7 @@ def client():
         raise BillingUnavailable("Billing is not configured.")
     return stripe.StripeClient(
         settings.STRIPE_SECRET_KEY,
-        stripe_version="2024-06-20",
+        stripe_version="2025-03-31.basil",
         stripe_context=settings.STRIPE_ACCOUNT_ID or None,
         max_network_retries=2,
         http_client=stripe.HTTPXClient(timeout=15, allow_sync_methods=True),

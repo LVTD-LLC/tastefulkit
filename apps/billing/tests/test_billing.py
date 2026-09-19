@@ -165,6 +165,7 @@ def test_checkout_is_post_only_csrf_protected_and_uses_server_plan(user, api, au
     assert payload["line_items"] == [{"price": "price_membership", "quantity": 1}]
     assert payload["success_url"] == "https://testserver/billing/return/"
     assert payload["mode"] == "subscription"
+    assert "payment_method_types" not in payload  # Respect Managed Payments defaults.
     assert not has_paid_access(user)
 
 
@@ -359,3 +360,15 @@ def test_completed_checkout_waits_for_reconciliation_but_canceled_members_can_re
     api.v1.subscriptions.list.return_value = {"data": [subscription("canceled")]}
     assert auth_client.post("/billing/checkout/").url == "https://checkout.stripe.com/test"
     api.v1.checkout.sessions.create.assert_called_once()
+
+
+def test_basil_subscription_item_period_controls_access(client, user, api, billing_settings):
+    BillingAccount.objects.create(user=user, customer_id="cus_local")
+    sub = subscription()
+    end = sub.pop("current_period_end")
+    sub["items"]["data"][0]["current_period_end"] = end
+    api.v1.subscriptions.list.return_value = {"data": [sub]}
+    assert signed_event(client, billing_settings).status_code == 200
+    account = BillingAccount.objects.get(user=user)
+    assert int(account.paid_until.timestamp()) == end
+    assert has_paid_access(user)
