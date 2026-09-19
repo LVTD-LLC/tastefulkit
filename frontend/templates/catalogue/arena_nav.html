@@ -4,6 +4,6 @@
        {% if request.resolver_match.url_name == 'voting_arena' %}aria-current="page"{% endif %}>Arena</a>
     <a href="{% url 'design_rankings' %}"
        {% if request.resolver_match.url_name == 'design_rankings' and mode == 'global' %}aria-current="page"{% endif %}>Global ranking</a>
-    <a href="{% url 'design_rankings' %}?mode=personal"
-       {% if mode == 'personal' %}aria-current="page"{% endif %}>For you</a>
+    {% if request.user.is_authenticated %}<a href="{% url 'design_rankings' %}?mode=personal"
+   {% if mode == 'personal' %}aria-current="page"{% endif %}>For you</a>{% else %}<a href="{% url 'account_login' %}?next={% url 'design_rankings' %}%3Fmode%3Dpersonal">Sign in for your ranking</a>{% endif %}
 </nav>

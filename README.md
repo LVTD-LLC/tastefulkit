@@ -64,10 +64,13 @@ original creators; they are inspiration, not downloadable source code or a
 license to reuse a site's assets.
 
 Browsing, search, saved designs, and assistant access are available today.
-Signed-in members can [compare designs](https://tastefulkit.com/arena/), explore
-[global Elo rankings](https://tastefulkit.com/rankings/), and build a private
+Anyone can [compare designs](https://tastefulkit.com/arena/) and explore
+[global Elo rankings](https://tastefulkit.com/rankings/) without signing in. Guest
+votes contribute globally, with duplicate protection and a 30-action/minute limit
+per browser session. Signed-in members can also build a private
 [personal ranking](https://tastefulkit.com/rankings/?mode=personal) from their
-votes and saved references.
+votes and saved references. Guest votes stay global-only; they are not imported
+into an account when you sign in. Clearing cookies starts a new guest session.
 
 ## Help make TastefulKit better
 

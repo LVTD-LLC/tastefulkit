@@ -9,7 +9,7 @@
                 <h1>Which feels more like you?</h1>
                 <p class="tk-arena-intro">Two references. Your instinct. Pick the design you prefer.</p>
             </div>
-            <p class="tk-arena-count">{{ vote_count }} comparison{{ vote_count|pluralize }} in your taste profile</p>
+            <p class="tk-arena-count">{{ vote_count }} comparison{{ vote_count|pluralize }} {% if request.user.is_authenticated %}in your taste profile{% else %}contributed from this browser{% endif %}</p>
         </div>
         {% include "catalogue/arena_nav.html" %}
         <form class="tk-search tk-arena-filter" method="get">
@@ -46,7 +46,7 @@
                             <a class="tk-arena-inspect"
                                href="{{ design.get_absolute_url }}"
                                target="_blank"
-                               rel="noopener">View reference ↗</a>
+                               rel="noopener">{% if request.user.is_authenticated %}View reference{% else %}Sign in to view reference{% endif %} ↗</a>
                         </article>
                     {% endfor %}
                 </div>
@@ -59,11 +59,16 @@
                 </div>
             </form>
         {% else %}
-            <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons in this selection. Try another element, revisit skipped pairs, or explore your rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button" href="{% url 'design_rankings' %}?mode=personal">See your rankings →</a>{% if kind %}<a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">All elements</a>{% endif %}</div></div>
+            <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons in this selection. Try another element, revisit skipped pairs, or explore the rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button"
+   href="{% url 'design_rankings' %}{% if request.user.is_authenticated %}?mode=personal{% endif %}">See {% if request.user.is_authenticated %}your{% else %}global{% endif %} rankings →</a>{% if kind %}<a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">All elements</a>{% endif %}</div></div>
         {% endif %}
         {% if skipped %}<form class="tk-arena-revisit"
       method="post"
       action="{% url 'arena_revisit' %}">{% csrf_token %}<button class="tk-button tk-button-quiet" type="submit">Revisit skipped pairs</button></form>{% endif %}
-        <p class="tk-arena-note">For signed-in members. Each pair counts once per account toward global rankings. Your personal ranking is visible only to you.</p>
+        {% if request.user.is_authenticated %}
+            <p class="tk-arena-note">Each pair counts once per account toward global rankings. Your personal ranking is visible only to you.</p>
+        {% else %}
+            <p class="tk-arena-note">No account needed. Your votes count toward the global ranking. <a href="{% url 'account_signup' %}?next={% url 'voting_arena' %}">Create an account</a> to build a personal ranking with your future votes.</p>
+        {% endif %}
     </div>
 {% endblock %}

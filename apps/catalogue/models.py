@@ -105,9 +105,21 @@ class TasteProfile(models.Model):
         return f"Taste profile {self.user_id}"
 
 
+class ArenaGuest(models.Model):
+    """Opaque browser-session identity; no account or personal taste profile."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    rate_window = models.DateTimeField(null=True, blank=True)
+    rate_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return "Arena guest"
+
+
 class ArenaBallot(models.Model):
     # UUID snapshots retain replay after catalogue deletion; no source/user content.
     user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+    guest = models.ForeignKey(ArenaGuest, null=True, on_delete=models.SET_NULL)
     generation = models.PositiveIntegerField(default=0)
     design_a = models.UUIDField()
     design_b = models.UUIDField()
@@ -118,6 +130,13 @@ class ArenaBallot(models.Model):
     class Meta:
         ordering = ["id"]
         constraints = [
+            models.CheckConstraint(
+                condition=models.Q(user__isnull=True) | models.Q(guest__isnull=True),
+                name="arena_single_voter_type",
+            ),
+            models.UniqueConstraint(
+                fields=["guest", "design_a", "design_b"], name="arena_one_guest_pair"
+            ),
             models.CheckConstraint(
                 condition=models.Q(design_a__lt=models.F("design_b")), name="arena_ordered_pair"
             ),

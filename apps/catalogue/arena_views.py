@@ -1,7 +1,9 @@
 from urllib.parse import urlencode
+from uuid import uuid4
 
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -9,7 +11,7 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from apps.catalogue import arena
-from apps.catalogue.models import Design, TasteProfile
+from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
 
 def selected_kind(request):
@@ -17,36 +19,47 @@ def selected_kind(request):
     return value if value in Design.Kind.values else ""
 
 
-@login_required
+def participant(request):
+    if request.user.is_authenticated:
+        return request.user
+    if "arena_guest" not in request.session:
+        request.session["arena_guest"] = str(uuid4())
+    return ArenaGuest(pk=request.session["arena_guest"])
+
+
 @never_cache
 def voting_arena(request):
-    profile = TasteProfile.objects.filter(user=request.user).first()
+    voter = participant(request)
+    profile = (
+        TasteProfile.objects.filter(user=request.user).first()
+        if request.user.is_authenticated
+        else None
+    )
     generation = profile.generation if profile else 0
     kind = selected_kind(request)
     skipped = request.session.get("arena_skipped", [])
-    pair = arena.choose_pair(request.user, generation, kind, skipped)
+    pair = arena.choose_pair(voter, generation, kind, skipped)
     return render(
         request,
         "catalogue/arena.html",
         {
             "pair": pair,
-            "token": arena.pair_token(request.user, generation, pair) if pair else "",
+            "token": arena.pair_token(voter, generation, pair) if pair else "",
             "kind": kind,
             "kinds": Design.Kind.choices,
             "skipped": bool(skipped),
-            "vote_count": arena.personal_ballots(request.user, generation).count(),
+            "vote_count": arena.comparison_ballots(voter, generation).count(),
         },
     )
 
 
-@login_required
 @require_POST
 @never_cache
 def vote(request):
     kind = selected_kind(request)
     try:
         outcome, ids = arena.submit_comparison(
-            request.user, request.POST.get("token", ""), request.POST.get("choice", "")
+            participant(request), request.POST.get("token", ""), request.POST.get("choice", "")
         )
     except arena.ArenaError as exc:
         messages.error(request, str(exc))
@@ -58,11 +71,15 @@ def vote(request):
         elif outcome == "duplicate":
             messages.info(request, "That comparison was already recorded. Here's the next one.")
         else:
-            messages.success(request, "Vote saved. Your rankings are up to date.")
+            messages.success(
+                request,
+                "Vote saved. Your rankings are up to date."
+                if request.user.is_authenticated
+                else "Vote saved. You helped shape the global ranking.",
+            )
     return redirect(reverse("voting_arena") + ("?" + urlencode({"kind": kind}) if kind else ""))
 
 
-@login_required
 @require_POST
 @never_cache
 def revisit_skipped(request):
@@ -70,10 +87,11 @@ def revisit_skipped(request):
     return redirect("voting_arena")
 
 
-@login_required
 @never_cache
 def rankings(request):
     mode = "personal" if request.GET.get("mode") == "personal" else "global"
+    if mode == "personal" and not request.user.is_authenticated:
+        return redirect_to_login(request.get_full_path())
     kind = selected_kind(request)
     designs, summary = arena.ranked_designs(request.user, mode, kind)
     page = Paginator(designs, 24).get_page(request.GET.get("page"))

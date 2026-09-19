@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-19
+
+- Opened the voting arena and global rankings to visitors without an account. Guest votes contribute to global Elo with session-bound pair tokens, duplicate protection, CSRF checks, and per-session rate limits.
+- Kept personalized rankings and taste resets account-only, with an optional signup link for guests to build a personal ranking from future votes.
+
 ## 2026-09-18
 
 - Added a signed-in-only design voting arena with comparable pairs, skips, duplicate protection, and per-account rate limiting.

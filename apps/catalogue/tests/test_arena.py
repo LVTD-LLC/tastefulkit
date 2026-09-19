@@ -10,7 +10,15 @@ from django.test import Client
 from django.utils import timezone
 
 from apps.catalogue import arena
-from apps.catalogue.models import ArenaBallot, Design, DesignRating, SavedDesign, Tag, TasteProfile
+from apps.catalogue.models import (
+    ArenaBallot,
+    ArenaGuest,
+    Design,
+    DesignRating,
+    SavedDesign,
+    Tag,
+    TasteProfile,
+)
 
 pytestmark = pytest.mark.django_db
 
@@ -52,10 +60,8 @@ def ratings_snapshot():
     )
 
 
-@pytest.mark.parametrize(
-    "url", ["/arena/", "/arena/vote/", "/arena/revisit/", "/rankings/", "/rankings/reset/"]
-)
-def test_anonymous_and_inactive_accounts_cannot_participate(client, user, url):
+@pytest.mark.parametrize("url", ["/rankings/?mode=personal", "/rankings/reset/"])
+def test_personal_features_require_an_active_account(client, user, url):
     assert client.get(url).status_code == 302
     assert client.post(url).status_code == 302
     user.is_active = False
@@ -278,3 +284,154 @@ def test_concurrent_distinct_votes_cannot_exceed_account_rate_limit(user, design
     assert TasteProfile.objects.get(user=user).rate_count == 30
     assert ArenaBallot.objects.count() == 1
     assert sum(DesignRating.objects.values_list("comparisons", flat=True)) == 2
+
+
+def test_guest_browser_flow_counts_globally_without_personal_profile(client, designs):
+    page = client.get("/arena/")
+    assert page.status_code == 200
+    assert "no-store" in page.headers["Cache-Control"]
+    assert b"No account needed" in page.content
+    assert b"in your taste profile" not in page.content
+    assert not ArenaGuest.objects.exists()  # Browsing does not create rate-limit rows.
+    pair = page.context["pair"]
+    data = {"token": page.context["token"], "choice": str(pair[0].pk)}
+    response = client.post("/arena/vote/", data, follow=True)
+    assert b"You helped shape the global ranking" in response.content
+    ballot = ArenaBallot.objects.get()
+    assert ballot.user_id is None and ballot.guest_id is not None and ballot.global_counted
+    assert not TasteProfile.objects.exists()
+    assert sorted(row[1] for row in ratings_snapshot()) == [984, 1016]
+    before = ratings_snapshot()
+    client.post("/arena/vote/", data)
+    assert ratings_snapshot() == before and ArenaBallot.objects.count() == 1
+    assert {d.pk for d in response.context["pair"]} != {d.pk for d in pair}
+    assert response.context["vote_count"] == 1
+    ranking = client.get("/rankings/")
+    assert ranking.status_code == 200 and ranking.context["summary"] == {}
+    assert ranking.context["page"][0].pk == pair[0].pk
+    assert b"personal fit" not in ranking.content
+    client.force_login(designs[0].submitted_by)
+    assert not client.get("/rankings/?mode=personal").context["summary"]["has_taste"]
+    assert not TasteProfile.objects.exists()
+
+
+def test_guest_skip_revisit_empty_and_filter(client, designs):
+    designs[2].kind = "hero"
+    designs[2].save()
+    page = client.get("/arena/?kind=landing_page")
+    response = client.post(
+        "/arena/vote/",
+        {"token": page.context["token"], "choice": "skip", "kind": "landing_page"},
+        follow=True,
+    )
+    assert not response.context["pair"] and not ArenaBallot.objects.exists()
+    assert b"See global rankings" in response.content
+    assert b"See your rankings" not in response.content
+    response = client.post("/arena/revisit/", follow=True)
+    assert len(response.context["pair"]) == 2
+    assert len(client.get("/rankings/?kind=hero").context["page"]) == 1
+
+
+def test_guest_tokens_are_session_bound_and_cannot_be_used_after_login(client, user, designs):
+    page = client.get("/arena/")
+    data = {"token": page.context["token"], "choice": str(page.context["pair"][0].pk)}
+    other = Client()
+    other.get("/arena/")
+    assert b"comparison expired" in other.post("/arena/vote/", data, follow=True).content
+    client.force_login(user)
+    assert b"comparison expired" in client.post("/arena/vote/", data, follow=True).content
+    assert not ArenaBallot.objects.exists()
+    assert not ArenaGuest.objects.exists()
+
+
+def test_guest_posts_require_csrf_and_get_cannot_mutate(designs):
+    client = Client(enforce_csrf_checks=True)
+    page = client.get("/arena/")
+    data = {"token": page.context["token"], "choice": str(page.context["pair"][0].pk)}
+    for path in ("/arena/vote/", "/arena/revisit/"):
+        assert client.get(path).status_code == 405
+        assert client.post(path, data).status_code == 403
+    data["csrfmiddlewaretoken"] = client.cookies["csrftoken"].value
+    assert client.post("/arena/vote/", data).status_code == 302
+    assert ArenaBallot.objects.count() == 1
+
+
+def test_guest_rate_limit_is_durable_and_independent(user, designs):
+    guest = ArenaGuest.objects.create(rate_window=timezone.now(), rate_count=30)
+    signed = arena.pair_token(guest, 0, designs[:2])
+    with pytest.raises(arena.ArenaError, match="wait a minute"):
+        arena.submit_comparison(guest, signed, str(designs[0].pk))
+    with pytest.raises(arena.ArenaError, match="wait a minute"):
+        arena.submit_comparison(guest, signed, "skip")
+    another = ArenaGuest(pk=uuid4())
+    assert (
+        arena.submit_comparison(
+            another, arena.pair_token(another, 0, designs[:2]), str(designs[0].pk)
+        )[0]
+        == "saved"
+    )
+    assert vote(user, designs)[0] == "saved"
+    with patch(
+        "apps.catalogue.arena.timezone.now",
+        return_value=timezone.now() + timezone.timedelta(minutes=1),
+    ):
+        assert arena.submit_comparison(guest, signed, str(designs[0].pk))[0] == "saved"
+    assert not TasteProfile.objects.filter(user_id=None).exists()
+
+
+def test_guest_validation_and_rebuild_preserve_history(designs):
+    guest = ArenaGuest(pk=uuid4())
+    signed = arena.pair_token(guest, 0, designs[:2])
+    for bad in ("", signed + "tampered"):
+        with pytest.raises(arena.ArenaError):
+            arena.submit_comparison(guest, bad, str(designs[0].pk))
+    with patch("django.core.signing.time.time", return_value=timezone.now().timestamp() + 3601):
+        with pytest.raises(arena.ArenaError):
+            arena.submit_comparison(guest, signed, str(designs[0].pk))
+    designs[0].published = False
+    designs[0].save()
+    with pytest.raises(arena.ArenaError):
+        arena.submit_comparison(guest, signed, str(designs[0].pk))
+    assert not ArenaGuest.objects.exists()
+    designs[0].published = True
+    designs[0].save()
+    with patch("apps.catalogue.arena.update_global", side_effect=RuntimeError("failure")):
+        with pytest.raises(RuntimeError):
+            arena.submit_comparison(guest, signed, str(designs[0].pk))
+    assert not ArenaGuest.objects.exists() and not ArenaBallot.objects.exists()
+    arena.submit_comparison(guest, signed, str(designs[0].pk))
+    reverse = arena.pair_token(guest, 0, list(reversed(designs[:2])))
+    assert arena.submit_comparison(guest, reverse, str(designs[1].pk))[0] == "duplicate"
+    before = ratings_snapshot()
+    guest.delete()
+    call_command("rebuild_arena_ratings")
+    assert ratings_snapshot() == before
+
+
+@pytest.mark.django_db(transaction=True)
+@pytest.mark.parametrize("same_pair", [True, False])
+def test_concurrent_guest_votes_are_idempotent_and_rate_limited(designs, same_pair):
+    guest = ArenaGuest.objects.create(rate_window=timezone.now(), rate_count=29)
+    signed = arena.pair_token(guest, 0, designs[:2])
+
+    def submit(pair):
+        close_old_connections()
+        try:
+            return arena.submit_comparison(guest, *pair)[0]
+        except arena.ArenaError as exc:
+            assert "wait a minute" in str(exc)
+            return "rate_limited"
+        finally:
+            close_old_connections()
+
+    submissions = [(signed, str(designs[0].pk))] * 2
+    if not same_pair:
+        submissions[1] = (arena.pair_token(guest, 0, designs[1:]), str(designs[1].pk))
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        outcomes = list(pool.map(submit, submissions))
+    assert sorted(outcomes) == (["duplicate", "saved"] if same_pair else ["rate_limited", "saved"])
+    guest.refresh_from_db()
+    assert guest.rate_count == 30
+    other_pair = arena.pair_token(guest, 0, [designs[0], designs[2]])
+    assert submit((other_pair, str(designs[2].pk))) == "rate_limited"
+    assert ArenaBallot.objects.count() == 1

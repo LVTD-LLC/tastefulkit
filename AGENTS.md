@@ -108,12 +108,15 @@ is the contribution and merge contract.
 - Signup requires email verification. Account settings support passkeys and
   personal API keys. Only explicitly provisioned active superusers may ingest
   complete prepared designs; never grant admin rights to the first signup.
-- The authenticated arena compares published ready references within the same kind
+- The public arena compares published ready references within the same kind
   and viewport family (<768px mobile, otherwise desktop). Signed one-hour pair
-  tokens bind user and taste generation; POSTs enforce CSRF, current visibility,
-  pair compatibility, one vote per pair/generation and 30 actions/minute/account.
+  tokens bind the account (and taste generation) or opaque guest session; POSTs enforce CSRF, current visibility,
+  pair compatibility, one vote per account/pair/generation or guest/pair, and
+  30 actions/minute/account or guest. Guest IDs live in the Django session; no
+  account or TasteProfile is created. Cookie resets can start new guest identities;
+  this is browser-session abuse friction, not proof of a unique human.
 - ArenaState serializes ballots and global Elo writes in one transaction. First
-  votes per account/pair count globally (initial 1000, K=32); resetting personal
+  votes per account/pair or guest/pair count globally (initial 1000, K=32); resetting personal
   taste never duplicates global weight. UUID snapshots retain exact replay after
   design deletion; account deletion unlinks ballots. Rebuild under the same lock
   with `python manage.py rebuild_arena_ratings` (not a scheduled operation).
@@ -121,7 +124,8 @@ is the contribution and merge contract.
   affinity from tags/kinds/industries and saves. They use no catalogue inference,
   query embeddings, or other accounts' taste. No personal signal falls back to
   global Elo. Reset starts a new generation and excludes older saves without
-  removing the collection. Rankings and profile operations remain session-only;
+  removing the collection. Global rankings are public; personal rankings and resets
+  remain account-only. Guest history is never imported into personal taste;
   REST/MCP catalogue contracts are unchanged.
 - The daily research agent is external and submits via the ingestion API.
   No catalogue entries are hardcoded or seeded by migrations.
