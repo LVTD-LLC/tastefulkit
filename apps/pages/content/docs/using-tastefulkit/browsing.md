@@ -47,7 +47,8 @@ can be revisited; return later as the collection grows if you run out of pairs.
 
 Guest votes count toward the global ranking. Create an account to have future
 votes build your personal taste profile; guest history stays separate.
-Browsing rankings, full references and design guides requires a [membership](/pricing/).
+Global rankings are public. Browsing personalized rankings, full references and
+design guides requires a [membership](/pricing/).
 
 [Global ranking](/rankings/) uses everyone's first vote per pair: Elo starts at
 1,000 and updates after each comparison. It is relative preference, not an

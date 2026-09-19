@@ -9,9 +9,9 @@ TastefulKit is a library of real landing-page screenshots. Use it to find exampl
 
 ## Take a first look
 
-Try the [Design Arena](/arena/) for free without an account. Sign in to start building your own taste profile.
+Try the [Design Arena](/arena/) and browse the [global rankings](/rankings/) for free without an account. Sign in to start building your own taste profile.
 
-The [membership](/pricing/) is $10 USD/month and includes the full landing-page catalog, global and personalized rankings, saved designs, design guides, and API/MCP access. Subscribe to browse the catalog or connect your agent. Cancel anytime in the billing portal; access lasts until the end of your paid period.
+The [membership](/pricing/) is $10 USD/month and includes the full landing-page catalog, personalized rankings, saved designs, design guides, and API/MCP access. Subscribe to browse the catalog or connect your agent. Cancel anytime in the billing portal; access lasts until the end of your paid period.
 
 1. [Create an account](/accounts/signup/) and confirm your email.
 2. Open **Explore** to browse the library, newest first.
