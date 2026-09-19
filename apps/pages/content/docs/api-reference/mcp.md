@@ -5,6 +5,11 @@ description: Connect an AI assistant to TastefulKit to search real designs and r
 
 # Connect your assistant to TastefulKit
 
+An active [$10/month membership](/pricing/) is required for API and MCP access.
+REST returns **402** for valid keys without a current membership. MCP rejects
+access until the membership is active again; your existing key can be reused.
+
+
 Give your assistant access to real design references without running a local server.
 Use the hosted **Streamable HTTP** endpoint:
 
@@ -51,7 +56,7 @@ storage or environment-variable support rather than committing credentials.
 | `list_designs` | Browse the newest published, ready designs, with optional `kind`, `tag`, `industry`, and `page`. |
 | `search_designs` | Search with `q` and the same filters; uses semantic search when available and falls back to text. |
 | `get_design` | Fetch one `design_id`, with metadata, DESIGN.md text, source URL, screenshot URL, and thumbnail URL. |
-| `get_design_filters` | Discover element kinds and tags/industries used by visible designs. |
+| `get_design_filters` | Discover landing-page tags and industries used by visible designs. |
 | `get_user_info` | Confirm which account your key belongs to. |
 
 Search and list responses use the same fields as the [Design Library API](/docs/api-reference/design-library/):

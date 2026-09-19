@@ -18,6 +18,9 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, UpdateView
 
+from apps.billing.access import has_paid_access, paid_required
+from apps.billing.services import cancel_for_deletion
+from apps.billing.views import BILLING_ERRORS
 from apps.core.analytics import track_account_deleted_event
 from apps.core.forms import ProfileUpdateForm
 from apps.core.models import Profile
@@ -81,6 +84,7 @@ class UserSettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
             type=Authenticator.Type.RECOVERY_CODES,
         ).exists()
 
+        context["paid_access"] = has_paid_access(user)
         context["api_key_prefix"] = profile.api_key_prefix
         context["has_api_key"] = profile.has_api_key
         context["new_api_key"] = self.request.session.pop(NEW_API_KEY_SESSION_KEY, "")
@@ -88,7 +92,7 @@ class UserSettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         return context
 
 
-@login_required
+@paid_required
 @require_POST
 def rotate_api_key(request):
     profile, _created = Profile.objects.get_or_create(user=request.user)
@@ -182,13 +186,19 @@ def delete_account(request):
         return redirect("settings")
 
     user_id = request.user.id
-
-    # Ensure we log the user out and remove data in a single flow.
-    with transaction.atomic():
-        user = request.user
-        track_account_deleted_event(user.profile)
-        logout(request)
-        user.delete()
+    try:
+        # Retain the billing row lock through deletion so checkout cannot reopen in between.
+        with transaction.atomic():
+            cancel_for_deletion(request.user)
+            user = request.user
+            track_account_deleted_event(user.profile)
+            logout(request)
+            user.delete()
+    except BILLING_ERRORS:
+        messages.error(
+            request, "We could not cancel billing. Your account is unchanged; try again shortly."
+        )
+        return redirect("settings")
 
     logger.info(
         "account.deletion.completed",

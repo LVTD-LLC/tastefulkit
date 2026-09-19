@@ -1,3 +1,4 @@
+from apps.billing.access import has_paid_access
 from apps.core.models import Profile
 
 
@@ -15,6 +16,6 @@ def serialize_user_info(profile: Profile) -> dict:
         "profile": {
             "id": profile.id,
             "state": profile.state,
-            "has_active_subscription": False,
+            "has_active_subscription": has_paid_access(user),
         },
     }

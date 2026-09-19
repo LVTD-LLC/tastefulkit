@@ -2,7 +2,6 @@ from urllib.parse import urlencode
 from uuid import uuid4
 
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
@@ -10,6 +9,7 @@ from django.urls import reverse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
+from apps.billing.access import paid_required
 from apps.catalogue import arena
 from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
@@ -79,6 +79,7 @@ def revisit_skipped(request):
     return redirect("voting_arena")
 
 
+@paid_required
 @never_cache
 def rankings(request):
     mode = "personal" if request.GET.get("mode") == "personal" else "global"
@@ -101,7 +102,7 @@ def rankings(request):
     )
 
 
-@login_required
+@paid_required
 @require_POST
 @never_cache
 def reset_taste(request):

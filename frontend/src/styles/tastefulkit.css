@@ -160,3 +160,9 @@
 }
 .tk-arena-feedback { padding: 16px 20px; margin-bottom: 24px; background: var(--tk-soft); border-radius: 8px; font-size: 15px; line-height: 1.6; }
 [data-arena-form][aria-busy="true"] button { opacity: .6; cursor: wait; }
+
+.tk-membership { max-width: 620px; padding: 32px 0; border-top: 1px solid var(--tk-line); border-bottom: 1px solid var(--tk-line); }
+.tk-membership h2 { font-size: 40px; line-height: 1.2; }
+.tk-membership h2 span { font-size: 16px; color: var(--tk-muted); }
+.tk-membership p { margin: 18px 0; line-height: 1.6; }
+.tk-membership ul { padding-left: 22px; margin: 24px 0; list-style: disc; line-height: 2; }

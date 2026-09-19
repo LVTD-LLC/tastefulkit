@@ -1,6 +1,6 @@
 ---
 title: Search and filter
-description: Use visual descriptions and Element, Style, and Industry filters to find useful design references.
+description: Use visual descriptions and Style and Industry filters to find useful design references.
 ---
 
 # Search for the design you have in mind
@@ -9,7 +9,6 @@ In [Explore](/explore/), enter a description and choose **Find inspiration ↗**
 
 ## Combine a description with filters
 
-- **Element** narrows the type of reference, such as a landing page, pricing page, hero, or dashboard.
 - **Style** selects a tag used in the library.
 - **Industry** narrows the industry recorded for a design.
 
@@ -29,7 +28,7 @@ Results are references to browse, not generated designs. Try a different descrip
 
 1. Start broad: `minimal` is a useful first pass.
 2. Add one distinguishing quality, such as `bold typography` or `warm colors`.
-3. Narrow the element type if you need a specific part of a website.
+3. Choose an industry to narrow your landing-page search.
 4. Open promising results and follow their style tags.
 
 If nothing matches, remove a filter or shorten the description. An empty result does not mean the search is broken; the library may not yet contain that combination. Check whether you are in **Saved** if you expected to search the full library.

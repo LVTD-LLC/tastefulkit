@@ -5,17 +5,17 @@ from django.urls import reverse
 
 @pytest.mark.django_db
 class TestHomeView:
-    def test_home_view_status_code(self, auth_client):
+    def test_home_view_status_code(self, auth_client, paid_user):
         url = reverse("home")
         response = auth_client.get(url)
         assert response.status_code == 200
 
-    def test_home_view_uses_correct_template(self, auth_client):
+    def test_home_view_uses_correct_template(self, auth_client, paid_user):
         url = reverse("home")
         response = auth_client.get(url)
         assert "catalogue/library.html" in [t.name for t in response.templates]
 
-    def test_rotate_api_key_stores_hash_and_shows_key_once(self, auth_client, profile):
+    def test_rotate_api_key_stores_hash_and_shows_key_once(self, auth_client, profile, paid_user):
         response = auth_client.post(reverse("rotate_api_key"), follow=True)
         content = response.content.decode()
         profile.refresh_from_db()

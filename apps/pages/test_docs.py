@@ -29,18 +29,25 @@ def test_docs_home_is_public(client):
 @pytest.mark.django_db
 @pytest.mark.parametrize("page", DOCS_PAGES, ids=lambda page: page["url"])
 @pytest.mark.parametrize("authenticated", [False, True], ids=["anonymous", "signed-in"])
-def test_docs_pages_and_links_are_public(client, django_user_model, settings, page, authenticated):
+def test_docs_pages_and_links_respect_membership(
+    client, django_user_model, settings, page, authenticated, grant_membership
+):
     settings.SITE_URL = "https://tastefulkit.com"
     if authenticated:
         user = django_user_model.objects.create_user(
             username="docs-reader", email="private-reader@example.com"
         )
+        grant_membership(user)
         client.force_login(user)
 
     response = client.get(page["url"])
+    if page["category_slug"] == "api-reference" and not authenticated:
+        assert response.status_code == 302
+        return
     assert response.status_code == 200
     content = response.content.decode()
-    assert 'content="index, follow"' in content
+    robots = "noindex, nofollow" if page["category_slug"] == "api-reference" else "index, follow"
+    assert f'content="{robots}"' in content
     assert f'href="https://tastefulkit.com{page["url"]}"' in content
     assert "data-docs-page" in content
     assert "private-reader@example.com" not in content
@@ -116,7 +123,9 @@ def test_all_public_docs_are_in_sitemap(client, settings):
     content = response.content.decode()
     assert DOCS_PAGES
     for page in DOCS_PAGES:
-        assert f"<loc>https://tastefulkit.com{page['url']}</loc>" in content
+        assert (f"<loc>https://tastefulkit.com{page['url']}</loc>" in content) == (
+            page["category_slug"] != "api-reference"
+        )
     assert "/docs/deployment/" not in content
 
 

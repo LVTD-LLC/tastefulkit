@@ -1,0 +1,40 @@
+{% extends "base_landing.html" %}
+{% block meta %}<title>Membership · TastefulKit</title><meta name="robots" content="noindex">{% endblock %}
+{% block content %}
+    <div class="tk-container library-page">
+        <h1>Your taste. Your next landing page.</h1>
+        <p class="tk-description">Find designs you love and give your coding agent the references to build from.</p>
+        <section class="tk-membership" aria-label="TastefulKit membership">
+            <h2>$10 <span>USD / month</span></h2>
+            <p>One plan. The full catalog. Cancel anytime.</p>
+            <p>Plus applicable tax, calculated at checkout.</p>
+            <ul>
+                <li>Explore and search every landing page</li>
+                <li>Personalized rankings shaped by your comparisons</li>
+                <li>Save favorites and read or download design guides</li>
+                <li>Connect your coding agent through MCP and the API</li>
+            </ul>
+            {% if paid_access %}
+                <p>Your membership is active.{% if billing_account.cancel_at_period_end %} Access ends {{ billing_account.paid_until|date:"M j, Y" }}.{% endif %}</p>
+                <a class="tk-button" href="{% url 'library' %}">Explore catalog →</a>
+            {% elif user.is_authenticated %}
+                {% if billing_ready %}
+                    <form method="post" action="{% url 'billing_checkout' %}">{% csrf_token %}<button class="tk-button" type="submit">Subscribe for $10/month →</button></form>
+                {% else %}
+                    <p>Subscriptions are temporarily unavailable. You can still vote in the Arena.</p>
+                {% endif %}
+            {% else %}
+                <a class="tk-button"
+                   href="{% url 'account_signup' %}?next={% url 'pricing' %}">Create account →</a>
+                <p>Already have an account? <a href="{% url 'account_login' %}?next={% url 'pricing' %}">Sign in</a>.</p>
+            {% endif %}
+            {% if billing_account.customer_id %}
+                <div class="tk-guide-actions">
+                    <form method="post" action="{% url 'billing_portal' %}">{% csrf_token %}<button class="tk-button tk-button-quiet" type="submit">Manage billing</button></form>
+                    <a href="{% url 'billing_return' %}">Refresh billing status</a>
+                </div>
+            {% endif %}
+        </section>
+        <p class="tk-description">The Design Arena is free, with or without an account. <a href="{% url 'voting_arena' %}">Vote on designs →</a></p>
+    </div>
+{% endblock %}

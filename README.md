@@ -4,7 +4,7 @@
 
 <h1 align="center">TastefulKit</h1>
 
-<p align="center"><strong>Find the right design reference. Build with a clearer direction.</strong></p>
+<p align="center"><strong>Find your taste. Build from it.</strong></p>
 
 <p align="center">
   <a href="https://tastefulkit.com">Website</a> ·
@@ -13,7 +13,7 @@
   <a href="CONTRIBUTING.md">Contribute</a>
 </p>
 
-TastefulKit is a searchable library of real website design examples for you and
+TastefulKit is a searchable library of real landing-page design examples for you and
 your AI assistant. Find a layout, explore its typography and colors, and save
 useful references for your next project.
 
@@ -23,7 +23,7 @@ useful references for your next project.
 helps you turn it into examples you can actually look at, compare, and discuss.
 
 - **Search in your own words.** Describe the style or page you have in mind.
-- **Narrow the search.** Filter by interface element, style tag, or industry.
+- **Narrow the search.** Filter landing pages by style tag or industry.
 - **Look beyond the thumbnail.** Open full screenshots, read descriptions, and
   visit the original websites.
 - **Take a design direction with you.** View, copy or download an example’s DESIGN.md
@@ -33,11 +33,14 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 
 ## Take a first look
 
-You can view featured examples on [tastefulkit.com](https://tastefulkit.com) and
-read the [docs](https://tastefulkit.com/docs/) without an account.
+Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
+The full catalog, rankings, design guides and API/MCP access are included in one
+[$10 USD/month membership](https://tastefulkit.com/pricing/). Cancel anytime; access
+continues until the end of the paid period. Signed-in votes shape your personal ranking;
+guest votes count globally and are not transferred on signup.
 
 1. [Create an account](https://tastefulkit.com/accounts/signup/) and confirm your email.
-2. Open [Explore](https://tastefulkit.com/explore/) to search and filter the full library.
+2. Subscribe on [Membership](https://tastefulkit.com/pricing/), then open [Explore](https://tastefulkit.com/explore/) to search and filter the full library.
 3. Open a design, inspect the screenshot, and choose **Save design +** to keep it.
 
 Start with the [browsing guide](https://tastefulkit.com/docs/using-tastefulkit/browsing/)

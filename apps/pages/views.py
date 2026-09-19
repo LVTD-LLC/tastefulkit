@@ -11,6 +11,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.views.generic import TemplateView
 
+from apps.billing.access import paid_required
 from apps.core.analytics import SIGNUP_COMPLETED, track_event
 from apps.core.choices import ProfileStates
 from apps.core.views import build_absolute_public_url
@@ -224,6 +225,12 @@ def docs_page_view(request, category, page):
     """
     Render public, repository-tracked product documentation without user data.
     """
+    if category == "api-reference":
+        return paid_required(_docs_page_view)(request, category, page)
+    return _docs_page_view(request, category, page)
+
+
+def _docs_page_view(request, category, page):
     markdown_file = DOCS_CONTENT_ROOT / category / f"{page}.md"
 
     if not markdown_file.exists():

@@ -40,21 +40,23 @@ original site's assets. Some older examples do not have a guide yet.
 
 ## Compare designs and discover your taste
 
-Open [Arena](/arena/) after signing in. Choose your preferred reference or skip
-the pair. Both references have the same element type and mobile/desktop format.
-Open a screenshot to inspect it fully, or follow **View reference**. Skipped pairs
-can be revisited. If there are no new pairs, try another element or return as the
-collection grows. Anonymous visitors must sign in before viewing or voting.
+Open [Arena](/arena/) for free, with or without an account. Click either screenshot
+or its **Choose** button to vote, or skip the pair. The landing pages use the same
+mobile/desktop format. Scroll within a screenshot to inspect it. Skipped pairs
+can be revisited; return later as the collection grows if you run out of pairs.
+
+Guest votes count toward the global ranking. Create an account to have future
+votes build your personal taste profile; guest history stays separate.
+Browsing rankings, full references and design guides requires a [membership](/pricing/).
 
 [Global ranking](/rankings/) uses everyone's first vote per pair: Elo starts at
 1,000 and updates after each comparison. It is relative preference, not an
 objective quality grade. Counts show how much evidence each score has; fewer
 than ten comparisons are labelled provisional. Equal scores share a rank.
-Different elements and viewport families are separate comparison pools, so
-filtering by element is more meaningful than comparing all scores across pools.
+Mobile and desktop landing pages are separate comparison pools.
 
 [For you](/rankings/?mode=personal) is private to your account. It combines Elo
-from your own comparisons with style-tag, element and industry similarities,
+from your own comparisons with style-tag and industry similarities,
 plus a smaller influence from saved references. This can suggest unvoted
 references with similar metadata; it does not analyze screenshot pixels.
 Personal fit is not a percentage or global Elo. Until you vote or save a
@@ -69,6 +71,6 @@ extra global weight. Newly saved references contribute to the new profile.
 Reset changes recommendations, not the retained voting history. Account deletion
 unlinks vote history from your account while preserving community results.
 
-Votes require an active signed-in account and a fresh comparison. A pair can
-count only once per account toward global rankings; repeated clicks are safe.
-There is a 30-comparison-action limit per minute per account, including skips.
+Votes need a fresh comparison. Each pair counts once per account or guest browser
+session toward global rankings; repeated clicks are safe. The limit is 30 comparison
+actions per minute per account or guest session, including skips.

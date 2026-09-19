@@ -1,8 +1,10 @@
 import logging
 
 from django.http import HttpRequest
+from ninja.errors import HttpError
 from ninja.security import APIKeyHeader, HttpBearer
 
+from apps.billing.access import has_paid_access
 from apps.core.model_utils import get_api_key_prefix
 from apps.core.models import Profile
 from tastefulkit.logging_utils import bind_log_context
@@ -63,12 +65,12 @@ class APIKeyHeaderAuth(APIKeyHeader):
     param_name = "X-API-Key"
 
     def authenticate(self, request: HttpRequest, key: str) -> Profile | None:
-        return get_profile_for_api_key(key)
+        return paid_api_profile(get_profile_for_api_key(key))
 
 
 class BearerAPIKeyAuth(HttpBearer):
     def authenticate(self, request: HttpRequest, token: str) -> Profile | None:
-        return get_profile_for_api_key(token)
+        return paid_api_profile(get_profile_for_api_key(token))
 
 
 class SessionAuth:
@@ -136,3 +138,9 @@ class SuperuserBearerAPIKeyAuth(HttpBearer):
 api_key_auth = [APIKeyHeaderAuth(), BearerAPIKeyAuth()]
 session_auth = SessionAuth()
 superuser_api_auth = [SuperuserAPIKeyHeaderAuth(), SuperuserBearerAPIKeyAuth()]
+
+
+def paid_api_profile(profile):
+    if profile and not has_paid_access(profile.user):
+        raise HttpError(402, "A $10/month TastefulKit membership is required. Visit /pricing/.")
+    return profile

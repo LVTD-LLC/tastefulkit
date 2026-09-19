@@ -1,26 +1,18 @@
-from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 
+from apps.billing.access import paid_required
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
 
 
 def landing(request):
-    return render(
-        request,
-        "pages/landing-page.html",
-        {
-            "designs": visible_designs()
-            .filter(kind=Design.Kind.LANDING)
-            .prefetch_related("tags")[:6]
-        },
-    )
+    return render(request, "pages/landing-page.html")
 
 
-@login_required
+@paid_required
 def library(request):
     query = request.GET.get("q", "")[:300]
     kind = Design.Kind.LANDING
@@ -56,7 +48,7 @@ def library(request):
     )
 
 
-@login_required
+@paid_required
 def detail(request, pk):
     design = get_object_or_404(visible_designs().prefetch_related("tags"), pk=pk)
     return render(
@@ -69,7 +61,7 @@ def detail(request, pk):
     )
 
 
-@login_required
+@paid_required
 @require_POST
 def save_design(request, pk):
     design = get_object_or_404(visible_designs(), pk=pk)
@@ -80,7 +72,7 @@ def save_design(request, pk):
     return redirect(design)
 
 
-@login_required
+@paid_required
 def design_markdown(request, pk):
     design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
     response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")

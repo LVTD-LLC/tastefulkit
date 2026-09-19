@@ -2,6 +2,8 @@
 
 ## 2026-09-19
 
+- Add one $10 USD/month membership with Stripe-hosted checkout, self-service billing, signed/idempotent subscription webhooks and server-side paid access for browsing, rankings, design guides and API/MCP. Keep Arena free; prevent orphaned billing on account deletion. Update setup and product documentation to the landing-page-only offer.
+
 - Focus browsing and comparisons on landing pages, simplify homepage copy and actions, remove decorative labels and element filters, and let Arena screenshots cast accessible keyboard/touch votes without routine success banners.
 
 - Opened the voting arena and global rankings to visitors without an account. Guest votes contribute to global Elo with session-bound pair tokens, duplicate protection, CSRF checks, and per-session rate limits.

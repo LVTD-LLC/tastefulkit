@@ -68,7 +68,11 @@ class StaticViewSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
 
 class DocumentationSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
     def items(self):
-        return [page["url"] for page in get_flat_page_list(get_docs_navigation())]
+        return [
+            page["url"]
+            for page in get_flat_page_list(get_docs_navigation())
+            if page["category_slug"] != "api-reference"
+        ]
 
     def location(self, item):
         return item
