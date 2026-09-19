@@ -9,7 +9,7 @@ from django.urls import reverse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from apps.billing.access import paid_required
+from apps.billing.access import has_paid_access, paid_required
 from apps.catalogue import arena
 from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
@@ -79,12 +79,14 @@ def revisit_skipped(request):
     return redirect("voting_arena")
 
 
-@paid_required
 @never_cache
 def rankings(request):
     mode = "personal" if request.GET.get("mode") == "personal" else "global"
-    if mode == "personal" and not request.user.is_authenticated:
-        return redirect_to_login(request.get_full_path())
+    if mode == "personal":
+        if not request.user.is_authenticated:
+            return redirect_to_login(request.get_full_path())
+        if not has_paid_access(request.user):
+            return redirect("pricing")
     kind = selected_kind(request)
     designs, summary = arena.ranked_designs(request.user, mode, kind)
     page = Paginator(designs, 24).get_page(request.GET.get("page"))

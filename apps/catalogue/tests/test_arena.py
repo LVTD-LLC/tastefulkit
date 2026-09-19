@@ -309,10 +309,15 @@ def test_guest_browser_flow_counts_globally_without_personal_profile(
     assert ratings_snapshot() == before and ArenaBallot.objects.count() == 1
     assert {d.pk for d in response.context["pair"]} != {d.pk for d in pair}
     assert response.context["vote_count"] == 1
-    assert client.get("/rankings/").status_code == 302
+    ranking = client.get("/rankings/")
+    assert ranking.status_code == 200 and ranking.context["summary"] == {}
+    assert ranking.context["page"][0].pk == pair[0].pk
+    assert "no-store" in ranking.headers["Cache-Control"]
+    assert b"tk-taste-reset" not in ranking.content
     owner = designs[0].submitted_by
     client.force_login(owner)
-    assert client.get("/rankings/").url == "/pricing/"
+    assert client.get("/rankings/").status_code == 200
+    assert client.get("/rankings/?mode=personal").url == "/pricing/"
     grant_membership(owner)
     ranking = client.get("/rankings/")
     assert ranking.status_code == 200 and ranking.context["summary"] == {}
@@ -335,7 +340,9 @@ def test_guest_skip_revisit_empty_and_filter(client, designs):
     assert b"See your rankings" not in response.content
     response = client.post("/arena/revisit/", follow=True)
     assert len(response.context["pair"]) == 2
-    assert client.get("/rankings/?kind=hero").status_code == 302
+    ranking = client.get("/rankings/?kind=hero")
+    assert ranking.status_code == 200
+    assert all(design.kind == "landing_page" for design in ranking.context["page"])
 
 
 def test_guest_tokens_are_session_bound_and_cannot_be_used_after_login(client, user, designs):

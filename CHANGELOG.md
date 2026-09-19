@@ -1,6 +1,7 @@
 # Changelog
 
 ## 2026-09-19
+- Make global rankings public for guests and unpaid accounts; keep personal rankings, taste reset, and design-library/API access membership-only.
 
 - Add one $10 USD/month membership with Stripe-hosted checkout, self-service billing, signed/idempotent subscription webhooks and server-side paid access for browsing, rankings, design guides and API/MCP. Keep Arena free; prevent orphaned billing on account deletion. Update setup and product documentation to the landing-page-only offer.
 
