@@ -83,3 +83,71 @@ class SavedDesign(models.Model):
 
     def __str__(self):
         return f"{self.user_id}: {self.design_id}"
+
+
+class ArenaState(models.Model):
+    """Singleton lock: ballot order and Elo updates share one transaction."""
+
+    id = models.PositiveSmallIntegerField(primary_key=True, default=1, editable=False)
+
+    def __str__(self):
+        return "Arena write lock"
+
+
+class TasteProfile(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    generation = models.PositiveIntegerField(default=0)
+    reset_at = models.DateTimeField(null=True, blank=True)
+    rate_window = models.DateTimeField(null=True, blank=True)
+    rate_count = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Taste profile {self.user_id}"
+
+
+class ArenaBallot(models.Model):
+    # UUID snapshots retain replay after catalogue deletion; no source/user content.
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, on_delete=models.SET_NULL)
+    generation = models.PositiveIntegerField(default=0)
+    design_a = models.UUIDField()
+    design_b = models.UUIDField()
+    winner = models.UUIDField()
+    global_counted = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["id"]
+        constraints = [
+            models.CheckConstraint(
+                condition=models.Q(design_a__lt=models.F("design_b")), name="arena_ordered_pair"
+            ),
+            models.CheckConstraint(
+                condition=models.Q(winner=models.F("design_a"))
+                | models.Q(winner=models.F("design_b")),
+                name="arena_winner_in_pair",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "generation", "design_a", "design_b"],
+                name="arena_one_personal_pair",
+            ),
+            models.UniqueConstraint(
+                fields=["user", "design_a", "design_b"],
+                condition=models.Q(global_counted=True),
+                name="arena_one_global_pair",
+            ),
+        ]
+        indexes = [models.Index(fields=["user", "generation"], name="arena_personal_history")]
+
+    def __str__(self):
+        return f"Arena ballot {self.pk}"
+
+
+class DesignRating(models.Model):
+    # Historical opponents remain replayable when references are deleted.
+    design_id = models.UUIDField(primary_key=True)
+    score = models.FloatField(default=1000)
+    comparisons = models.PositiveIntegerField(default=0)
+    wins = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return f"Rating {self.design_id}"

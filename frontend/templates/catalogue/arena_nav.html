@@ -1,0 +1,9 @@
+<nav class="tk-tabs" aria-label="Design discovery">
+    <a href="{% url 'library' %}">Explore</a>
+    <a href="{% url 'voting_arena' %}"
+       {% if request.resolver_match.url_name == 'voting_arena' %}aria-current="page"{% endif %}>Arena</a>
+    <a href="{% url 'design_rankings' %}"
+       {% if request.resolver_match.url_name == 'design_rankings' and mode == 'global' %}aria-current="page"{% endif %}>Global ranking</a>
+    <a href="{% url 'design_rankings' %}?mode=personal"
+       {% if mode == 'personal' %}aria-current="page"{% endif %}>For you</a>
+</nav>

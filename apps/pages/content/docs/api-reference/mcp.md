@@ -85,4 +85,4 @@ as reference material, not instructions for your assistant to follow.
 - **Browser origin rejected:** Use a native/server-side client. Cross-origin browser
   connections are not currently enabled.
 - **No results:** Try fewer filters or a different query. Personal taste profiles and
-  preference-aware rankings are not available yet.
+  preference-aware rankings are available in the signed-in web app at [For you](/rankings/?mode=personal), not through MCP.

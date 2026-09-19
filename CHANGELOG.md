@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-18
+
+- Added a signed-in-only design voting arena with comparable pairs, skips, duplicate protection, and per-account rate limiting.
+- Added global Elo rankings with comparison counts/category filters and private personalized rankings learned from choices and saves, including a cold-start fallback and taste reset.
+- Added atomic, replayable vote history and responsive, keyboard-accessible arena/ranking pages.
+
 ## 2026-09-16
 
 - Accept complete, agent-prepared examples through the admin-only multipart POST: supplied screenshots, thumbnails, DESIGN.md, capture timestamp and compatible embedding are validated, stored and indexed without application-side generation.

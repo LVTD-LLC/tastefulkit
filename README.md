@@ -64,7 +64,10 @@ original creators; they are inspiration, not downloadable source code or a
 license to reuse a site's assets.
 
 Browsing, search, saved designs, and assistant access are available today.
-Personal taste profiles and preference-based rankings are not available yet.
+Signed-in members can [compare designs](https://tastefulkit.com/arena/), explore
+[global Elo rankings](https://tastefulkit.com/rankings/), and build a private
+[personal ranking](https://tastefulkit.com/rankings/?mode=personal) from their
+votes and saved references.
 
 ## Help make TastefulKit better
 

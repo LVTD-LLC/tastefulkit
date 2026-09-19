@@ -62,6 +62,10 @@
                         <a href="{% url 'docs_home' %}"
                            class="app-focus hover:text-gray-950 dark:hover:text-white {% if 'docs' in request.resolver_match.url_name %}text-gray-950 dark:text-white{% endif %}">docs</a>
                         {% if user.is_authenticated %}
+                            <a class="app-focus hover:text-gray-950 dark:hover:text-white"
+                               href="{% url 'voting_arena' %}">arena</a>
+                            <a class="app-focus hover:text-gray-950 dark:hover:text-white"
+                               href="{% url 'design_rankings' %}">rankings</a>
                             <a href="{% url 'settings' %}"
                                class="app-focus hover:text-gray-950 dark:hover:text-white {% if request.resolver_match.url_name == 'settings' %}text-gray-950 dark:text-white{% endif %}">settings</a>
                             {% if user.is_superuser %}
@@ -100,7 +104,7 @@
                                 <a class="app-focus" href="{% url 'home' %}">explore</a>
                                 <a class="app-focus" href="{% url 'docs_home' %}">docs</a>
                                 {% if user.is_authenticated %}
-                                    <a class="app-focus" href="{% url 'settings' %}">settings</a>
+                                    <a class="app-focus" href="{% url 'settings' %}">settings</a><a class="app-focus" href="{% url 'voting_arena' %}">arena</a><a class="app-focus" href="{% url 'design_rankings' %}">rankings</a>
                                     {% if user.is_superuser %}<a class="app-focus"
    href="{% url 'admin_panel' %}">admin</a>{% endif %}
                                     <form method="post" action="{% url 'account_logout' %}">
