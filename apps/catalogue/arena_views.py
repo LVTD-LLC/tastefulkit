@@ -15,8 +15,7 @@ from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
 
 def selected_kind(request):
-    value = request.GET.get("kind", "") if request.method == "GET" else request.POST.get("kind", "")
-    return value if value in Design.Kind.values else ""
+    return Design.Kind.LANDING
 
 
 def participant(request):
@@ -70,13 +69,6 @@ def vote(request):
             request.session["arena_skipped"] = list(dict.fromkeys([*skipped, key]))[-100:]
         elif outcome == "duplicate":
             messages.info(request, "That comparison was already recorded. Here's the next one.")
-        else:
-            messages.success(
-                request,
-                "Vote saved. Your rankings are up to date."
-                if request.user.is_authenticated
-                else "Vote saved. You helped shape the global ranking.",
-            )
     return redirect(reverse("voting_arena") + ("?" + urlencode({"kind": kind}) if kind else ""))
 
 

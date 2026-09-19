@@ -7,16 +7,9 @@
         <div class="tk-arena-heading">
             <div>
                 <h1>Which feels more like you?</h1>
-                <p class="tk-arena-intro">Two references. Your instinct. Pick the design you prefer.</p>
             </div>
-            <p class="tk-arena-count">{{ vote_count }} comparison{{ vote_count|pluralize }} {% if request.user.is_authenticated %}in your taste profile{% else %}contributed from this browser{% endif %}</p>
         </div>
         {% include "catalogue/arena_nav.html" %}
-        <form class="tk-search tk-arena-filter" method="get">
-            <label for="kind">Compare element</label>
-            <select id="kind" name="kind"><option value="">All elements</option>{% for value,label in kinds %}<option value="{{ value }}" {% if kind == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select>
-            <button type="submit" class="tk-button tk-button-quiet">Apply</button>
-        </form>
         {% if pair %}
             <form method="post" action="{% url 'arena_vote' %}" data-arena-form>
                 {% csrf_token %}
@@ -28,16 +21,16 @@
                 <div class="tk-arena-pair">
                     {% for design in pair %}
                         <article class="tk-arena-candidate">
-                            <a href="{{ design.screenshot.url }}"
-                               target="_blank"
-                               rel="noopener"
-                               class="tk-arena-preview"
-                               aria-label="Inspect full screenshot of {{ design.title }} (opens a new tab)">
+                            <button type="submit"
+                                    name="choice"
+                                    value="{{ design.pk }}"
+                                    class="tk-arena-preview"
+                                    aria-label="Vote for {{ design.title }}">
                                 <img src="{{ design.screenshot.url }}"
                                      alt="{{ design.title }} design screenshot"
                                      width="{{ design.viewport_width }}"
                                      height="900">
-                            </a>
+                            </button>
                             <div class="tk-arena-caption"><h2>{{ design.title }}</h2><p>{{ design.get_kind_display }} · {% if design.viewport_width < 768 %}Mobile{% else %}Desktop{% endif %}</p></div>
                             <button class="tk-button tk-arena-pick"
                                     name="choice"
@@ -59,8 +52,8 @@
                 </div>
             </form>
         {% else %}
-            <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons in this selection. Try another element, revisit skipped pairs, or explore the rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button"
-   href="{% url 'design_rankings' %}{% if request.user.is_authenticated %}?mode=personal{% endif %}">See {% if request.user.is_authenticated %}your{% else %}global{% endif %} rankings →</a>{% if kind %}<a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">All elements</a>{% endif %}</div></div>
+            <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons for now. Revisit skipped pairs or explore the rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button"
+   href="{% url 'design_rankings' %}{% if request.user.is_authenticated %}?mode=personal{% endif %}">See {% if request.user.is_authenticated %}your{% else %}global{% endif %} rankings →</a></div></div>
         {% endif %}
         {% if skipped %}<form class="tk-arena-revisit"
       method="post"

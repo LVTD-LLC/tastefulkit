@@ -108,7 +108,7 @@
 .tk-button-quiet:hover { background: var(--tk-soft); opacity: 1; }
 .tk-arena-pair { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 32px; }
 .tk-arena-candidate { min-width: 0; }
-.tk-arena-preview { display: block; height: 420px; overflow-y: auto; border: 1px solid var(--tk-line); border-radius: 10px; background: var(--tk-soft); }
+.tk-arena-preview { display: block; width: 100%; padding: 0; cursor: pointer; text-align: left; height: 420px; overflow-y: auto; border: 1px solid var(--tk-line); border-radius: 10px; background: var(--tk-soft); }
 .tk-arena-preview img { display: block; width: 100%; height: auto; min-height: 100%; object-fit: contain; object-position: top; }
 .tk-arena-caption { margin: 18px 0 14px; }
 .tk-arena-caption h2 { font-size: 20px; font-weight: 600; overflow-wrap: anywhere; }

@@ -27,11 +27,11 @@ def test_homepage_preview_metadata_is_consistent_without_changing_other_pages():
     head.feed(rendered)
     description = head.tags["description"]
     assert len(description) == 1
-    assert "website design references" in description[0]
+    assert "landing pages" in description[0]
     assert head.tags["og:description"] == head.tags["twitter:description"] == description
     assert len(head.tags["og:title"]) == 1
     assert head.tags["og:title"] == head.tags["twitter:title"]
-    assert "Website Design Inspiration" in head.tags["og:title"][0]
+    assert "Landing Page Inspiration" in head.tags["og:title"][0]
     assert head.tags["canonical"] == ["https://tastefulkit.com/"]
     assert head.tags["og:url"] == ["https://tastefulkit.com/"]
     assert head.tags["robots"] == ["index, follow"]

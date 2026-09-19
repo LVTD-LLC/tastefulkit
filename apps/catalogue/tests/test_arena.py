@@ -233,7 +233,8 @@ def test_web_flow_skip_vote_empty_ranking_and_explicit_reset(auth_client, user, 
     response = auth_client.post(
         "/arena/vote/", {"token": token(user, designs), "choice": str(designs[0].pk)}, follow=True
     )
-    assert b"Vote saved" in response.content
+    assert b"Vote saved" not in response.content
+    assert ArenaBallot.objects.count() == 1
     response = auth_client.get("/rankings/?mode=personal")
     assert response.context["summary"]["votes"] == 1
     assert b"personal fit" in response.content
@@ -296,7 +297,7 @@ def test_guest_browser_flow_counts_globally_without_personal_profile(client, des
     pair = page.context["pair"]
     data = {"token": page.context["token"], "choice": str(pair[0].pk)}
     response = client.post("/arena/vote/", data, follow=True)
-    assert b"You helped shape the global ranking" in response.content
+    assert b"Vote saved" not in response.content
     ballot = ArenaBallot.objects.get()
     assert ballot.user_id is None and ballot.guest_id is not None and ballot.global_counted
     assert not TasteProfile.objects.exists()
@@ -329,7 +330,7 @@ def test_guest_skip_revisit_empty_and_filter(client, designs):
     assert b"See your rankings" not in response.content
     response = client.post("/arena/revisit/", follow=True)
     assert len(response.context["pair"]) == 2
-    assert len(client.get("/rankings/?kind=hero").context["page"]) == 1
+    assert len(client.get("/rankings/?kind=hero").context["page"]) == 2
 
 
 def test_guest_tokens_are_session_bound_and_cannot_be_used_after_login(client, user, designs):
@@ -435,3 +436,24 @@ def test_concurrent_guest_votes_are_idempotent_and_rate_limited(designs, same_pa
     other_pair = arena.pair_token(guest, 0, [designs[0], designs[2]])
     assert submit((other_pair, str(designs[2].pk))) == "rate_limited"
     assert ArenaBallot.objects.count() == 1
+
+
+def test_screenshots_are_vote_buttons_and_no_element_controls(client, designs):
+    from html.parser import HTMLParser
+
+    buttons = []
+
+    class PreviewParser(HTMLParser):
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            if tag == "button" and attrs.get("class") == "tk-arena-preview":
+                buttons.append(attrs)
+
+    page = client.get("/arena/?kind=hero")
+    PreviewParser().feed(page.content.decode())
+    assert len(buttons) == 2
+    assert {button["value"] for button in buttons} == {str(d.pk) for d in page.context["pair"]}
+    assert all(button["type"] == "submit" and button["name"] == "choice" for button in buttons)
+    assert b"<select" not in page.content
+    assert b"tk-arena-count" not in page.content
+    assert b"tk-arena-intro" not in page.content
