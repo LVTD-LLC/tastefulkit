@@ -101,8 +101,8 @@ is the contribution and merge contract.
 
 ## Application contracts
 
-- The catalogue uses one design model for landing pages, pricing pages, heroes,
-  blogs, dashboards, and other UI elements. External agents prepare metadata, screenshots,
+- The customer-facing catalog focuses on landing pages. The model retains other
+  kinds for future expansion; do not advertise them in UI/filter discovery. External agents prepare metadata, screenshots,
   thumbnails, DESIGN.md and embeddings; the admin-only multipart POST validates, stores
   and indexes them synchronously. Django admin handles visibility, not content creation.
 - Signup requires email verification. Account settings support passkeys and
@@ -124,9 +124,9 @@ is the contribution and merge contract.
   affinity from tags/kinds/industries and saves. They use no catalogue inference,
   query embeddings, or other accounts' taste. No personal signal falls back to
   global Elo. Reset starts a new generation and excludes older saves without
-  removing the collection. Global rankings are public; personal rankings and resets
-  remain account-only. Guest history is never imported into personal taste;
-  REST/MCP catalogue contracts are unchanged.
+  removing the collection. Rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
+  require a current paid membership. Arena voting remains free for guests and
+  accounts. Guest history is never imported into personal taste.
 - The daily research agent is external and submits via the ingestion API.
   No catalogue entries are hardcoded or seeded by migrations.
 
@@ -431,3 +431,19 @@ npm run lint
 - Update this file when project structure, test commands, security constraints,
   or major workflows change.
 - Content-specific writing guidance lives in `apps/pages/content/AGENTS.md`.
+
+## Membership billing
+
+- `apps/billing/` owns the single USD $10/month plan, hosted Checkout, customer portal,
+  signed webhooks, and shared access checks. Admin ingestion remains exempt.
+- Credentials and the price/account/portal IDs are environment driven. Pin Stripe API
+  version `2024-06-20`, including webhook payloads; organization keys require account context.
+- Entitlement requires `active` status and a future paid-through timestamp. No trials.
+  Reconcile current Stripe subscriptions under the account lock, never trust browser
+  success parameters or stale event snapshots. Webhook retries are idempotent.
+- Signup does not grant paid access. Account settings, auth and billing stay accessible.
+  Paid setup docs are excluded from the sitemap. Public marketing never lists catalog data.
+- Account deletion cancels recurring subscriptions and expires open checkout sessions
+  before deleting the user. Provider failure keeps the account intact for retry.
+- Production web and worker need the same Stripe settings from `.env.example`.
+  Register `/billing/webhook/` with the event types in `apps/billing/views.py`.

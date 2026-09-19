@@ -118,6 +118,7 @@ CUSTOM_APPS = [
     "apps.catalogue.apps.CatalogueConfig",
     "apps.hosted_mcp.apps.MCPConfig",
     "apps.core.CoreConfig",
+    "apps.billing",
     "apps.api.ApiConfig",
     "apps.pages.PagesConfig",
 ]
@@ -538,3 +539,11 @@ QDRANT_URL = env("QDRANT_URL", default="")
 QDRANT_API_KEY = env("QDRANT_API_KEY", default="")
 QDRANT_COLLECTION = env("QDRANT_COLLECTION", default="tastefulkit-designs-bge-base-v1")
 QDRANT_TIMEOUT_SECONDS = env.int("QDRANT_TIMEOUT_SECONDS", default=5)
+
+# Server-only Stripe configuration. Empty credentials fail closed for paid access.
+STRIPE_SECRET_KEY = env("STRIPE_SECRET_KEY", default="")
+STRIPE_ACCOUNT_ID = env("STRIPE_ACCOUNT_ID", default="")
+STRIPE_PRICE_ID = env("STRIPE_PRICE_ID", default="")
+STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
+STRIPE_PORTAL_CONFIGURATION_ID = env("STRIPE_PORTAL_CONFIGURATION_ID", default="")
+STRIPE_LIVE_MODE = env.bool("STRIPE_LIVE_MODE", default=True)

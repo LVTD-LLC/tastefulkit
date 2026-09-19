@@ -26,7 +26,8 @@ class UserInfoApiUnitTests(SimpleTestCase):
         request = HttpRequest()
         request.auth = profile
 
-        response = get_user_info(request)
+        with patch("apps.api.services.has_paid_access", return_value=False):
+            response = get_user_info(request)
 
         assert response["email"] == "ada@example.com"
         assert response["full_name"] == "Ada Lovelace"
@@ -46,7 +47,9 @@ def test_api_key_auth_returns_profile_for_valid_key():
 
     for auth_class in [APIKeyHeaderAuth, BearerAPIKeyAuth]:
         profile = SimpleNamespace(
-            id=11, user=SimpleNamespace(is_active=True), check_api_key=Mock(return_value=True)
+            id=11,
+            user=SimpleNamespace(is_active=True, is_authenticated=True, is_superuser=True),
+            check_api_key=Mock(return_value=True),
         )
         with patch("apps.api.auth.Profile.objects") as objects:
             objects.select_related.return_value.get.return_value = profile

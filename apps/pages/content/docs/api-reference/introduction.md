@@ -5,6 +5,11 @@ description: Connect a script or agent to TastefulKit with a personal API key an
 
 # Read TastefulKit from a script or agent
 
+An active [$10/month membership](/pricing/) is required for API and MCP access.
+REST returns **402** for valid keys without a current membership. MCP rejects
+access until the membership is active again; your existing key can be reused.
+
+
 The API lets you search the design library, fetch a design, and check which account a key belongs to. You can read this documentation without signing in; API requests require a personal API key.
 
 ## Get a key

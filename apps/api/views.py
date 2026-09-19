@@ -113,7 +113,7 @@ def healthcheck(request: HttpRequest):
 
 @api.get(
     "/user",
-    response=UserInfoOut,
+    response={200: UserInfoOut, 401: dict, 402: dict},
     auth=api_key_auth,
     tags=["user"],
 )

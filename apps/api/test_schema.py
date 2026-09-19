@@ -9,7 +9,7 @@ schema = schemathesis.openapi.from_wsgi("/api/openapi.json", application, config
 
 
 @pytest.fixture
-def api_key(profile):
+def api_key(profile, paid_user):
     return profile.rotate_api_key()
 
 

@@ -218,7 +218,7 @@ def test_rankings_filter_hidden_entries_and_share_ties(user, designs):
         assert [d.pk for d in ranked] == [designs[1].pk]
 
 
-def test_web_flow_skip_vote_empty_ranking_and_explicit_reset(auth_client, user, designs):
+def test_web_flow_skip_vote_empty_ranking_and_explicit_reset(auth_client, user, designs, paid_user):
     page = auth_client.get("/arena/")
     assert page.status_code == 200 and "no-store" in page.headers["Cache-Control"]
     pair = page.context["pair"]
@@ -287,7 +287,9 @@ def test_concurrent_distinct_votes_cannot_exceed_account_rate_limit(user, design
     assert sum(DesignRating.objects.values_list("comparisons", flat=True)) == 2
 
 
-def test_guest_browser_flow_counts_globally_without_personal_profile(client, designs):
+def test_guest_browser_flow_counts_globally_without_personal_profile(
+    client, designs, grant_membership
+):
     page = client.get("/arena/")
     assert page.status_code == 200
     assert "no-store" in page.headers["Cache-Control"]
@@ -307,11 +309,14 @@ def test_guest_browser_flow_counts_globally_without_personal_profile(client, des
     assert ratings_snapshot() == before and ArenaBallot.objects.count() == 1
     assert {d.pk for d in response.context["pair"]} != {d.pk for d in pair}
     assert response.context["vote_count"] == 1
+    assert client.get("/rankings/").status_code == 302
+    owner = designs[0].submitted_by
+    client.force_login(owner)
+    assert client.get("/rankings/").url == "/pricing/"
+    grant_membership(owner)
     ranking = client.get("/rankings/")
     assert ranking.status_code == 200 and ranking.context["summary"] == {}
     assert ranking.context["page"][0].pk == pair[0].pk
-    assert b"personal fit" not in ranking.content
-    client.force_login(designs[0].submitted_by)
     assert not client.get("/rankings/?mode=personal").context["summary"]["has_taste"]
     assert not TasteProfile.objects.exists()
 
@@ -330,7 +335,7 @@ def test_guest_skip_revisit_empty_and_filter(client, designs):
     assert b"See your rankings" not in response.content
     response = client.post("/arena/revisit/", follow=True)
     assert len(response.context["pair"]) == 2
-    assert len(client.get("/rankings/?kind=hero").context["page"]) == 2
+    assert client.get("/rankings/?kind=hero").status_code == 302
 
 
 def test_guest_tokens_are_session_bound_and_cannot_be_used_after_login(client, user, designs):

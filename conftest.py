@@ -46,3 +46,26 @@ def auth_client(client, user):
 @pytest.fixture
 def profile(user):
     return user.profile
+
+
+@pytest.fixture
+def grant_membership():
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    from apps.billing.models import BillingAccount
+
+    def grant(user):
+        return BillingAccount.objects.update_or_create(
+            user=user,
+            defaults={"status": "active", "paid_until": timezone.now() + timedelta(days=30)},
+        )[0]
+
+    return grant
+
+
+@pytest.fixture
+def paid_user(user, grant_membership):
+    grant_membership(user)
+    return user

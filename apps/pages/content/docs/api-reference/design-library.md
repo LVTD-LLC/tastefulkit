@@ -5,6 +5,11 @@ description: Search published design references, paginate results, and fetch fre
 
 # Search the design library
 
+An active [$10/month membership](/pricing/) is required for API and MCP access.
+REST returns **402** for valid keys without a current membership. MCP rejects
+access until the membership is active again; your existing key can be reused.
+
+
 Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.
 
 ```bash
@@ -19,7 +24,7 @@ All query parameters are optional:
 | Parameter | Use |
 | --- | --- |
 | `q` | A text description, such as `warm minimal`. |
-| `kind` | An element type: `landing_page`, `pricing_page`, `hero`, `blog`, `navigation`, `footer`, `dashboard`, or `other`. |
+| `kind` | Use `landing_page` for the landing-page catalog. |
 | `tag` | A style tag from the library. |
 | `industry` | An industry from the library. |
 | `page` | A page number, starting at `1`. |

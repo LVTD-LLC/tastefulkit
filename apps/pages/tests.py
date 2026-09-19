@@ -160,7 +160,7 @@ def test_passkey_signup_verifies_email_then_shows_styled_passkey_creation(
     assert "Menu:" not in content
 
 
-def test_dashboard_does_not_show_email_confirmation_reminder(client):
+def test_dashboard_does_not_show_email_confirmation_reminder(client, grant_membership):
     user = get_user_model().objects.create_user(
         username="unverified",
         email="unverified@example.com",
@@ -171,6 +171,7 @@ def test_dashboard_does_not_show_email_confirmation_reminder(client):
         email=user.email,
         defaults={"primary": True, "verified": False},
     )
+    grant_membership(user)
     client.force_login(user)
 
     response = client.get(reverse("home"))

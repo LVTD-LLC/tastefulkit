@@ -39,7 +39,7 @@ def create_design(
     return (201 if created else 200), serialize_design(design, admin=True, detail=True)
 
 
-@router.get("", response={200: dict, 401: dict, 422: dict})
+@router.get("", response={200: dict, 401: dict, 402: dict, 422: dict})
 def list_designs(
     request, q: str = "", kind: str = "", tag: str = "", industry: str = "", page: int = 1
 ):
@@ -47,6 +47,6 @@ def list_designs(
     return design_page(q, kind, tag, industry, page)
 
 
-@router.get("/{design_id}", response={200: dict, 401: dict, 404: dict, 422: dict})
+@router.get("/{design_id}", response={200: dict, 401: dict, 402: dict, 404: dict, 422: dict})
 def get_design(request, design_id: UUID):
     return design_detail(design_id, request.auth.user)

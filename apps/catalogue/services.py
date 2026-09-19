@@ -109,7 +109,10 @@ def design_filters(page=1):
     tag_page = Paginator(tags.values_list("name", flat=True), 100).get_page(page)
     industry_page = Paginator(industries, 100).get_page(page)
     return {
-        "kinds": [{"value": value, "label": label} for value, label in Design.Kind.choices],
+        "kinds": [
+            {"value": value, "label": label}
+            for value, label in [(Design.Kind.LANDING, Design.Kind.LANDING.label)]
+        ],
         "tags": list(tag_page),
         "industries": list(industry_page),
         "tags_page": tag_page.number,

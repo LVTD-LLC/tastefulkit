@@ -53,6 +53,7 @@ urlpatterns += [
     ),
     path("", include("apps.pages.urls")),
     path("", include("apps.core.urls")),
+    path("", include("apps.billing.urls")),
     path("", include("apps.catalogue.urls")),
     path(
         "sitemap.xml",

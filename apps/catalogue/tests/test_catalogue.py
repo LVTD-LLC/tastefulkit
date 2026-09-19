@@ -67,7 +67,7 @@ def test_semantic_results_include_related_designs(design, qdrant_store):
     assert matches == [design] and mode == "semantic"
 
 
-def test_library_save_and_visibility(client, user, design):
+def test_library_save_and_visibility(client, user, design, paid_user):
     assert client.get("/explore/").status_code == 302
     client.force_login(user)
     assert client.get("/explore/").status_code == 200

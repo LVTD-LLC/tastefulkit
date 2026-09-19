@@ -1,15 +1,17 @@
 ---
 title: Start here
-description: Find real website design references, explore their details, and save useful examples in TastefulKit.
+description: Find real landing-page design references, explore their details, and save useful examples in TastefulKit.
 ---
 
 # Find your next design reference
 
-TastefulKit is a library of real website screenshots. Use it to find examples of layouts, typography, colors, and interface elements, then save the ones you want to revisit.
+TastefulKit is a library of real landing-page screenshots. Use it to find examples of layouts, typography, colors, and spacing, then save the ones you want to revisit.
 
 ## Take a first look
 
-You can view the featured examples on the [homepage](/) and read every page of these docs without an account. Sign in to open the full [Explore library](/explore/), view design details, and save designs.
+Try the [Design Arena](/arena/) for free without an account. Sign in to start building your own taste profile.
+
+The [membership](/pricing/) is $10 USD/month and includes the full landing-page catalog, global and personalized rankings, saved designs, design guides, and API/MCP access. Subscribe to browse the catalog or connect your agent. Cancel anytime in the billing portal; access lasts until the end of your paid period.
 
 1. [Create an account](/accounts/signup/) and confirm your email.
 2. Open **Explore** to browse the library, newest first.
