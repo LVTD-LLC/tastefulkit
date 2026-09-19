@@ -90,11 +90,11 @@ def signed_event(
 def test_free_users_can_vote_but_cannot_read_catalog_or_agent_setup(client, user):
     key = user.profile.rotate_api_key()
     assert client.get("/arena/").status_code == 200
+    assert client.get("/rankings/").status_code == 200
     assert client.get("/pricing/").status_code == 200
     for path in [
         "/explore/",
         "/home",
-        "/rankings/",
         "/rankings/?mode=personal",
         "/docs/api-reference/mcp/",
         "/designs/00000000-0000-0000-0000-000000000001/",
@@ -102,10 +102,10 @@ def test_free_users_can_vote_but_cannot_read_catalog_or_agent_setup(client, user
     ]:
         assert "/accounts/login/" in client.get(path).url
     client.force_login(user)
+    assert client.get("/rankings/").status_code == 200
     for path in [
         "/explore/",
         "/home",
-        "/rankings/",
         "/rankings/?mode=personal",
         "/docs/api-reference/mcp/",
     ]:

@@ -34,7 +34,7 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 ## Take a first look
 
 Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
-The full catalog, rankings, design guides and API/MCP access are included in one
+Global rankings are public too. The full catalog, personalized rankings, design guides and API/MCP access are included in one
 [$10 USD/month membership](https://tastefulkit.com/pricing/). Cancel anytime; access
 continues until the end of the paid period. Signed-in votes shape your personal ranking;
 guest votes count globally and are not transferred on signup.

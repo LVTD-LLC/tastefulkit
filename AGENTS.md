@@ -124,8 +124,8 @@ is the contribution and merge contract.
   affinity from tags/kinds/industries and saves. They use no catalogue inference,
   query embeddings, or other accounts' taste. No personal signal falls back to
   global Elo. Reset starts a new generation and excludes older saves without
-  removing the collection. Rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
-  require a current paid membership. Arena voting remains free for guests and
+  removing the collection. Personal rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
+  require a current paid membership. Arena voting and global rankings remain free for guests and
   accounts. Guest history is never imported into personal taste.
 - The daily research agent is external and submits via the ingestion API.
   No catalogue entries are hardcoded or seeded by migrations.
