@@ -1,4 +1,4 @@
-"""Authenticated comparisons, reproducible Elo, and private metadata-based taste."""
+"""Guest and account comparisons, reproducible Elo, and private metadata-based taste."""
 
 import random
 from collections import defaultdict
@@ -11,7 +11,14 @@ from django.core import signing
 from django.db import transaction
 from django.utils import timezone
 
-from apps.catalogue.models import ArenaBallot, ArenaState, DesignRating, SavedDesign, TasteProfile
+from apps.catalogue.models import (
+    ArenaBallot,
+    ArenaGuest,
+    ArenaState,
+    DesignRating,
+    SavedDesign,
+    TasteProfile,
+)
 from apps.catalogue.services import visible_designs
 
 TOKEN_SALT = "catalogue.arena.v1"
@@ -38,6 +45,14 @@ def personal_ballots(user, generation):
     return ArenaBallot.objects.filter(user=user, generation=generation)
 
 
+def voter_filter(user):
+    return {"guest_id": user.pk} if isinstance(user, ArenaGuest) else {"user": user}
+
+
+def comparison_ballots(user, generation):
+    return ArenaBallot.objects.filter(**voter_filter(user), generation=generation)
+
+
 def choose_pair(user, generation, kind="", skipped=()):
     """Shuffle anchors and sides; compare like elements and viewport families."""
     designs = eligible_designs()
@@ -46,7 +61,7 @@ def choose_pair(user, generation, kind="", skipped=()):
     candidates = list(designs.only("id", "kind", "viewport_width"))
     random.SystemRandom().shuffle(candidates)
     seen_pairs = defaultdict(set)
-    for a, b in personal_ballots(user, generation).values_list("design_a", "design_b"):
+    for a, b in comparison_ballots(user, generation).values_list("design_a", "design_b"):
         seen_pairs[a].add(b)
         seen_pairs[b].add(a)
     skipped = set(skipped)
@@ -70,7 +85,11 @@ def choose_pair(user, generation, kind="", skipped=()):
 
 def pair_token(user, generation, pair):
     return signing.dumps(
-        {"user": user.pk, "generation": generation, "pair": [str(d.pk) for d in pair]},
+        {
+            "user": str(user.pk) if isinstance(user, ArenaGuest) else user.pk,
+            "generation": generation,
+            "pair": [str(d.pk) for d in pair],
+        },
         salt=TOKEN_SALT,
     )
 
@@ -79,7 +98,8 @@ def parse_token(user, token):
     try:
         data = signing.loads(token, salt=TOKEN_SALT, max_age=3600)
         ids = sorted(UUID(value) for value in data["pair"])
-        if data["user"] != user.pk or len(ids) != 2 or ids[0] == ids[1]:
+        identity = str(user.pk) if isinstance(user, ArenaGuest) else user.pk
+        if data["user"] != identity or len(ids) != 2 or ids[0] == ids[1]:
             raise ValueError
         return data["generation"], ids
     except (signing.BadSignature, ValueError, KeyError, TypeError) as exc:
@@ -114,15 +134,20 @@ def submit_comparison(user, token, choice):
     # This row lock is held until commit, including profile rate checks/increments.
     # All vote/reset writers use it, so concurrent requests cannot read a stale counter.
     lock_arena()
-    profile, _ = TasteProfile.objects.get_or_create(user=user)
-    if generation != profile.generation:
+    if isinstance(user, ArenaGuest):
+        profile, _ = ArenaGuest.objects.get_or_create(pk=user.pk)
+        current_generation = 0
+    else:
+        profile, _ = TasteProfile.objects.get_or_create(user=user)
+        current_generation = profile.generation
+    if generation != current_generation:
         raise ArenaError("Your taste profile changed. Refresh the arena and try again.")
     designs = list(eligible_designs().select_for_update().filter(pk__in=ids).order_by("id"))
     if len(designs) != 2 or comparison_group(designs[0]) != comparison_group(designs[1]):
         raise ArenaError("These designs are no longer available to compare. Try the next pair.")
     if choice not in [str(pk) for pk in ids] + ["skip"]:
         raise ArenaError("Choose one of the two designs, or skip this comparison.")
-    existing = personal_ballots(user, generation).filter(design_a=ids[0], design_b=ids[1])
+    existing = comparison_ballots(user, generation).filter(design_a=ids[0], design_b=ids[1])
     if existing.exists():
         return "duplicate", ids
     now = timezone.now()
@@ -135,10 +160,10 @@ def submit_comparison(user, token, choice):
     if choice == "skip":
         return "skipped", ids
     counted = not ArenaBallot.objects.filter(
-        user=user, design_a=ids[0], design_b=ids[1], global_counted=True
+        **voter_filter(user), design_a=ids[0], design_b=ids[1], global_counted=True
     ).exists()
     ballot = ArenaBallot.objects.create(
-        user=user,
+        **voter_filter(user),
         generation=generation,
         design_a=ids[0],
         design_b=ids[1],
