@@ -1,5 +1,7 @@
 async function loadFullScreenshots(form) {
-  const previews = [...form.querySelectorAll("[data-arena-full-src]")];
+  const previews = [...form.querySelectorAll("[data-arena-full-src]")].filter(
+    (preview) => preview.src !== new URL(preview.dataset.arenaFullSrc, document.baseURI).href,
+  );
   // Get both lightweight choices on screen before competing for image bandwidth.
   await Promise.allSettled(previews.map((preview) => preview.decode()));
   await Promise.all(previews.map(async (preview) => {
@@ -40,7 +42,9 @@ export function initArena() {
       button.disabled = true;
     });
   });
-  window.addEventListener("pageshow", () => {
+  window.addEventListener("pageshow", (event) => {
+    // A navigation can interrupt background downloads before they finish.
+    if (event.persisted) void loadFullScreenshots(form);
     delete form.dataset.submitting;
     form.removeAttribute("aria-busy");
     form.querySelectorAll("[data-pending-choice]").forEach((input) => input.remove());
