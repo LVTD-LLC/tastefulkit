@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Restore six homepage landing-page previews in global-ranking order, with a link to the full public ranking; keep catalog and design-guide access membership-only.
+
 - Replace navbar theme text with a circular sun/moon icon toggle to the right of Get started; retain accessible labels, keyboard controls, and saved theme preferences.
 
 ## 2026-09-19
