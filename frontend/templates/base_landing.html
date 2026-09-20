@@ -80,10 +80,6 @@
                                href="{% url 'docs_home' %}">docs</a>
                         </nav>
                         <div class="ml-auto hidden items-center gap-5 text-sm lg:flex">
-                            <button type="button"
-                                    data-theme-toggle
-                                    class="app-focus text-gray-600 hover:text-gray-950 dark:text-gray-300 dark:hover:text-white"
-                                    aria-label="Toggle theme"><span data-theme-label>Theme</span></button>
                             <a class="app-focus" href="{% url 'voting_arena' %}">arena</a>
                             <a class="app-focus" href="{% url 'design_rankings' %}">rankings</a>
                             {% if user.is_authenticated %}
@@ -97,6 +93,7 @@
                                    data-posthog-cta="signup"
                                    data-posthog-cta-location="site_header">get started</a>
                             {% endif %}
+                            {% include "components/theme_toggle.html" %}
                         </div>
                         <details class="relative ml-auto lg:hidden"
                                  @keydown.escape.window="$el.open = false"
@@ -116,10 +113,7 @@
                                         <a class="app-focus font-semibold text-orange-700 dark:text-orange-400"
                                            href="{% url 'account_signup' %}">get started</a>
                                     {% endif %}
-                                    <button type="button"
-                                            data-theme-toggle
-                                            class="app-focus text-left"
-                                            aria-label="Toggle theme"><span data-theme-label>Theme</span></button>
+                                    {% include "components/theme_toggle.html" %}
                                 </div>
                             </nav>
                         </details>

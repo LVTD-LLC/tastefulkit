@@ -306,6 +306,14 @@ Before shipping generated-project UI changes:
 
 The public catalogue uses warm paper (#f8f7f3), dark ink (#242922), and terracotta (#b34424). Dark mode swaps to deep green-black and light warm text. Use system sans for product UI and Georgia italic for the hero's single “taste” accent. Catalogue screenshots provide the visual interest: no generated mock examples or invented activity counts. Shared rules live in frontend/src/styles/tastefulkit.css. The library grid is three/two/one columns at desktop/tablet/mobile; all controls retain keyboard focus states.
 
+### Theme control
+
+Use a 44px circular, outlined icon button after the navbar account actions
+(to the right of Get started for guests). Show a stroked sun in light mode and
+a crescent moon in dark mode, with an accessible label describing the switch
+action. Reuse the same control in mobile menus, with the warm `--tk-*` palette
+and visible keyboard focus.
+
 ### Documentation navigation
 
 Docs use the product's monospace navigation and warm `--tk-*` colors: sentence-case
