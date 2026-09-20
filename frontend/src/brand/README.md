@@ -26,3 +26,16 @@ Inspect both the full image and a 400px-wide preview after changes. Keep the PNG
 dimensions and the metadata in `frontend/templates/catalogue/arena.html` aligned.
 Only the PNG ships as a static asset; this HTML is an artwork source, not an app
 template.
+
+## Homepage
+
+`home-social-preview.html` uses the same self-contained source approach and the
+same public Raycast/Notion thumbnails. Replace `arena-social-preview` with
+`home-social-preview` in the capture command above to regenerate its 2400×1260 PNG.
+
+## Generated cards
+
+Other public pages use the Pillow renderer in `apps/pages/social_images.py`.
+Titles and descriptions come from the finite page registry or repository docs;
+design cards use only the stored thumbnail. See `docs/social-previews.md` for the
+routes, visibility rules, and update workflow.

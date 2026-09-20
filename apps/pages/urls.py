@@ -1,9 +1,15 @@
 from django.urls import path
 
 from apps.catalogue.views import landing
-from apps.pages import views
+from apps.pages import social, views
 
 urlpatterns = [
+    path("social/pages/<slug:key>.png", social.page_social_image, name="page_social_image"),
+    path(
+        "social/docs/<slug:category>/<slug:page>.png",
+        social.docs_social_image,
+        name="docs_social_image",
+    ),
     path("", landing, name="landing"),
     path("privacy-policy", views.PrivacyPolicyView.as_view(), name="privacy_policy"),
     path("terms-of-service", views.TermsOfServiceView.as_view(), name="terms_of_service"),

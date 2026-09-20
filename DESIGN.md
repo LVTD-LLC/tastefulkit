@@ -203,6 +203,15 @@ self-contained HTML in `frontend/src/brand/`. Keep its real reference comparison
 dark ink and terracotta palette, bold italic headline, and central VS. readable
 at feed size. Its angled matchup composition is specific to this social artwork.
 
+## Social previews
+
+The homepage uses `frontend/src/brand/home-social-preview.html` and its 2× PNG.
+Public utility pages and docs use `apps/pages/social_images.py`: warm paper, ink,
+terracotta, the reference-stack mark, and a locally bundled Inter font (SIL OFL).
+Design cards pair the title with the prepared thumbnail. These derivative images
+never replace catalogue assets. Keep text within three measured lines, crop
+reference previews from the top, and retain readable branding at feed size.
+
 ## Colors
 
 The default palette uses practical SaaS neutrals with one confident primary color.

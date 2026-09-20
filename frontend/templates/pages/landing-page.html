@@ -1,8 +1,6 @@
 {% extends "base_landing.html" %}
-{% block page_title %}Landing Page Inspiration for You &amp; Your Agent | TastefulKit{% endblock page_title %}
-{% block og_title %}Landing Page Inspiration for You &amp; Your Agent | TastefulKit{% endblock og_title %}
-{% block twitter_title %}Landing Page Inspiration for You &amp; Your Agent | TastefulKit{% endblock twitter_title %}
-{% block page_description %}Find landing pages you love with personalized pairwise rankings, then give your coding agent the references to build from.{% endblock page_description %}
-{% block og_description %}Find landing pages you love with personalized pairwise rankings, then give your coding agent the references to build from.{% endblock og_description %}
-{% block twitter_description %}Find landing pages you love with personalized pairwise rankings, then give your coding agent the references to build from.{% endblock twitter_description %}
+{% load social_metadata %}
+{% block meta %}
+    {% page_metadata "landing" %}
+{% endblock %}
 {% block content %}<div class="tk-container"><section class="tk-hero"><h1>Find your taste.<br>Build from <em>it.</em></h1><p>Compare landing pages to rank designs around your taste. Give your coding agent the references to bring that look to your project.</p><div class="tk-guide-actions"><a class="tk-button" href="{% url 'library' %}">Explore catalog ↗</a><a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">Vote on designs →</a></div></section><section class="tk-showcase" aria-labelledby="top-designs-heading"><div class="tk-section-heading"><h2 id="top-designs-heading">Top-ranked landing pages.</h2><a href="{% url 'design_rankings' %}">View global ranking ↗</a></div><div class="design-grid">{% for design in designs %}{% include "catalogue/card.html" %}{% empty %}<div class="tk-empty"><h3>A home for designs worth keeping.</h3><p>We're collecting the first landing pages. A growing library of real-world inspiration is on its way.</p></div>{% endfor %}</div></section></div>{% endblock %}

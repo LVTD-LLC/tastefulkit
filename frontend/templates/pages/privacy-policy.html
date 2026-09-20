@@ -1,28 +1,9 @@
 {% extends "base_landing.html" %}
+{% load social_metadata %}
 {% load static %}
 {% block meta %}
-    <title>Privacy Policy - TastefulKit</title>
-    <meta name="description"
-          content="Privacy Policy for TastefulKit - Learn how we collect, use, and protect your personal information." />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical"
-          href="{{ public_site_url }}{% url 'privacy_policy' %}" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Privacy Policy - TastefulKit" />
-    <meta property="og:url"
-          content="{{ public_site_url }}{% url 'privacy_policy' %}" />
-    <meta property="og:description"
-          content="Privacy Policy for TastefulKit - Learn how we collect, use, and protect your personal information." />
-    <meta property="og:image"
-          content="https://osig.app/g?site=meta&style=logo&font=markerfelt&title=Privacy%20Policy&subtitle=TastefulKit" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary" />
-    <meta name="twitter:title" content="Privacy Policy - TastefulKit" />
-    <meta name="twitter:description"
-          content="Privacy Policy for TastefulKit - Learn how we collect, use, and protect your personal information." />
-    <meta name="twitter:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=Privacy%20Policy&subtitle=TastefulKit" />
-{% endblock meta %}
+    {% page_metadata "privacy_policy" %}
+{% endblock %}
 {% block content %}
     <div class="px-4 py-16 mx-auto max-w-4xl sm:py-24 sm:px-6 lg:px-8">
         <div class="text-center">

@@ -1,6 +1,6 @@
 from django.urls import path
 
-from apps.catalogue import arena_views, views
+from apps.catalogue import arena_views, social, views
 
 urlpatterns = [
     path("arena/", arena_views.voting_arena, name="voting_arena"),
@@ -9,6 +9,7 @@ urlpatterns = [
     path("rankings/", arena_views.rankings, name="design_rankings"),
     path("rankings/reset/", arena_views.reset_taste, name="reset_taste"),
     path("explore/", views.library, name="library"),
+    path("designs/<uuid:pk>/social.png", social.design_social_image, name="design_social_image"),
     path("designs/<uuid:pk>/", views.detail, name="design_detail"),
     path("designs/<uuid:pk>/DESIGN.md", views.design_markdown, name="design_markdown"),
     path("designs/<uuid:pk>/save/", views.save_design, name="save_design"),
