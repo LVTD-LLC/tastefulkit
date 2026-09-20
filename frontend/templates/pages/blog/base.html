@@ -1,0 +1,33 @@
+{% extends "base_landing.html" %}
+{% block meta %}
+    <title>{{ page_title }}{% if not post %} | TastefulKit{% endif %}</title>
+    <meta name="description" content="{{ meta_description }}" />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href="{{ canonical_url }}" />
+    <meta property="og:type"
+          content="{% if post %}article{% else %}website{% endif %}" />
+    <meta property="og:title"
+          content="{{ page_title }}{% if not post %} | TastefulKit{% endif %}" />
+    <meta property="og:description" content="{{ meta_description }}" />
+    <meta property="og:url" content="{{ canonical_url }}" />
+    <meta property="og:image" content="{{ social_image_url }}" />
+    <meta property="og:image:alt"
+          content="TastefulKit — design references tuned to your taste" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title"
+          content="{{ page_title }}{% if not post %} | TastefulKit{% endif %}" />
+    <meta name="twitter:description" content="{{ meta_description }}" />
+    <meta name="twitter:image" content="{{ social_image_url }}" />
+    <meta name="twitter:image:alt"
+          content="TastefulKit — design references tuned to your taste" />
+    {% if post %}
+        <meta name="author" content="{{ post.author }}" />
+        <meta property="article:published_time"
+              content="{{ post.published|date:'Y-m-d' }}" />
+        <meta property="article:modified_time"
+              content="{{ post.updated|date:'Y-m-d' }}" />
+    {% endif %}
+{% endblock meta %}
+{% block schema %}
+    {% if schema_json %}<script type="application/ld+json">{{ schema_json|safe }}</script>{% endif %}
+{% endblock schema %}

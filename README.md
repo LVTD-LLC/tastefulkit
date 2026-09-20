@@ -9,6 +9,7 @@
 <p align="center">
   <a href="https://tastefulkit.com">Website</a> ·
   <a href="https://tastefulkit.com/docs/">Docs</a> ·
+  <a href="https://tastefulkit.com/blog/">Blog</a> ·
   <a href="https://tastefulkit.com/docs/api-reference/mcp/">Connect your assistant</a> ·
   <a href="CONTRIBUTING.md">Contribute</a>
 </p>
@@ -46,6 +47,9 @@ guest votes count globally and are not transferred on signup.
 
 Start with the [browsing guide](https://tastefulkit.com/docs/using-tastefulkit/browsing/)
 or learn how to [search and filter](https://tastefulkit.com/docs/using-tastefulkit/search/).
+
+For practical reference workflows, read the free [landing page design guides](https://tastefulkit.com/blog/).
+Blog articles are maintained in the repository; see [blog authoring](docs/blog-authoring.md) to contribute.
 
 ## Give your AI assistant something to work with
 

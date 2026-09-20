@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Add a public, repository-managed blog with four practical landing-page design guides, article metadata/schema, dated sitemap entries, and links from the homepage and navigation. Document the keyword strategy and Markdown publishing workflow; exclude drafts and future posts from public routes.
+
 - Add a branded Arena link preview with real side-by-side design references and complete Open Graph/Twitter image metadata.
 
 - Make all documentation public for logged-out and unpaid visitors, including API/MCP setup guides; restore API-reference sitemap entries and indexing while keeping paid product features protected.
