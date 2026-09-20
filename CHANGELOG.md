@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Add a branded Arena link preview with real side-by-side design references and complete Open Graph/Twitter image metadata.
+
 - Make all documentation public for logged-out and unpaid visitors, including API/MCP setup guides; restore API-reference sitemap entries and indexing while keeping paid product features protected.
 
 - Show lightweight Arena previews before decoding full screenshots in the background; retain screenshot voting and full-page scrolling. Remove the Arena reassurance, skip button, account-ranking footnote, and homepage how-it-works/final CTA sections.

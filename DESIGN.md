@@ -198,6 +198,11 @@ before the wordmark. Browser/touch icons use the inverse mark on a dark tile.
 preview used for social sharing. Keep all brand variants consistent with the
 reference-stack silhouette.
 
+Arena uses `frontend/static/brand/arena-social-preview.png`, rendered from the
+self-contained HTML in `frontend/src/brand/`. Keep its real reference comparison,
+dark ink and terracotta palette, bold italic headline, and central VS. readable
+at feed size. Its angled matchup composition is specific to this social artwork.
+
 ## Colors
 
 The default palette uses practical SaaS neutrals with one confident primary color.
