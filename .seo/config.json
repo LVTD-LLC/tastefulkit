@@ -35,18 +35,19 @@
       "read_method": "repository files and public rendered pages",
       "write_method": "feature branch and PR",
       "body_format": "Markdown and Django templates",
-      "auth_note": "public docs; authenticated library is not a publishing surface"
+      "auth_note": "public docs and blog; member-only library is not a publishing surface"
     },
     "_comment_content_store": "Resolved by references/content-stores.md, which replaces this string with its object form (type, platform, base_url, read_method, write_method, model_or_collection, body_format, auth_note) once detected. For app_db stores, references/stacks/app-db.md adds the table, field, status, revision and preview fields the fix and programmatic lanes need.",
-    "content_dir": "apps/pages/content/docs",
-    "content_layout": null,
-    "output_url_prefix": "/docs",
+    "content_dir": "apps/pages/content/blog",
+    "content_layout": "frontend/templates/pages/blog/post.html",
+    "output_url_prefix": "/blog",
     "cms": null,
     "figure_style": {
       "tokens": "DESIGN.md",
       "dark_mode": "class",
       "notes": "No visual changes in this run."
-    }
+    },
+    "docs_content_dir": "apps/pages/content/docs"
   },
   "gsc": {
     "site_url": "https://tastefulkit.com/",
@@ -70,7 +71,10 @@
     "https://tastefulkit.com/docs/api-reference/mcp/"
   ],
   "_comment_priority_pages": "The URLs whose accuracy and reachability matter most. Sampling and claim re-verification key off this list.",
-  "crawl_hubs": [],
+  "crawl_hubs": [
+    "/",
+    "/blog/"
+  ],
   "_comment_crawl_hubs": "Pages Google crawls most often, from batch_url_inspection last_crawled (references/gsc.md \u00a77a). Every new page takes \u22651 inbound link from here. Re-derive every few months.",
   "authority": {
     "dr": null,

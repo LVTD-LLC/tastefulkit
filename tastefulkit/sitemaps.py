@@ -4,6 +4,7 @@ from django.conf import settings
 from django.contrib import sitemaps
 from django.urls import reverse
 
+from apps.pages.blog import published_posts
 from apps.pages.views import get_docs_navigation, get_flat_page_list
 
 
@@ -49,6 +50,7 @@ class StaticViewSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
         """
         return [
             "landing",
+            "blog_index",
             "uses",
             "privacy_policy",
             "terms_of_service",
@@ -74,7 +76,19 @@ class DocumentationSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
         return item
 
 
+class BlogSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
+    def items(self):
+        return published_posts()
+
+    def location(self, item):
+        return item.url
+
+    def lastmod(self, item):
+        return item.updated
+
+
 sitemaps = {
     "static": StaticViewSitemap,
     "docs": DocumentationSitemap,
+    "blog": BlogSitemap,
 }

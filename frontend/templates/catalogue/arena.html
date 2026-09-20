@@ -1,5 +1,9 @@
 {% extends "base_landing.html" %}
-{% block meta %}<title>Voting arena · TastefulKit</title><meta name="robots" content="noindex, nofollow">{% endblock %}
+{% load social_metadata %}
+{% load static %}
+{% block meta %}
+    {% page_metadata "voting_arena" %}
+{% endblock %}
 {% block default_messages %}{% endblock %}
 {% block content %}
     <div class="tk-container library-page tk-arena-page">

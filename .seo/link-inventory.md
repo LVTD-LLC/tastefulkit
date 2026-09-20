@@ -19,3 +19,14 @@ Public sitemap inventory checked 2026-09-12. Authentication redirects are intent
 | https://tastefulkit.com/uses | Technology Stack | TastefulKit |
 
 `/docs/` intentionally redirects to the getting-started guide. `/uses` is a low-priority public orphan. Exact crawl observations live in Rowset.
+
+## Blog launch additions — September 20, 2026
+
+- `/blog/`: design guides; landing-page guides; practical design reading.
+- `/blog/landing-page-design-ideas/`: choose a direction; reference brief; landing-page design ideas.
+- `/blog/creative-landing-page-design/`: creative constraints; expressive page design; clarity review.
+- `/blog/mobile-landing-page-design/`: mobile review; narrow-screen checklist; responsive reference review.
+- `/blog/design-references-ai-coding-agents/`: agent handoff; visual brief; design references for coding agents.
+
+Each article links from the blog hub, homepage recent guides and sibling articles.
+Product entry points: `/arena/` and `/rankings/` public/free; `/pricing/` explains membership.

@@ -1,4 +1,4 @@
-{% load static %}
+{% load static social_metadata %}
 <!DOCTYPE html>
 <html lang="en" class="antialiased">
     <head>
@@ -8,27 +8,7 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         {% include "components/favicon.html" %}
         {% block meta %}
-            <title>{% block page_title %}TastefulKit{% endblock page_title %}</title>
-            <meta name="description"
-                  content="{% block page_description %}Discover design references tuned to your taste.{% endblock page_description %}" />
-            <meta name="robots" content="index, follow" />
-            <link rel="canonical" href="{{ public_site_url }}/" />
-            <meta property="og:type" content="website" />
-            <meta property="og:title"
-                  content="{% block og_title %}TastefulKit{% endblock og_title %}" />
-            <meta property="og:url" content="{{ public_site_url }}/" />
-            <meta property="og:description"
-                  content="{% block og_description %}Discover design references tuned to your taste.{% endblock og_description %}" />
-            <meta property="og:image"
-                  content="{{ public_site_url }}{% static 'brand/social-preview.png' %}" />
-            <meta property="og:locale" content="en_US" />
-            <meta name="twitter:card" content="summary_large_image" />
-            <meta name="twitter:title"
-                  content="{% block twitter_title %}TastefulKit{% endblock twitter_title %}" />
-            <meta name="twitter:description"
-                  content="{% block twitter_description %}Discover design references tuned to your taste.{% endblock twitter_description %}" />
-            <meta name="twitter:image"
-                  content="{{ public_site_url }}{% static 'brand/social-preview.png' %}" />
+            {% page_metadata "landing" %}
         {% endblock meta %}
         {% include "components/posthog.html" %}
         <script>
@@ -78,6 +58,9 @@
                              aria-label="Public navigation">
                             <a class="app-focus hover:text-gray-950 dark:hover:text-white"
                                href="{% url 'docs_home' %}">docs</a>
+                            <a class="app-focus"
+                               href="{% url 'blog_index' %}"
+                               {% if request.resolver_match.url_name == "blog_index" or request.resolver_match.url_name == "blog_post" %}aria-current="page"{% endif %}>blog</a>
                         </nav>
                         <div class="ml-auto hidden items-center gap-5 text-sm lg:flex">
                             <a class="app-focus" href="{% url 'voting_arena' %}">arena</a>
@@ -104,6 +87,9 @@
                                 <div class="flex flex-col gap-5 text-base sm:text-sm">
                                     <a class="app-focus" href="{% url 'pricing' %}">pricing</a>
                                     <a class="app-focus" href="{% url 'docs_home' %}">docs</a>
+                                    <a class="app-focus"
+                                       href="{% url 'blog_index' %}"
+                                       {% if request.resolver_match.url_name == "blog_index" or request.resolver_match.url_name == "blog_post" %}aria-current="page"{% endif %}>blog</a>
                                     <a class="app-focus" href="{% url 'voting_arena' %}">arena</a>
                                     <a class="app-focus" href="{% url 'design_rankings' %}">rankings</a>
                                     {% if user.is_authenticated %}
@@ -136,6 +122,9 @@
                              aria-label="Footer navigation">
                             <a class="app-focus hover:text-gray-950 dark:hover:text-white"
                                href="{% url 'docs_home' %}">docs</a>
+                            <a class="app-focus"
+                               href="{% url 'blog_index' %}"
+                               {% if request.resolver_match.url_name == "blog_index" or request.resolver_match.url_name == "blog_post" %}aria-current="page"{% endif %}>blog</a>
                             <a class="app-focus hover:text-gray-950 dark:hover:text-white"
                                href="{% url 'privacy_policy' %}">privacy</a>
                             <a class="app-focus hover:text-gray-950 dark:hover:text-white"

@@ -1,0 +1,28 @@
+{% extends "pages/blog/base.html" %}
+{% block content %}
+    <div class="tk-container tk-blog">
+        <header class="tk-blog-heading">
+            <h1>Landing page design guides</h1>
+            <p>Find a direction, compare real references, and turn what you like into a page you can build.</p>
+        </header>
+        <div class="tk-blog-list">
+            {% for post in posts %}
+                <article class="tk-blog-entry">
+                    <p class="tk-blog-meta"><time datetime="{{ post.published|date:'Y-m-d' }}">{{ post.published|date:'F j, Y' }}</time> · {{ post.author }}</p>
+                    <h2><a href="{{ post.url }}">{{ post.title }}</a></h2>
+                    <p>{{ post.description }}</p>
+                </article>
+            {% empty %}
+                <div class="tk-empty">
+                    <h2>Guides are on their way.</h2>
+                    <p>In the meantime, compare real landing pages in the <a href="{% url 'voting_arena' %}">design arena</a>.</p>
+                </div>
+            {% endfor %}
+        </div>
+        <section class="tk-blog-next" aria-labelledby="blog-next-heading">
+            <h2 id="blog-next-heading">Put your eye for design to work.</h2>
+            <p>Compare two real landing pages at a time. The arena is free to try, without an account.</p>
+            <a class="tk-button" href="{% url 'voting_arena' %}">Try the design arena →</a>
+        </section>
+    </div>
+{% endblock content %}

@@ -9,6 +9,7 @@
 <p align="center">
   <a href="https://tastefulkit.com">Website</a> ·
   <a href="https://tastefulkit.com/docs/">Docs</a> ·
+  <a href="https://tastefulkit.com/blog/">Blog</a> ·
   <a href="https://tastefulkit.com/docs/api-reference/mcp/">Connect your assistant</a> ·
   <a href="CONTRIBUTING.md">Contribute</a>
 </p>
@@ -35,7 +36,8 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 
 Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
 Lightweight previews appear first; full screenshots load in the background for scrolling.
-Global rankings are public too. The full catalog, personalized rankings, design guides and API/MCP access are included in one
+Global rankings and shared design previews are public too. A shared design link shows
+its title and thumbnail; full details remain part of membership. The full catalog, personalized rankings, design guides and API/MCP access are included in one
 [$10 USD/month membership](https://tastefulkit.com/pricing/). Cancel anytime; access
 continues until the end of the paid period. Signed-in votes shape your personal ranking;
 guest votes count globally and are not transferred on signup.
@@ -46,6 +48,9 @@ guest votes count globally and are not transferred on signup.
 
 Start with the [browsing guide](https://tastefulkit.com/docs/using-tastefulkit/browsing/)
 or learn how to [search and filter](https://tastefulkit.com/docs/using-tastefulkit/search/).
+
+For practical reference workflows, read the free [landing page design guides](https://tastefulkit.com/blog/).
+Blog articles are maintained in the repository; see [blog authoring](docs/blog-authoring.md) to contribute.
 
 ## Give your AI assistant something to work with
 

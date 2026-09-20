@@ -3,6 +3,12 @@
 ## 2026-09-20
 
 - Add responsive space between the homepage thumbnail grid and footer (48px on small screens, 64px from tablet upward).
+- Add a public, repository-managed blog with four practical landing-page design guides, article metadata/schema, dated sitemap entries, and links from the homepage and navigation. Document the keyword strategy and Markdown publishing workflow; exclude drafts and future posts from public routes.
+
+- Add a custom homepage share image and automatic branded previews for docs, rankings, membership, legal pages, and published landing-page references. Shared design links now show public title-and-thumbnail teasers while full details, design guides, and saves remain members-only.
+
+- Add a branded Arena link preview with real side-by-side design references and complete Open Graph/Twitter image metadata.
+
 - Make all documentation public for logged-out and unpaid visitors, including API/MCP setup guides; restore API-reference sitemap entries and indexing while keeping paid product features protected.
 
 - Show lightweight Arena previews before decoding full screenshots in the background; retain screenshot voting and full-page scrolling. Remove the Arena reassurance, skip button, account-ranking footnote, and homepage how-it-works/final CTA sections.

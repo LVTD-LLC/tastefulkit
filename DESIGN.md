@@ -198,6 +198,20 @@ before the wordmark. Browser/touch icons use the inverse mark on a dark tile.
 preview used for social sharing. Keep all brand variants consistent with the
 reference-stack silhouette.
 
+Arena uses `frontend/static/brand/arena-social-preview.png`, rendered from the
+self-contained HTML in `frontend/src/brand/`. Keep its real reference comparison,
+dark ink and terracotta palette, bold italic headline, and central VS. readable
+at feed size. Its angled matchup composition is specific to this social artwork.
+
+## Social previews
+
+The homepage uses `frontend/src/brand/home-social-preview.html` and its 2× PNG.
+Public utility pages and docs use `apps/pages/social_images.py`: warm paper, ink,
+terracotta, the reference-stack mark, and a locally bundled Inter font (SIL OFL).
+Design cards pair the title with the prepared thumbnail. These derivative images
+never replace catalogue assets. Keep text within three measured lines, crop
+reference previews from the top, and retain readable branding at feed size.
+
 ## Colors
 
 The default palette uses practical SaaS neutrals with one confident primary color.
@@ -336,3 +350,14 @@ scores beside a live comparison. Rankings use compact ordered rows with thumbnai
 visible sample counts, provisional labels, and distinct Global / For you tabs.
 Personal-fit scores are relative, never percentages. Reset is an explicit,
 confirmed action. All screens support keyboard input, no-JS forms, and dark mode.
+
+### Blog reading layout
+
+Repository-managed blog pages use a single readable column (900px outer maximum),
+the existing warm `--tk-*` palette, and border-separated editorial entries instead
+of screenshotless cards. Titles use fixed 44px desktop / 34px mobile sizes; body
+copy uses 18px / 17px with generous line height. A native collapsed table-of-contents
+disclosure works without JavaScript. Links are underlined, heading anchors clear
+the sticky header, and tables/code overflow within labeled, keyboard-focusable regions inside the
+article, not the viewport.
+Shared blog rules live in `frontend/src/styles/tastefulkit.css`.
