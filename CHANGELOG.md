@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-09-20
+
+- Replace navbar theme text with a circular sun/moon icon toggle to the right of Get started; retain accessible labels, keyboard controls, and saved theme preferences.
+
 ## 2026-09-19
 - Make global rankings public for guests and unpaid accounts; keep personal rankings, taste reset, and design-library/API access membership-only.
 

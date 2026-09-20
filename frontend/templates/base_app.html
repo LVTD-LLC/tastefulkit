@@ -75,12 +75,6 @@
                         {% endif %}
                     </nav>
                     <div class="ml-auto hidden items-center gap-5 text-sm text-gray-500 dark:text-gray-400 lg:flex">
-                        <button type="button"
-                                data-theme-toggle
-                                class="app-focus hover:text-gray-950 dark:hover:text-white"
-                                aria-label="Toggle theme">
-                            <span data-theme-label>Theme</span>
-                        </button>
                         {% if user.is_authenticated %}
                             <form method="post" action="{% url 'account_logout' %}">
                                 {% csrf_token %}
@@ -93,6 +87,7 @@
                             <a href="{% url 'account_signup' %}"
                                class="app-focus rounded-lg border border-gray-950/20 px-3 py-2 font-semibold text-gray-950 hover:border-gray-950/50 dark:border-white/20 dark:text-white dark:hover:border-white/50">get started</a>
                         {% endif %}
+                        {% include "components/theme_toggle.html" %}
                     </div>
                     <details class="relative ml-auto lg:hidden"
                              @keydown.escape.window="$el.open = false"
@@ -116,10 +111,7 @@
                                     <a class="app-focus font-semibold text-orange-700 dark:text-orange-400"
                                        href="{% url 'account_signup' %}">get started</a>
                                 {% endif %}
-                                <button type="button"
-                                        data-theme-toggle
-                                        class="app-focus text-left"
-                                        aria-label="Toggle theme"><span data-theme-label>Theme</span></button>
+                                {% include "components/theme_toggle.html" %}
                             </div>
                         </nav>
                     </details>

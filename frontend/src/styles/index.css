@@ -24,6 +24,22 @@
     @apply focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-white dark:focus-visible:ring-offset-gray-950;
   }
 
+  .app-theme-toggle {
+    @apply inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full border;
+    border-color: var(--tk-line);
+    color: var(--tk-ink);
+    background: transparent;
+  }
+
+  .app-theme-toggle:hover {
+    background: var(--tk-soft);
+    border-color: var(--tk-muted);
+  }
+
+  .app-theme-toggle:active {
+    background: var(--tk-line);
+  }
+
   .app-card {
     @apply rounded-xl border border-gray-950/10 bg-white dark:border-white/10 dark:bg-gray-900;
   }
