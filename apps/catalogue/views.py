@@ -8,12 +8,17 @@ from apps.billing.access import has_paid_access, paid_required
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
+from apps.pages.blog import published_posts
 
 
 @never_cache
 def landing(request):
     designs, _ = ranked_designs(request.user, mode="global", kind=Design.Kind.LANDING)
-    return render(request, "pages/landing-page.html", {"designs": designs[:6]})
+    return render(
+        request,
+        "pages/landing-page.html",
+        {"designs": designs[:6], "recent_posts": published_posts()[:4]},
+    )
 
 
 @paid_required

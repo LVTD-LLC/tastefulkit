@@ -166,3 +166,48 @@
 .tk-membership h2 span { font-size: 16px; color: var(--tk-muted); }
 .tk-membership p { margin: 18px 0; line-height: 1.6; }
 .tk-membership ul { padding-left: 22px; margin: 24px 0; list-style: disc; line-height: 2; }
+
+/* Editorial pages share the catalogue palette without competing with references. */
+.tk-blog { max-width: 900px; padding-top: 48px; padding-bottom: 64px; }
+.tk-blog-heading { margin-bottom: 32px; }
+.tk-blog-heading h1 { font-size: 44px; line-height: 1.12; font-weight: 550; letter-spacing: -1.6px; text-wrap: balance; overflow-wrap: anywhere; }
+.tk-blog-heading > p { margin-top: 20px; font-size: 19px; line-height: 1.7; color: var(--tk-muted); text-wrap: pretty; }
+.tk-blog .tk-blog-meta { font-size: 14px; line-height: 1.7; color: var(--tk-muted); }
+.tk-blog-entry { border-top: 1px solid var(--tk-line); padding: 28px 0; }
+.tk-blog-entry h2,.tk-blog-next h2 { font-size: 25px; line-height: 1.3; font-weight: 550; letter-spacing: -.5px; margin: 10px 0; text-wrap: balance; }
+.tk-blog-entry > p:not(.tk-blog-meta),.tk-blog-next > p { font-size: 17px; line-height: 1.7; color: var(--tk-muted); }
+.tk-blog-entry h2 a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.tk-blog-breadcrumbs { display: flex; gap: 12px; margin-bottom: 28px; font-size: 14px; color: var(--tk-muted); }
+.tk-blog-toc { border-block: 1px solid var(--tk-line); margin: 32px 0; padding: 8px 0; }
+.tk-blog-toc summary { cursor: pointer; padding: 12px 0; font-weight: 600; }
+.tk-blog-toc ul { padding-left: 20px; list-style: disc; }
+.tk-blog-toc nav { padding: 8px 0 20px; line-height: 1.7; }
+.tk-blog-toc a { display: block; padding-block: 5px; }
+.tk-blog-body { font-size: 18px; line-height: 1.8; overflow-wrap: anywhere; }
+.tk-blog-body > * + * { margin-top: 22px; }
+.tk-blog-body h2 { margin-top: 48px; font-size: 29px; line-height: 1.3; font-weight: 600; letter-spacing: -.6px; }
+.tk-blog-body h3 { margin-top: 32px; font-size: 23px; line-height: 1.4; font-weight: 600; }
+.tk-blog-body :is(h2,h3) { scroll-margin-top: 90px; text-wrap: balance; }
+.tk-blog-body a,.tk-blog-toc a,.tk-blog-related a,.tk-blog-breadcrumbs a,.tk-blog .tk-empty a { text-decoration: underline; text-underline-offset: 4px; }
+.tk-blog-body a:hover,.tk-blog-toc a:hover,.tk-blog-related a:hover { color: var(--tk-accent); }
+.tk-blog-body ul { list-style: disc; padding-left: 26px; }
+.tk-blog-body ol { list-style: decimal; padding-left: 26px; }
+.tk-blog-body li + li { margin-top: 8px; }
+.tk-blog-body pre { padding: 20px; border-radius: 10px; background: var(--tk-soft); font-size: 14px; }
+.tk-blog-body code { font-size: .88em; }
+.tk-blog-body img { max-width: 100%; height: auto; border-radius: 10px; }
+.tk-blog-body table { border-collapse: collapse; font-size: 16px; }
+.tk-blog-scroll { max-width: 100%; overflow-x: auto; }
+.tk-blog-scroll:focus-visible { outline: 2px solid var(--tk-accent); outline-offset: 4px; }
+.tk-blog-body :is(th,td) { padding: 12px; border: 1px solid var(--tk-line); text-align: left; min-width: 180px; overflow-wrap: normal; }
+.tk-blog-body blockquote { padding: 20px; background: var(--tk-soft); }
+.tk-blog-next { border-top: 1px solid var(--tk-line); margin-top: 48px; padding-top: 28px; margin-bottom: 32px; }
+.tk-blog-next .tk-button { margin-top: 20px; }
+.tk-blog-related { list-style: none; }
+.tk-blog-related a { display: inline-block; padding: 12px 0; line-height: 1.5; }
+@media (max-width: 600px) {
+  .tk-blog { padding-top: 32px; }
+  .tk-blog-heading h1 { font-size: 34px; letter-spacing: -1px; }
+  .tk-blog-heading > p,.tk-blog-body { font-size: 17px; }
+  .tk-blog-body h2 { font-size: 25px; }
+}

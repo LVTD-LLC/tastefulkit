@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Add a public, repository-managed blog with four practical landing-page design guides, article metadata/schema, dated sitemap entries, and links from the homepage and navigation. Document the keyword strategy and Markdown publishing workflow; exclude drafts and future posts from public routes.
+
 - Add a custom homepage share image and automatic branded previews for docs, rankings, membership, legal pages, and published landing-page references. Shared design links now show public title-and-thumbnail teasers while full details, design guides, and saves remain members-only.
 
 - Add a branded Arena link preview with real side-by-side design references and complete Open Graph/Twitter image metadata.

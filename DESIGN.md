@@ -350,3 +350,14 @@ scores beside a live comparison. Rankings use compact ordered rows with thumbnai
 visible sample counts, provisional labels, and distinct Global / For you tabs.
 Personal-fit scores are relative, never percentages. Reset is an explicit,
 confirmed action. All screens support keyboard input, no-JS forms, and dark mode.
+
+### Blog reading layout
+
+Repository-managed blog pages use a single readable column (900px outer maximum),
+the existing warm `--tk-*` palette, and border-separated editorial entries instead
+of screenshotless cards. Titles use fixed 44px desktop / 34px mobile sizes; body
+copy uses 18px / 17px with generous line height. A native collapsed table-of-contents
+disclosure works without JavaScript. Links are underlined, heading anchors clear
+the sticky header, and tables/code overflow within labeled, keyboard-focusable regions inside the
+article, not the viewport.
+Shared blog rules live in `frontend/src/styles/tastefulkit.css`.

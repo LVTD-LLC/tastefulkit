@@ -1,0 +1,9 @@
+<section class="tk-blog-next" aria-labelledby="recent-guides-heading">
+    <div class="tk-section-heading">
+        <h2 id="recent-guides-heading">From reference to finished page.</h2>
+        <a href="{% url 'blog_index' %}">All design guides ↗</a>
+    </div>
+    <ul class="tk-blog-related">
+        {% for post in recent_posts %}<li><a href="{{ post.url }}">{{ post.title }}</a></li>{% endfor %}
+    </ul>
+</section>

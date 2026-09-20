@@ -19,6 +19,7 @@ POSTHOG_PAGEVIEW_GROUPS = {
     "account_reset_password_from_key_done": "auth",
     "account_signup": "auth",
     "account_signup_by_passkey": "auth",
+    "blog_index": "blog",
     "blog_post": "blog",
     "blog_posts": "blog",
     "docs_home": "docs",
