@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Add responsive space between the homepage thumbnail grid and footer (48px on small screens, 64px from tablet upward).
+
 - Show lightweight Arena previews before decoding full screenshots in the background; retain screenshot voting and full-page scrolling. Remove the Arena reassurance, skip button, account-ranking footnote, and homepage how-it-works/final CTA sections.
 
 - Restore six homepage landing-page previews in global-ranking order, with a link to the full public ranking; keep catalog and design-guide access membership-only.
