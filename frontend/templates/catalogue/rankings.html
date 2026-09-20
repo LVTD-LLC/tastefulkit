@@ -1,5 +1,6 @@
 {% extends "base_landing.html" %}
-{% block meta %}<title>{% if mode == "personal" %}Your ranking{% else %}Global ranking{% endif %} · TastefulKit</title><meta name="robots" content="noindex, nofollow">{% endblock %}
+{% load social_metadata %}
+{% block meta %}{% if mode == "personal" %}<title>Your ranking · TastefulKit</title><meta name="robots" content="noindex, nofollow">{% else %}{% page_metadata "design_rankings" %}{% endif %}{% endblock %}
 {% block default_messages %}{% endblock %}
 {% block content %}
     <div class="tk-container library-page tk-arena-page">

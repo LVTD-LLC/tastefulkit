@@ -1,11 +1,7 @@
 {% extends "pages/docs/base_docs.html" %}
+{% load social_metadata %}
 {% block meta %}
-    <title>{{ page_title }} - {{ category_title }} | TastefulKit Documentation</title>
-    <meta name="description"
-          content="{% if meta_description %}{{ meta_description }}{% else %}{{ page_title }} documentation for TastefulKit{% endif %}" />
-    {% if author %}<meta name="author" content="{{ author }}" />{% endif %}
-    <meta name="robots" content="index, follow" />
-    {% if canonical_url %}<link rel="canonical" href="{{ canonical_url }}" />{% endif %}
+    {% docs_metadata current_category current_page %}
 {% endblock meta %}
 {% block docs_content %}
     {{ content|safe }}

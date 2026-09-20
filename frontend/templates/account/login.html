@@ -1,10 +1,10 @@
 {% extends "base_landing.html" %}
+{% load social_metadata %}
 {% load widget_tweaks %}
 {% load socialaccount %}
 {% block meta %}
-    <title>Sign In | TastefulKit</title>
-    <meta name="robots" content="noindex, nofollow" />
-{% endblock meta %}
+    {% page_metadata "account_login" %}
+{% endblock %}
 {% block content %}
     <div class="flex justify-center items-center px-4 py-12 my-4 sm:px-6 lg:px-8">
         <div class="space-y-8 w-full max-w-md">

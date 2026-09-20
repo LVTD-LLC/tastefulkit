@@ -127,6 +127,10 @@ is the contribution and merge contract.
   removing the collection. Personal rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
   require a current paid membership. Arena voting and global rankings remain free for guests and
   accounts. Guest history is never imported into personal taste.
+- Published ready landing-page detail URLs expose a public title-and-thumbnail teaser
+  and a generated social card. Full detail content, DESIGN.md and saves remain paid.
+  Social cards read only stored thumbnails, recheck publication before cache reads,
+  and never fetch source URLs or expose full screenshots.
 - The daily research agent is external and submits via the ingestion API.
   No catalogue entries are hardcoded or seeded by migrations.
 
@@ -161,7 +165,7 @@ for exact preparation requirements, limits, a curl example and the pinned DESIGN
 
 The payload supplies a timestamp and a finite nonzero 768-value embedding from
 `@cf/baai/bge-base-en-v1.5`. No source fetching, rendering, resizing, content generation,
-example embedding inference or asynchronous processing occurs in the app. Images are
+example embedding inference or asynchronous processing occurs in the ingestion pipeline. Images are
 validated but stored byte-for-byte. DESIGN.md is stored durably in PostgreSQL, escaped
 in the detail page, available as a protected download and included in REST/MCP detail.
 

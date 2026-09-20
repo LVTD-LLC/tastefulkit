@@ -9,7 +9,10 @@ Open [Explore](/explore/) after signing in. With no search or filters applied, t
 
 ## Look beyond the thumbnail
 
-Open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
+Anyone can open a shared design link to preview its title and thumbnail. Share the
+design page URL for a branded link preview; image URLs can expire.
+
+With a membership, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
 
 Choose **Visit original website ↗** to open the source in a new tab. A screenshot records one page at one point in time: the live site may have changed, and interactions or responsive behavior are best checked on the original website.
 

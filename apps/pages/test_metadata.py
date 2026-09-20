@@ -1,10 +1,16 @@
 from html.parser import HTMLParser
 
+import pytest
 from django.conf import settings
 from django.contrib.auth.models import AnonymousUser
 from django.template.loader import render_to_string
 from django.templatetags.static import static
 from PIL import Image
+
+
+@pytest.fixture(autouse=True)
+def public_origin(settings):
+    settings.SITE_URL = "https://tastefulkit.com"
 
 
 class HeadMetadata(HTMLParser):

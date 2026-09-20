@@ -96,7 +96,6 @@ def test_free_users_can_vote_but_cannot_access_paid_features(client, user):
         "/explore/",
         "/home",
         "/rankings/?mode=personal",
-        "/designs/00000000-0000-0000-0000-000000000001/",
         "/designs/00000000-0000-0000-0000-000000000001/DESIGN.md",
     ]:
         assert "/accounts/login/" in client.get(path).url

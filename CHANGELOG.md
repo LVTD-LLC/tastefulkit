@@ -2,6 +2,8 @@
 
 ## 2026-09-20
 
+- Add a custom homepage share image and automatic branded previews for docs, rankings, membership, legal pages, and published landing-page references. Shared design links now show public title-and-thumbnail teasers while full details, design guides, and saves remain members-only.
+
 - Add a branded Arena link preview with real side-by-side design references and complete Open Graph/Twitter image metadata.
 
 - Make all documentation public for logged-out and unpaid visitors, including API/MCP setup guides; restore API-reference sitemap entries and indexing while keeping paid product features protected.
