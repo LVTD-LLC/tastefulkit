@@ -328,7 +328,10 @@ current link with `aria-current="page"` and preserve keyboard focus indicators.
 Continue the catalogue's warm `--tk-*` palette, compact buttons, and restrained
 10px image corners. Compare two equal-width screenshot panels on desktop and
 stack them on narrow screens. Use the same preview height for both candidates,
-with full screenshots accessible independently of voting. Never show global
+with eager, high-priority thumbnails first and full screenshots decoded at low
+priority after both previews settle. Keep the preview visible until its full image
+is ready (or if loading fails); no-JS visitors can still vote from thumbnails.
+Full reference pages remain accessible independently of voting. Never show global
 scores beside a live comparison. Rankings use compact ordered rows with thumbnails,
 visible sample counts, provisional labels, and distinct Global / For you tabs.
 Personal-fit scores are relative, never percentages. Reset is an explicit,
