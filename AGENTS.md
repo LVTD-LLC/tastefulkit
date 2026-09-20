@@ -444,7 +444,9 @@ npm run lint
   Reconcile current Stripe subscriptions under the account lock, never trust browser
   success parameters or stale event snapshots. Webhook retries are idempotent.
 - Signup does not grant paid access. Account settings, auth and billing stay accessible.
-  Paid setup docs are excluded from the sitemap. Public marketing never lists catalog data.
+  Paid setup docs are excluded from the sitemap. The public homepage previews the
+  first six landing pages in global ranking order; full catalog browsing and design
+  guides remain paid.
 - Account deletion cancels recurring subscriptions and expires open checkout sessions
   before deleting the user. Provider failure keeps the account intact for retry.
 - Production web and worker need the same Stripe settings from `.env.example`.

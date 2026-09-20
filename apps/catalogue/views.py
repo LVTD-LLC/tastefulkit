@@ -1,15 +1,19 @@
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from apps.billing.access import paid_required
+from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
 
 
+@never_cache
 def landing(request):
-    return render(request, "pages/landing-page.html")
+    designs, _ = ranked_designs(request.user, mode="global", kind=Design.Kind.LANDING)
+    return render(request, "pages/landing-page.html", {"designs": designs[:6]})
 
 
 @paid_required
