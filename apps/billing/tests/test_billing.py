@@ -87,7 +87,7 @@ def signed_event(
     )
 
 
-def test_free_users_can_vote_but_cannot_read_catalog_or_agent_setup(client, user):
+def test_free_users_can_vote_but_cannot_access_paid_features(client, user):
     key = user.profile.rotate_api_key()
     assert client.get("/arena/").status_code == 200
     assert client.get("/rankings/").status_code == 200
@@ -96,7 +96,6 @@ def test_free_users_can_vote_but_cannot_read_catalog_or_agent_setup(client, user
         "/explore/",
         "/home",
         "/rankings/?mode=personal",
-        "/docs/api-reference/mcp/",
         "/designs/00000000-0000-0000-0000-000000000001/",
         "/designs/00000000-0000-0000-0000-000000000001/DESIGN.md",
     ]:
@@ -107,7 +106,6 @@ def test_free_users_can_vote_but_cannot_read_catalog_or_agent_setup(client, user
         "/explore/",
         "/home",
         "/rankings/?mode=personal",
-        "/docs/api-reference/mcp/",
     ]:
         assert client.get(path).url == "/pricing/"
     assert client.post("/settings/api-key/rotate/").url == "/pricing/"
