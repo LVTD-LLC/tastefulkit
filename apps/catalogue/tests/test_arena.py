@@ -454,18 +454,26 @@ def test_screenshots_are_vote_buttons_and_no_element_controls(client, designs):
     from html.parser import HTMLParser
 
     buttons = []
+    images = []
 
     class PreviewParser(HTMLParser):
         def handle_starttag(self, tag, attrs):
             attrs = dict(attrs)
             if tag == "button" and attrs.get("class") == "tk-arena-preview":
                 buttons.append(attrs)
+            if tag == "img" and "data-arena-full-src" in attrs:
+                images.append(attrs)
 
     page = client.get("/arena/?kind=hero")
     PreviewParser().feed(page.content.decode())
     assert len(buttons) == 2
     assert {button["value"] for button in buttons} == {str(d.pk) for d in page.context["pair"]}
     assert all(button["type"] == "submit" and button["name"] == "choice" for button in buttons)
+    assert len(images) == 2
+    for image, design in zip(images, page.context["pair"], strict=True):
+        assert image["src"] == design.thumbnail.url
+        assert image["data-arena-full-src"] == design.screenshot.url
+        assert image["loading"] == "eager"
     assert b"<select" not in page.content
     assert b"tk-arena-count" not in page.content
     assert b"tk-arena-intro" not in page.content

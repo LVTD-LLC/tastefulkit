@@ -26,7 +26,11 @@
                                     value="{{ design.pk }}"
                                     class="tk-arena-preview"
                                     aria-label="Vote for {{ design.title }}">
-                                <img src="{{ design.screenshot.url }}"
+                                <img src="{{ design.thumbnail.url }}"
+                                     data-arena-full-src="{{ design.screenshot.url }}"
+                                     loading="eager"
+                                     fetchpriority="high"
+                                     decoding="async"
                                      alt="{{ design.title }} design screenshot"
                                      width="{{ design.viewport_width }}"
                                      height="900">
@@ -43,13 +47,6 @@
                         </article>
                     {% endfor %}
                 </div>
-                <div class="tk-arena-bottom">
-                    <p>No wrong answers. Scores stay hidden until you choose.</p>
-                    <button class="tk-button tk-button-quiet"
-                            type="submit"
-                            name="choice"
-                            value="skip">Skip this pair →</button>
-                </div>
             </form>
         {% else %}
             <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons for now. Revisit skipped pairs or explore the rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button"
@@ -58,9 +55,7 @@
         {% if skipped %}<form class="tk-arena-revisit"
       method="post"
       action="{% url 'arena_revisit' %}">{% csrf_token %}<button class="tk-button tk-button-quiet" type="submit">Revisit skipped pairs</button></form>{% endif %}
-        {% if request.user.is_authenticated %}
-            <p class="tk-arena-note">Each pair counts once per account toward global rankings. Your personal ranking is visible only to you.</p>
-        {% else %}
+        {% if not request.user.is_authenticated %}
             <p class="tk-arena-note">No account needed. Your votes count toward the global ranking. <a href="{% url 'account_signup' %}?next={% url 'voting_arena' %}">Create an account</a> to build a personal ranking with your future votes.</p>
         {% endif %}
     </div>
