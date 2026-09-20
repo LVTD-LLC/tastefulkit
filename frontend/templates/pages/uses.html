@@ -1,26 +1,9 @@
 {% extends "base_landing.html" %}
+{% load social_metadata %}
 {% load static %}
 {% block meta %}
-    <title>Technology Stack | TastefulKit</title>
-    <meta name="description"
-          content="The core technologies and services used by TastefulKit." />
-    <meta name="robots" content="index, follow" />
-    <link rel="canonical" href="{{ public_site_url }}/uses" />
-    <meta property="og:type" content="website" />
-    <meta property="og:title" content="Technology Stack | TastefulKit" />
-    <meta property="og:url" content="{{ public_site_url }}/uses" />
-    <meta property="og:description"
-          content="The core technologies and services used by TastefulKit." />
-    <meta property="og:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=TastefulKit&subtitle=Technology%20stack" />
-    <meta property="og:locale" content="en_US" />
-    <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Technology Stack | TastefulKit" />
-    <meta name="twitter:description"
-          content="The core technologies and services used by TastefulKit." />
-    <meta name="twitter:image"
-          content="https://osig.app/g?site=x&style=logo&font=markerfelt&title=TastefulKit&subtitle=Technology%20stack" />
-{% endblock meta %}
+    {% page_metadata "uses" %}
+{% endblock %}
 {% block content %}
     <div class="container px-4 py-8 mx-auto prose">
         <h1>Technology stack</h1>

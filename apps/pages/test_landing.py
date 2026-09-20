@@ -60,11 +60,14 @@ def test_homepage_matches_first_six_global_results_for_guests_and_members(client
         )
         assert 'href="/rankings/"' in html
         assert "no-store" in response["Cache-Control"]
-        # Previewing an example does not unlock its paid detail/guide.
-        for suffix in ["", "DESIGN.md"]:
-            detail = client.get(expected[0].get_absolute_url() + suffix)
-            assert detail.status_code == 302
-            assert detail.url == "/pricing/" if signed_in else "/accounts/login/" in detail.url
+        # Public teasers do not unlock the full screenshot or paid guide.
+        teaser = client.get(expected[0].get_absolute_url())
+        assert teaser.status_code == 200
+        assert b"Explore membership" in teaser.content
+        assert b"screenshot.png" not in teaser.content
+        guide = client.get(expected[0].get_absolute_url() + "DESIGN.md")
+        assert guide.status_code == 302
+        assert guide.url == "/pricing/" if signed_in else "/accounts/login/" in guide.url
 
 
 @pytest.mark.parametrize("count", [0, 2])

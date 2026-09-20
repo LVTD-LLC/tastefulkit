@@ -1,33 +1,8 @@
 {% extends "base_landing.html" %}
+{% load social_metadata %}
 {% load static %}
 {% block meta %}
-    <title>Voting arena · TastefulKit</title>
-    <meta name="description"
-          content="Compare real websites. Discover your taste. Vote on landing page designs for free in the TastefulKit Arena. No account needed.">
-    <meta name="robots" content="noindex, nofollow">
-    <link rel="canonical" href="{{ public_site_url }}{% url 'voting_arena' %}">
-    <meta property="og:type" content="website">
-    <meta property="og:site_name" content="TastefulKit">
-    <meta property="og:title" content="Design Arena | TastefulKit">
-    <meta property="og:description"
-          content="Compare real websites. Discover your taste. Vote on landing page designs for free in the TastefulKit Arena. No account needed.">
-    <meta property="og:url"
-          content="{{ public_site_url }}{% url 'voting_arena' %}">
-    <meta property="og:image"
-          content="{{ public_site_url }}{% static 'brand/arena-social-preview.png' %}">
-    <meta property="og:image:type" content="image/png">
-    <meta property="og:image:width" content="2400">
-    <meta property="og:image:height" content="1260">
-    <meta property="og:image:alt"
-          content="Design Arena: Raycast versus Notion in a fighting-game-style website matchup.">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Design Arena | TastefulKit">
-    <meta name="twitter:description"
-          content="Compare real websites. Discover your taste. Vote on landing page designs for free in the TastefulKit Arena. No account needed.">
-    <meta name="twitter:image"
-          content="{{ public_site_url }}{% static 'brand/arena-social-preview.png' %}">
-    <meta name="twitter:image:alt"
-          content="Design Arena: Raycast versus Notion in a fighting-game-style website matchup.">
+    {% page_metadata "voting_arena" %}
 {% endblock %}
 {% block default_messages %}{% endblock %}
 {% block content %}

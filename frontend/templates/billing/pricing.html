@@ -1,5 +1,8 @@
 {% extends "base_landing.html" %}
-{% block meta %}<title>Membership · TastefulKit</title><meta name="robots" content="noindex">{% endblock %}
+{% load social_metadata %}
+{% block meta %}
+    {% page_metadata "pricing" %}
+{% endblock %}
 {% block content %}
     <div class="tk-container library-page">
         <h1>Your taste. Your next landing page.</h1>

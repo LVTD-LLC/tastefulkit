@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from apps.billing.access import paid_required
+from apps.billing.access import has_paid_access, paid_required
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
@@ -57,8 +57,22 @@ def library(request):
     )
 
 
-@paid_required
+@never_cache
 def detail(request, pk):
+    if not has_paid_access(request.user):
+        design = get_object_or_404(
+            visible_designs().filter(kind=Design.Kind.LANDING).only("id", "title", "thumbnail"),
+            pk=pk,
+        )
+        return render(
+            request,
+            "catalogue/teaser.html",
+            {
+                "design_id": design.pk,
+                "design_title": design.title,
+                "preview_thumbnail_url": design.thumbnail.url if design.thumbnail else "",
+            },
+        )
     design = get_object_or_404(visible_designs().prefetch_related("tags"), pk=pk)
     return render(
         request,
