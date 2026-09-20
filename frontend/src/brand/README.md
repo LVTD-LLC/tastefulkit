@@ -2,7 +2,7 @@
 
 `arena-social-preview.html` is the editable, self-contained source for
 `frontend/static/brand/arena-social-preview.png`. Its 1200 × 630 canvas is captured
-at 2× (2400 × 1260 pixels). It uses the existing reference-stack mark and corner wordmark, Arial,
+at 2× (2400 × 1260 pixels). It uses the existing reference-stack mark and centered wordmark, Arial,
 bold italic matchup typography, ink, warm white, and terracotta. The two real
 website previews face off around a large VS. in a fighting-game-inspired layout.
 
