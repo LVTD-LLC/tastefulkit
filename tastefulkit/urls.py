@@ -25,6 +25,8 @@ from apps.pages.indexnow_views import indexnow_key
 from apps.pages.views import AccountSignupByPasskeyView, AccountSignupView
 from tastefulkit.sitemaps import sitemaps
 
+handler404 = "apps.pages.errors.page_not_found"
+
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("indexnow-key.txt", indexnow_key, name="indexnow_key"),
