@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-23
+
+- Keep public 404 pages independent of database-backed context and analytics so
+  missing URLs return 404 and valid slashless URLs can redirect normally.
+
 ## 2026-09-20
 
 - Add responsive space between the homepage thumbnail grid and footer (48px on small screens, 64px from tablet upward).
