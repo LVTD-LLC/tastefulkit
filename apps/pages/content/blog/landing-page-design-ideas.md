@@ -3,7 +3,7 @@ title: "Landing Page Design Ideas: Choose a Direction"
 description: "Turn landing page design ideas into a useful brief. Match layouts to your visitor's task, compare references, and decide what to borrow."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-20
+updated: 2026-09-24
 ---
 
 Good landing page design ideas begin with the decision your visitor needs to make. Choose references that explain a similar offer, require similar evidence, and lead to a comparable action. Then borrow a specific principle—such as section order or visual hierarchy—rather than copying an entire page that solves a different problem.
@@ -54,7 +54,7 @@ A useful note reads: “Borrow the short explanation beside each product image. 
 
 An unhelpful note reads: “Make it clean and premium.” Those words can mean generous spacing, low visual density, restrained color, expensive photography, or almost anything else. Replace them with visible decisions.
 
-In TastefulKit, [searching by a visual description](/docs/using-tastefulkit/search/) can help narrow the library. Full reference browsing requires a [membership](/pricing/). For a free starting point, use [Arena](/arena/) to compare landing-page directions or inspect the [global rankings](/rankings/). Neither a winning vote nor a high rank establishes that the page converts better for your audience.
+In TastefulKit, [searching by a visual description](/docs/using-tastefulkit/search/) can help narrow the library. Full reference browsing is free with an [account](/accounts/signup/). DESIGN.md guides require a paid [membership](/pricing/). Without an account, use [Arena](/arena/) to compare landing-page directions or inspect the [global rankings](/rankings/). Neither a winning vote nor a high rank establishes that the page converts better for your audience.
 
 ## 4. Translate the references into a section order
 

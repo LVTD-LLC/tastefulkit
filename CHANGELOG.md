@@ -6,6 +6,8 @@
   guide text behind the existing $10/month membership; restore checkout and upgrade
   prompts. Keep Explore, For You, screenshots, saves and metadata access free.
 
+- Correct the four starter blog posts to describe free-account access after the pricing change, preserve their publication dates, and align SEO product guidance and claim checks.
+
 - Make all current features free for accounts: Explore, For You, saved designs,
   design guides, API keys, REST and MCP no longer require a subscription.
 - Replace upgrade prompts with free-account guidance and disable new web checkouts;

@@ -29,4 +29,4 @@ Public sitemap inventory checked 2026-09-12. Authentication redirects are intent
 - `/blog/design-references-ai-coding-agents/`: agent handoff; visual brief; design references for coding agents.
 
 Each article links from the blog hub, homepage recent guides and sibling articles.
-Product entry points: `/arena/` and `/rankings/` public/free; `/pricing/` explains membership.
+Product entry points: `/arena/` and `/rankings/` public/free; `/pricing/` explains free-account access.

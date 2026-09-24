@@ -3,7 +3,7 @@ title: "Mobile Landing Page Design: A Practical Review Checklist"
 description: "Review mobile landing page design with a practical checklist for reading order, image crops, reflow, controls, keyboard access, and sticky elements."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-20
+updated: 2026-09-24
 ---
 
 Good mobile landing page design preserves the page's argument on a narrow screen: what the product does, why it matters, and what to do next. Review reading order, image crops, text reflow, controls, keyboard access, and sticky elements together. A smaller screenshot of the desktop layout is not enough.
@@ -38,7 +38,7 @@ Use a short reference note with three fields:
 - **Adapt:** What your content requires you to change, such as replacing an abstract illustration with your own product example.
 - **Verify:** Anything the image cannot prove, such as menu focus behavior or image loading on a slower connection.
 
-TastefulKit's Arena compares mobile and desktop landing pages in separate pools. A preference ranking can help you explore visual directions; it does not establish conversion performance or accessibility. Full catalogue browsing and design guides require a [membership](/pricing/). Use references to make a decision, not to outsource the decision to a score.
+TastefulKit's Arena compares mobile and desktop landing pages in separate pools. A preference ranking can help you explore visual directions; it does not establish conversion performance or accessibility. Full catalogue browsing is free with an [account](/accounts/signup/). DESIGN.md guides require a paid [membership](/pricing/). Use references to make a decision, not to outsource the decision to a score.
 
 ## Review reading order before adjusting spacing
 
