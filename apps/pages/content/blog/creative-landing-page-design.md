@@ -3,7 +3,7 @@ title: "Creative Landing Page Design Without Losing Clarity"
 description: "Make a landing page distinctive with one strong visual decision. Use a practical constraint sheet to balance typography, composition and clarity."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-20
+updated: 2026-09-24
 ---
 
 Creative landing page design gives a clear message a distinctive visual form. Choose one dominant device—typography, composition, imagery or color—and define what it must never obscure. Keep the offer, evidence and next action understandable before adding a second layer of visual expression or motion.
@@ -70,7 +70,7 @@ The [reference brief](/blog/landing-page-design-ideas/#3-give-every-reference-a-
 
 For the workshop concept, imagine a desktop photograph with the instructor's hands at one side and the finished object at the other. A narrow center crop might keep the attractive clay texture but lose both pieces of useful evidence. Reject that version even if the crop looks elegant. An acceptable adaptation could use a different photograph showing the hands and object together, with the class explanation below it. The material-led idea survives; the desktop composition does not have to.
 
-This keeps the reference useful without treating it as a licensed template. TastefulKit's [browsing guide](/docs/using-tastefulkit/browsing/) explains how to inspect the full capture and original source. Full references and design guides require a [membership](/pricing/); the [Arena](/arena/) is a free way to compare directions first.
+This keeps the reference useful without treating it as a licensed template. TastefulKit's [browsing guide](/docs/using-tastefulkit/browsing/) explains how to inspect the full capture and original source. Full references and design guides are free with an [account](/pricing/); the [Arena](/arena/) lets you compare directions without signing in.
 
 When a reference includes DESIGN.md, treat inferred values as a starting point for review, not as the original site's authoritative design system. Your content may need different line lengths, image proportions or spacing even when the visual principle is the same.
 

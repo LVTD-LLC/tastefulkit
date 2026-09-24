@@ -1,6 +1,6 @@
 [
   {
-    "claim": "Search uses descriptive queries and existing filters",
+    "claim": "Homepage describes reference comparison and coding-agent handoff",
     "paths": [
       "frontend/templates/pages/landing-page.html"
     ],
@@ -8,8 +8,8 @@
       "/"
     ],
     "must_match": [
-      "Search in your own words",
-      "element, style, or industry"
+      "Compare landing pages",
+      "coding agent"
     ],
     "flags": "i"
   },
@@ -36,6 +36,78 @@
     ],
     "must_match": [
       "API key"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "landing-page-design-ideas: current access is free with an account, not paid membership",
+    "paths": [
+      "apps/pages/content/blog/landing-page-design-ideas.md"
+    ],
+    "urls": [
+      "/blog/landing-page-design-ideas/"
+    ],
+    "must_match": [
+      "free with an",
+      "account"
+    ],
+    "must_not_match": [
+      "requires? (?:an active |a )?(?:\\[)?membership",
+      "active paid membership"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "mobile-landing-page-design: current access is free with an account, not paid membership",
+    "paths": [
+      "apps/pages/content/blog/mobile-landing-page-design.md"
+    ],
+    "urls": [
+      "/blog/mobile-landing-page-design/"
+    ],
+    "must_match": [
+      "free with an",
+      "account"
+    ],
+    "must_not_match": [
+      "requires? (?:an active |a )?(?:\\[)?membership",
+      "active paid membership"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "creative-landing-page-design: current access is free with an account, not paid membership",
+    "paths": [
+      "apps/pages/content/blog/creative-landing-page-design.md"
+    ],
+    "urls": [
+      "/blog/creative-landing-page-design/"
+    ],
+    "must_match": [
+      "free with an",
+      "account"
+    ],
+    "must_not_match": [
+      "requires? (?:an active |a )?(?:\\[)?membership",
+      "active paid membership"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "design-references-ai-coding-agents: current access is free with an account, not paid membership",
+    "paths": [
+      "apps/pages/content/blog/design-references-ai-coding-agents.md"
+    ],
+    "urls": [
+      "/blog/design-references-ai-coding-agents/"
+    ],
+    "must_match": [
+      "free with an",
+      "account"
+    ],
+    "must_not_match": [
+      "requires? (?:an active |a )?(?:\\[)?membership",
+      "active paid membership"
     ],
     "flags": "i"
   }
