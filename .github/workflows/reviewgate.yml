@@ -17,7 +17,7 @@ jobs:
         github.actor != 'dependabot[bot]'
       }}
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 30
     permissions:
       actions: read
       attestations: read
@@ -40,8 +40,8 @@ jobs:
         with:
           openrouter_api_key: ${{ secrets.OPENROUTER_API_KEY }}
           model: deepseek/deepseek-v4-flash
-          angle_timeout_seconds: 300
-          total_timeout_seconds: 660
+          angle_timeout_seconds: 600
+          total_timeout_seconds: 1260
 
   rereview:
     if: >-
