@@ -124,11 +124,13 @@ is the contribution and merge contract.
   affinity from tags/kinds/industries and saves. They use no catalogue inference,
   query embeddings, or other accounts' taste. No personal signal falls back to
   global Elo. Reset starts a new generation and excludes older saves without
-  removing the collection. Personal rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
+  removing the collection. Personal rankings, resets, catalogue browsing, API keys, REST and MCP
   require a free account, not a subscription. Arena voting and global rankings remain free for guests and
   accounts. Guest history is never imported into personal taste.
 - Published ready landing-page detail URLs expose a public title-and-thumbnail teaser
-  and a generated social card. Full detail content, DESIGN.md and saves require a free account.
+  and a generated social card. Full screenshots, metadata and saves require a free account. DESIGN.md text is
+  paid-only across HTML, direct downloads, REST and MCP. Free detail responses return
+  `design_markdown: null` and `design_markdown_locked: true` when a guide exists.
   Social cards read only stored thumbnails, recheck publication before cache reads,
   and never fetch source URLs or expose full screenshots.
 - The daily research agent is external and submits via the ingestion API.
@@ -438,23 +440,21 @@ npm run lint
 
 ## Membership billing
 
-- All current product features are free. Authentication, account ownership and admin-only
-  ingestion boundaries still apply. `apps/billing/` retains legacy customer portal,
-  webhook reconciliation and account-deletion cancellation. The checkout route no
-  longer creates subscriptions. Existing subscriptions are not automatically canceled.
+- DESIGN.md guides require the existing $10/month membership; other product features
+  remain free. Authentication, account ownership and admin-only ingestion boundaries
+  still apply. `apps/billing/` owns Checkout, customer portal, webhook reconciliation
+  and account-deletion cancellation. Active superusers retain ingestion/guide access.
 - Credentials and the price/account/portal IDs are environment driven. Pin Stripe API
   client version `2025-03-31.basil`; organization keys require account context.
   Webhook snapshots may remain on `2024-06-20`: only customer identity is consumed,
   and current subscription state is fetched using the pinned client version.
-- Legacy subscription reporting uses `active` status and a future paid-through timestamp;
-  this is not a product access gate.
+- Guide access requires `active` status and a future paid-through timestamp.
   Reconcile current Stripe subscriptions under the account lock, never trust browser
   success parameters or stale event snapshots. Webhook retries are idempotent.
 - Signup grants free product access. Account settings, auth and legacy billing stay accessible.
   All product documentation, including API/MCP setup guides, is public and included
   in the sitemap; actual API/MCP access requires a valid key for an active account. The public homepage previews the
-  first six landing pages in global ranking order; full catalog browsing and design
-  guides require a free account.
+  first six landing pages in global ranking order; full catalog browsing requires a free account; DESIGN.md guides require paid access.
 - Account deletion cancels recurring subscriptions and expires open checkout sessions
   before deleting the user. Provider failure keeps the account intact for retry.
 - Production web and worker need the same Stripe settings from `.env.example`.

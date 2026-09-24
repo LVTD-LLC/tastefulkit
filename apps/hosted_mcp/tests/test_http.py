@@ -285,3 +285,38 @@ def test_mcp_access_is_independent_of_subscription_status(http, user):
     BillingAccount.objects.update_or_create(user=user, defaults={"status": "canceled"})
     response = http.post("/mcp/", json={"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
     assert response.status_code == 200
+
+
+def test_guide_entitlement_changes_without_rotating_mcp_key(http, user, design, grant_membership):
+    from datetime import timedelta
+
+    from django.utils import timezone
+
+    from apps.billing.models import BillingAccount
+
+    guide = "# Membership-only guide with a unique secret marker"
+    design.design_markdown = guide
+    design.save()
+
+    def check(allowed):
+        result = call(http, "get_design", design_id=str(design.pk))
+        assert not result.get("isError"), result
+        detail = result["structuredContent"]
+        assert detail["design_markdown"] == (guide if allowed else None)
+        assert detail["design_markdown_locked"] is not allowed
+        assert bool(guide in str(result)) == allowed  # Both text and structured tool content.
+        assert detail["screenshot_url"].endswith("shot.jpg")
+        assert data(http, "list_designs")["total"] == 1
+
+    check(False)
+    grant_membership(user)
+    check(True)
+    BillingAccount.objects.filter(user=user).update(cancel_at_period_end=True)
+    check(True)
+    BillingAccount.objects.filter(user=user).update(
+        paid_until=timezone.now() - timedelta(seconds=1)
+    )
+    check(False)
+    grant_membership(user)
+    BillingAccount.objects.filter(user=user).update(status="canceled")
+    check(False)

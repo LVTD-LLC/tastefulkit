@@ -28,7 +28,7 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 - **Look beyond the thumbnail.** Open full screenshots, read descriptions, and
   visit the original websites.
 - **Take a design direction with you.** View, copy or download an example’s DESIGN.md
-  when available, or retrieve its text through MCP/API.
+  with a paid membership when available, or retrieve its text through MCP/API.
 - **Keep a shortlist.** Save designs and revisit them when you're ready to build.
 - **Bring your assistant.** Search and retrieve references through MCP or the API.
 
@@ -37,9 +37,10 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
 Lightweight previews appear first; full screenshots load in the background for scrolling.
 Global rankings and shared design previews are public too. A shared design link shows
-its title and thumbnail; sign in for full details. All current features are free,
-including the full catalog, personalized rankings, saved designs, design guides,
-and API/MCP access. No subscription or credit card is required.
+its title and thumbnail; sign in for full details. The full catalog, personalized rankings, saved designs, screenshots, and API/MCP
+metadata access are free. DESIGN.md guides require an active
+[$10/month membership](https://tastefulkit.com/pricing/) to view, copy, download,
+or retrieve through API/MCP.
 Signed-in votes shape your personal ranking;
 guest votes count globally and are not transferred on signup.
 

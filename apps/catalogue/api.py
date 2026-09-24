@@ -1,5 +1,6 @@
 from uuid import UUID
 
+from django.http import HttpResponse
 from ninja import File, Router, UploadedFile
 from ninja.errors import HttpError
 
@@ -36,7 +37,9 @@ def create_design(
         raise HttpError(
             503, "Storage or indexing unavailable. Retry the complete submission."
         ) from None
-    return (201 if created else 200), serialize_design(design, admin=True, detail=True)
+    return (201 if created else 200), serialize_design(
+        design, admin=True, detail=True, include_design_markdown=True
+    )
 
 
 @router.get("", response={200: dict, 401: dict, 402: dict, 422: dict})
@@ -48,5 +51,6 @@ def list_designs(
 
 
 @router.get("/{design_id}", response={200: dict, 401: dict, 402: dict, 404: dict, 422: dict})
-def get_design(request, design_id: UUID):
+def get_design(request, response: HttpResponse, design_id: UUID):
+    response["Cache-Control"] = "private, no-store"
     return design_detail(design_id, request.auth.user)

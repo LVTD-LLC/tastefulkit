@@ -5,6 +5,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
+from apps.billing.access import has_paid_access
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
@@ -80,6 +81,7 @@ def detail(request, pk):
         "catalogue/detail.html",
         {
             "design": design,
+            "can_access_design_markdown": has_paid_access(request.user),
             "is_saved": SavedDesign.objects.filter(user=request.user, design=design).exists(),
         },
     )
@@ -101,6 +103,8 @@ def save_design(request, pk):
 @never_cache
 def design_markdown(request, pk):
     design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
+    if not has_paid_access(request.user):
+        return redirect("pricing")
     response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="DESIGN.md"'
     response["Cache-Control"] = "private, no-store"

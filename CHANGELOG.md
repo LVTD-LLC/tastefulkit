@@ -2,6 +2,10 @@
 
 ## 2026-09-24
 
+- Make DESIGN.md the paid feature: gate viewing, copying, downloads and API/MCP
+  guide text behind the existing $10/month membership; restore checkout and upgrade
+  prompts. Keep Explore, For You, screenshots, saves and metadata access free.
+
 - Make all current features free for accounts: Explore, For You, saved designs,
   design guides, API keys, REST and MCP no longer require a subscription.
 - Replace upgrade prompts with free-account guidance and disable new web checkouts;

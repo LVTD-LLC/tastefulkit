@@ -2,6 +2,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
+from apps.billing.access import has_paid_access
 from apps.catalogue.models import Design, Tag
 from apps.catalogue.providers import embed
 from apps.catalogue.vector_store import search_vectors
@@ -47,7 +48,7 @@ def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
     return [by_id[pk] for pk in ids if pk in by_id], "semantic"
 
 
-def serialize_design(design, *, admin=False, detail=False):
+def serialize_design(design, *, admin=False, detail=False, include_design_markdown=False):
     result = {
         "id": str(design.pk),
         "title": design.title,
@@ -65,7 +66,12 @@ def serialize_design(design, *, admin=False, detail=False):
         "captured_at": design.captured_at.isoformat() if design.captured_at else None,
     }
     if detail:
-        result["design_markdown"] = design.design_markdown or None
+        result["design_markdown"] = (
+            (design.design_markdown or None) if include_design_markdown else None
+        )
+        result["design_markdown_locked"] = (
+            bool(design.design_markdown) and not include_design_markdown
+        )
     if admin:
         result.update(capture_error=design.capture_error, embedding_error=design.embedding_error)
     return result
@@ -93,7 +99,9 @@ def design_detail(design_id, user):
     admin = user.is_active and user.is_superuser
     designs = Design.objects.all().defer("embedding") if admin else visible_designs()
     design = get_object_or_404(designs.prefetch_related("tags"), pk=design_id)
-    return serialize_design(design, admin=admin, detail=True)
+    return serialize_design(
+        design, admin=admin, detail=True, include_design_markdown=has_paid_access(user)
+    )
 
 
 def design_filters(page=1):
