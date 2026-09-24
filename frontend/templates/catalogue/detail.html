@@ -21,7 +21,9 @@
         <p class="tk-muted">If copying fails, download the file or select the text above.</p>
     {% else %}
         <p>Get DESIGN.md for your project and give your coding agent a guide to this design. Viewing, copying, and downloading guides requires a paid membership.</p>
-        <a class="tk-button" href="{% url 'pricing' %}">Unlock design guides · $10/month →</a>
+        <div class="tk-guide-actions">
+            <a class="tk-button" href="{% url 'pricing' %}">Unlock design guides · $10/month →</a>
+        </div>
         <p class="tk-muted">Browsing, screenshots, saved designs, and For You stay free.</p>
     {% endif %}
 </section>
