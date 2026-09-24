@@ -1,10 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from apps.billing.access import has_paid_access, paid_required
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.services import search_designs, visible_designs
@@ -21,7 +21,8 @@ def landing(request):
     )
 
 
-@paid_required
+@login_required
+@never_cache
 def library(request):
     query = request.GET.get("q", "")[:300]
     kind = Design.Kind.LANDING
@@ -59,7 +60,7 @@ def library(request):
 
 @never_cache
 def detail(request, pk):
-    if not has_paid_access(request.user):
+    if not request.user.is_authenticated:
         design = get_object_or_404(
             visible_designs().filter(kind=Design.Kind.LANDING).only("id", "title", "thumbnail"),
             pk=pk,
@@ -84,7 +85,8 @@ def detail(request, pk):
     )
 
 
-@paid_required
+@login_required
+@never_cache
 @require_POST
 def save_design(request, pk):
     design = get_object_or_404(visible_designs(), pk=pk)
@@ -95,7 +97,8 @@ def save_design(request, pk):
     return redirect(design)
 
 
-@paid_required
+@login_required
+@never_cache
 def design_markdown(request, pk):
     design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
     response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")

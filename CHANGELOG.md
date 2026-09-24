@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-24
+
+- Make all current features free for accounts: Explore, For You, saved designs,
+  design guides, API keys, REST and MCP no longer require a subscription.
+- Replace upgrade prompts with free-account guidance and disable new web checkouts;
+  retain existing billing management, webhook reconciliation and cancellation.
+
 ## 2026-09-23
 
 - Keep public 404 pages independent of database-backed context and analytics so

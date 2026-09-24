@@ -2,6 +2,7 @@ from urllib.parse import urlencode
 from uuid import uuid4
 
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Paginator
 from django.shortcuts import redirect, render
@@ -9,7 +10,6 @@ from django.urls import reverse
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
-from apps.billing.access import has_paid_access, paid_required
 from apps.catalogue import arena
 from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
@@ -85,8 +85,6 @@ def rankings(request):
     if mode == "personal":
         if not request.user.is_authenticated:
             return redirect_to_login(request.get_full_path())
-        if not has_paid_access(request.user):
-            return redirect("pricing")
     kind = selected_kind(request)
     designs, summary = arena.ranked_designs(request.user, mode, kind)
     page = Paginator(designs, 24).get_page(request.GET.get("page"))
@@ -104,7 +102,7 @@ def rankings(request):
     )
 
 
-@paid_required
+@login_required
 @require_POST
 @never_cache
 def reset_taste(request):

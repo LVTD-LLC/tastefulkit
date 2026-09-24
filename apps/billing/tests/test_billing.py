@@ -87,38 +87,41 @@ def signed_event(
     )
 
 
-def test_free_users_can_vote_but_cannot_access_paid_features(client, user):
+@pytest.mark.parametrize("status", [None, "canceled", "past_due", "unpaid", "active"])
+def test_all_current_features_are_free_but_still_require_auth(client, user, status):
+    if status is not None:
+        BillingAccount.objects.create(
+            user=user, status=status, paid_until=timezone.now() - timedelta(days=1)
+        )
     key = user.profile.rotate_api_key()
     assert client.get("/arena/").status_code == 200
     assert client.get("/rankings/").status_code == 200
-    assert client.get("/pricing/").status_code == 200
-    for path in [
-        "/explore/",
-        "/home",
-        "/rankings/?mode=personal",
-        "/designs/00000000-0000-0000-0000-000000000001/DESIGN.md",
-    ]:
+    for path in ["/explore/", "/home", "/rankings/?mode=personal"]:
         assert "/accounts/login/" in client.get(path).url
+    assert client.get("/api/v1/designs").status_code == 401
     client.force_login(user)
-    assert client.get("/rankings/").status_code == 200
-    for path in [
-        "/explore/",
-        "/home",
-        "/rankings/?mode=personal",
-    ]:
-        assert client.get(path).url == "/pricing/"
-    assert client.post("/settings/api-key/rotate/").url == "/pricing/"
-    assert client.post("/rankings/reset/").url == "/pricing/"
-    assert client.get("/settings").status_code == 200
-    assert b"Generate API key" not in client.get("/settings").content
-    for path in [
-        "/api/user",
-        "/api/v1/designs",
-        "/api/v1/designs/00000000-0000-0000-0000-000000000001",
-    ]:
-        response = client.get(path, HTTP_AUTHORIZATION=f"Bearer {key}")
-        assert response.status_code == 402
-        assert "membership" in response.json()["detail"]
+    for path in ["/explore/", "/home", "/rankings/?mode=personal", "/settings"]:
+        response = client.get(path)
+        assert response.status_code == 200
+    assert b"Rotate key" in client.get("/settings").content
+    assert client.post("/rankings/reset/", {"confirm": "reset"}).url == "/rankings/?mode=personal"
+    for path in ["/api/user", "/api/v1/designs"]:
+        for header in ["HTTP_AUTHORIZATION", "HTTP_X_API_KEY"]:
+            value = f"Bearer {key}" if header == "HTTP_AUTHORIZATION" else key
+            assert client.get(path, **{header: value}).status_code == 200
+    assert client.post("/settings/api-key/rotate/").url == "/settings"
+    assert client.get("/api/user", HTTP_AUTHORIZATION=f"Bearer {key}").status_code == 401
+
+
+def test_pricing_is_free_and_legacy_billing_remains_available(client, user, api):
+    response = client.get("/pricing/")
+    assert b"No subscription or credit card required" in response.content
+    assert b"billing/checkout" not in response.content
+    client.force_login(user)
+    BillingAccount.objects.create(user=user, customer_id="cus_local")
+    assert b"Manage billing" in client.get("/pricing/").content
+    assert b"Manage billing" in client.get("/settings").content
+    assert client.post("/billing/portal/").url == "https://billing.stripe.com/test"
 
 
 @pytest.mark.parametrize(
@@ -144,34 +147,24 @@ def test_expiration_and_inactive_accounts_fail_closed(paid_user):
     assert not has_paid_access(paid_user)
 
 
-def test_checkout_is_post_only_csrf_protected_and_uses_server_plan(user, api, auth_client):
+def test_checkout_is_disabled_and_still_post_only_csrf_protected(user, api, auth_client):
     assert auth_client.get("/billing/checkout/").status_code == 405
     csrf = Client(enforce_csrf_checks=True)
     csrf.force_login(user)
     assert csrf.post("/billing/checkout/").status_code == 403
-    for _ in range(2):
-        response = auth_client.post(
-            "/billing/checkout/",
-            {"price": "price_free", "customer": "cus_attacker", "next": "https://evil.test"},
-        )
-        assert response.url == "https://checkout.stripe.com/test"
-    api.v1.customers.create.assert_called_once()
-    api.v1.checkout.sessions.create.assert_called_once()
-    payload = api.v1.checkout.sessions.create.call_args.args[0]
-    assert payload["customer"] == "cus_local"
-    assert payload["line_items"] == [{"price": "price_membership", "quantity": 1}]
-    assert payload["success_url"] == "https://testserver/billing/return/"
-    assert payload["mode"] == "subscription"
-    assert "payment_method_types" not in payload  # Respect Managed Payments defaults.
-    assert not has_paid_access(user)
+    assert auth_client.post("/billing/checkout/").url == "/explore/"
+    api.v1.customers.create.assert_not_called()
+    api.v1.checkout.sessions.create.assert_not_called()
+    assert not BillingAccount.objects.filter(user=user).exists()
 
 
 def test_checkout_timeout_reuses_persisted_attempt(auth_client, api, user):
     api.v1.checkout.sessions.create.side_effect = stripe.APIConnectionError("timeout")
-    assert auth_client.post("/billing/checkout/").url == "/pricing/"
+    with pytest.raises(stripe.APIConnectionError):
+        services.checkout_url(user)
     attempt = api.v1.checkout.sessions.create.call_args.kwargs["options"]["idempotency_key"]
     api.v1.checkout.sessions.create.side_effect = None
-    assert auth_client.post("/billing/checkout/").url.startswith("https://checkout.stripe.com")
+    assert services.checkout_url(user).startswith("https://checkout.stripe.com")
     assert api.v1.checkout.sessions.create.call_args.kwargs["options"]["idempotency_key"] == attempt
     assert BillingAccount.objects.get(user=user).customer_id == "cus_local"
 
@@ -179,13 +172,13 @@ def test_checkout_timeout_reuses_persisted_attempt(auth_client, api, user):
 def test_expired_checkout_starts_new_attempt_but_existing_subscription_opens_portal(
     auth_client, api, user
 ):
-    auth_client.post("/billing/checkout/")
+    services.checkout_url(user)
     first = BillingAccount.objects.get(user=user).checkout_attempt
     api.v1.checkout.sessions.retrieve.return_value = {"status": "expired"}
-    auth_client.post("/billing/checkout/")
+    services.checkout_url(user)
     assert BillingAccount.objects.get(user=user).checkout_attempt != first
     api.v1.subscriptions.list.return_value = {"data": [subscription("past_due")]}
-    assert auth_client.post("/billing/checkout/").url == "https://billing.stripe.com/test"
+    assert services.checkout_url(user) == "https://billing.stripe.com/test"
     assert api.v1.checkout.sessions.create.call_count == 2
 
 
@@ -352,10 +345,10 @@ def test_completed_checkout_waits_for_reconciliation_but_canceled_members_can_re
         "status": "complete",
         "subscription": "sub_local",
     }
-    assert auth_client.post("/billing/checkout/").url == "https://billing.stripe.com/test"
+    assert services.checkout_url(user) == "https://billing.stripe.com/test"
     api.v1.checkout.sessions.create.assert_not_called()
     api.v1.subscriptions.list.return_value = {"data": [subscription("canceled")]}
-    assert auth_client.post("/billing/checkout/").url == "https://checkout.stripe.com/test"
+    assert services.checkout_url(user) == "https://checkout.stripe.com/test"
     api.v1.checkout.sessions.create.assert_called_once()
 
 

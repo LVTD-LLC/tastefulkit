@@ -19,8 +19,8 @@ HEADERS = {"Accept": "application/json, text/event-stream"}
 
 
 @pytest.fixture
-def key(paid_user):
-    return paid_user.profile.rotate_api_key()
+def key(user):
+    return user.profile.rotate_api_key()
 
 
 @pytest.fixture
@@ -278,10 +278,10 @@ def test_mcp_is_read_only_even_for_admins(http, user, admin):
     assert call(http, "retry_design", design_id=str(uuid4()))["isError"]
 
 
-def test_membership_revocation_takes_effect_on_next_mcp_request(http, user):
+def test_mcp_access_is_independent_of_subscription_status(http, user):
     from apps.billing.models import BillingAccount
 
     assert data(http, "list_designs")["total"] == 0
-    BillingAccount.objects.filter(user=user).update(status="canceled")
+    BillingAccount.objects.update_or_create(user=user, defaults={"status": "canceled"})
     response = http.post("/mcp/", json={"jsonrpc": "2.0", "id": 1, "method": "tools/list"})
-    assert response.status_code == 401
+    assert response.status_code == 200

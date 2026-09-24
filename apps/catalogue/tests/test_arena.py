@@ -218,7 +218,7 @@ def test_rankings_filter_hidden_entries_and_share_ties(user, designs):
         assert [d.pk for d in ranked] == [designs[1].pk]
 
 
-def test_web_flow_skip_vote_empty_ranking_and_explicit_reset(auth_client, user, designs, paid_user):
+def test_web_flow_skip_vote_empty_ranking_and_explicit_reset(auth_client, user, designs):
     page = auth_client.get("/arena/")
     assert page.status_code == 200 and "no-store" in page.headers["Cache-Control"]
     pair = page.context["pair"]
@@ -287,9 +287,7 @@ def test_concurrent_distinct_votes_cannot_exceed_account_rate_limit(user, design
     assert sum(DesignRating.objects.values_list("comparisons", flat=True)) == 2
 
 
-def test_guest_browser_flow_counts_globally_without_personal_profile(
-    client, designs, grant_membership
-):
+def test_guest_browser_flow_counts_globally_without_personal_profile(client, designs):
     page = client.get("/arena/")
     assert page.status_code == 200
     assert "no-store" in page.headers["Cache-Control"]
@@ -317,8 +315,7 @@ def test_guest_browser_flow_counts_globally_without_personal_profile(
     owner = designs[0].submitted_by
     client.force_login(owner)
     assert client.get("/rankings/").status_code == 200
-    assert client.get("/rankings/?mode=personal").url == "/pricing/"
-    grant_membership(owner)
+    assert client.get("/rankings/?mode=personal").status_code == 200
     ranking = client.get("/rankings/")
     assert ranking.status_code == 200 and ranking.context["summary"] == {}
     assert ranking.context["page"][0].pk == pair[0].pk

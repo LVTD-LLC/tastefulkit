@@ -10,7 +10,6 @@ from fastmcp.server.auth import AccessToken, TokenVerifier
 from fastmcp.server.dependencies import get_access_token
 
 from apps.api.auth import get_profile_for_api_key
-from apps.billing.access import has_paid_access
 from tastefulkit.logging_utils import bind_log_context, reset_log_context
 
 
@@ -29,7 +28,7 @@ def database_scope():
 def verify_api_key(token):
     with database_scope():
         profile = get_profile_for_api_key(token)
-        if profile is None or not has_paid_access(profile.user):
+        if profile is None:
             return None
         return AccessToken(token=token, client_id=str(profile.pk), scopes=[])
 
@@ -45,11 +44,8 @@ def authenticated_profile(*, admin=False):
     with database_scope():
         access_token = get_access_token()
         profile = get_profile_for_api_key(access_token.token) if access_token else None
-        if profile is None or not has_paid_access(profile.user):
-            raise ToolError(
-                "An active paid TastefulKit membership and valid API key are required. "
-                "Visit /pricing/."
-            )
+        if profile is None:
+            raise ToolError("A valid API key for an active TastefulKit account is required.")
         if admin and not profile.user.is_superuser:
             raise ToolError("Administrator access is required.")
         try:

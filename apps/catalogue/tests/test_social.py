@@ -34,7 +34,7 @@ def social_design(user):
 
 
 @pytest.mark.parametrize("reader", ["anonymous", "unpaid", "paid"])
-def test_design_sharing_preserves_membership_boundary(
+def test_design_sharing_requires_only_a_free_account(
     client, social_design, user, grant_membership, reader, settings
 ):
     settings.SITE_URL = "https://tastefulkit.com"
@@ -52,11 +52,13 @@ def test_design_sharing_preserves_membership_boundary(
     assert head.tags["og:image"] == [
         "https://tastefulkit.com" + reverse("design_social_image", args=[social_design.pk])
     ]
-    if reader == "paid":
+    if reader != "anonymous":
+        assert client.get(reverse("design_markdown", args=[social_design.pk])).status_code == 200
+        assert client.post(reverse("save_design", args=[social_design.pk])).status_code == 302
         assert "Private design guide" in html
         assert "private-full-screenshot.png" in html
     else:
-        assert "Explore membership" in html
+        assert "Create free account" in html
         assert social_design.thumbnail.url in html
         for secret in (
             "Private design guide",

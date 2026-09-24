@@ -12,7 +12,7 @@ Open [Explore](/explore/) after signing in. With no search or filters applied, t
 Anyone can open a shared design link to preview its title and thumbnail. Share the
 design page URL for a branded link preview; image URLs can expire.
 
-With a membership, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
+With a free account, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
 
 Choose **Visit original website ↗** to open the source in a new tab. A screenshot records one page at one point in time: the live site may have changed, and interactions or responsive behavior are best checked on the original website.
 
@@ -51,7 +51,7 @@ can be revisited; return later as the collection grows if you run out of pairs.
 Guest votes count toward the global ranking. Create an account to have future
 votes build your personal taste profile; guest history stays separate.
 Global rankings are public. Browsing personalized rankings, full references and
-design guides requires a [membership](/pricing/).
+design guides requires a free account, not a subscription.
 
 [Global ranking](/rankings/) uses everyone's first vote per pair: Elo starts at
 1,000 and updates after each comparison. It is relative preference, not an
