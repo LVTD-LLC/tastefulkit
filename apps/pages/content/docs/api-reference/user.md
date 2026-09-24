@@ -5,9 +5,8 @@ description: Verify a TastefulKit API key and check which account it belongs to.
 
 # Check your API access
 
-An active [$10/month membership](/pricing/) is required for API and MCP access.
-REST returns **402** for valid keys without a current membership. MCP rejects
-access until the membership is active again; your existing key can be reused.
+API and MCP access are free. Create an account and generate an API key in
+[Account settings](/settings). No subscription is required.
 
 
 Use `GET /api/user` to verify a key before searching the catalogue. It returns the account associated with the supplied key, not any other user's account.

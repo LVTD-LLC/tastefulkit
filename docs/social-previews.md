@@ -4,9 +4,9 @@
 | --- | --- | --- |
 | Homepage | Custom 2400×1260 PNG | Marketing page and existing top-six previews |
 | Arena | Approved 2400×1260 matchup PNG | Existing public voting page |
-| Global rankings, membership, legal, technology | Generated 1200×630 PNG | Existing page content |
+| Global rankings, pricing, legal, technology | Generated 1200×630 PNG | Existing page content |
 | Docs | Generated title/description card for each navigable article | Repository-tracked documentation |
-| Published ready landing-page references | Generated title + stored thumbnail | Title-and-thumbnail teaser for guests/unpaid users; full page for paid members |
+| Published ready landing-page references | Generated title + stored thumbnail | Title-and-thumbnail teaser for guests; full page for all signed-in accounts |
 | Sign-in/signup | Homepage artwork with route-specific metadata | No account data or query parameters |
 | Personal rankings, saved library, settings, admin, password and verification flows | No personalized social card | Existing access restrictions |
 

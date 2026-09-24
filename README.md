@@ -37,13 +37,14 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
 Lightweight previews appear first; full screenshots load in the background for scrolling.
 Global rankings and shared design previews are public too. A shared design link shows
-its title and thumbnail; full details remain part of membership. The full catalog, personalized rankings, design guides and API/MCP access are included in one
-[$10 USD/month membership](https://tastefulkit.com/pricing/). Cancel anytime; access
-continues until the end of the paid period. Signed-in votes shape your personal ranking;
+its title and thumbnail; sign in for full details. All current features are free,
+including the full catalog, personalized rankings, saved designs, design guides,
+and API/MCP access. No subscription or credit card is required.
+Signed-in votes shape your personal ranking;
 guest votes count globally and are not transferred on signup.
 
 1. [Create an account](https://tastefulkit.com/accounts/signup/) and confirm your email.
-2. Subscribe on [Membership](https://tastefulkit.com/pricing/), then open [Explore](https://tastefulkit.com/explore/) to search and filter the full library.
+2. Open [Explore](https://tastefulkit.com/explore/) to search and filter the full library.
 3. Open a design, inspect the screenshot, and choose **Save design +** to keep it.
 
 Start with the [browsing guide](https://tastefulkit.com/docs/using-tastefulkit/browsing/)

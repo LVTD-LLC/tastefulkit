@@ -125,10 +125,10 @@ is the contribution and merge contract.
   query embeddings, or other accounts' taste. No personal signal falls back to
   global Elo. Reset starts a new generation and excludes older saves without
   removing the collection. Personal rankings, resets, catalogue browsing, design guides, API keys, REST and MCP
-  require a current paid membership. Arena voting and global rankings remain free for guests and
+  require a free account, not a subscription. Arena voting and global rankings remain free for guests and
   accounts. Guest history is never imported into personal taste.
 - Published ready landing-page detail URLs expose a public title-and-thumbnail teaser
-  and a generated social card. Full detail content, DESIGN.md and saves remain paid.
+  and a generated social card. Full detail content, DESIGN.md and saves require a free account.
   Social cards read only stored thumbnails, recheck publication before cache reads,
   and never fetch source URLs or expose full screenshots.
 - The daily research agent is external and submits via the ingestion API.
@@ -438,20 +438,23 @@ npm run lint
 
 ## Membership billing
 
-- `apps/billing/` owns the single USD $10/month plan, hosted Checkout, customer portal,
-  signed webhooks, and shared access checks. Admin ingestion remains exempt.
+- All current product features are free. Authentication, account ownership and admin-only
+  ingestion boundaries still apply. `apps/billing/` retains legacy customer portal,
+  webhook reconciliation and account-deletion cancellation. The checkout route no
+  longer creates subscriptions. Existing subscriptions are not automatically canceled.
 - Credentials and the price/account/portal IDs are environment driven. Pin Stripe API
   client version `2025-03-31.basil`; organization keys require account context.
   Webhook snapshots may remain on `2024-06-20`: only customer identity is consumed,
   and current subscription state is fetched using the pinned client version.
-- Entitlement requires `active` status and a future paid-through timestamp. No trials.
+- Legacy subscription reporting uses `active` status and a future paid-through timestamp;
+  this is not a product access gate.
   Reconcile current Stripe subscriptions under the account lock, never trust browser
   success parameters or stale event snapshots. Webhook retries are idempotent.
-- Signup does not grant paid access. Account settings, auth and billing stay accessible.
+- Signup grants free product access. Account settings, auth and legacy billing stay accessible.
   All product documentation, including API/MCP setup guides, is public and included
-  in the sitemap; actual API/MCP access remains membership-only. The public homepage previews the
+  in the sitemap; actual API/MCP access requires a valid key for an active account. The public homepage previews the
   first six landing pages in global ranking order; full catalog browsing and design
-  guides remain paid.
+  guides require a free account.
 - Account deletion cancels recurring subscriptions and expires open checkout sessions
   before deleting the user. Provider failure keeps the account intact for retry.
 - Production web and worker need the same Stripe settings from `.env.example`.

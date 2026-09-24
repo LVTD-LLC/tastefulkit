@@ -5,9 +5,8 @@ description: Search published design references, paginate results, and fetch fre
 
 # Search the design library
 
-An active [$10/month membership](/pricing/) is required for API and MCP access.
-REST returns **402** for valid keys without a current membership. MCP rejects
-access until the membership is active again; your existing key can be reused.
+API and MCP access are free. Create an account and generate an API key in
+[Account settings](/settings). No subscription is required.
 
 
 Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.

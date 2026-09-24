@@ -5,9 +5,8 @@ description: Connect an AI assistant to TastefulKit to search real designs and r
 
 # Connect your assistant to TastefulKit
 
-An active [$10/month membership](/pricing/) is required for API and MCP access.
-REST returns **402** for valid keys without a current membership. MCP rejects
-access until the membership is active again; your existing key can be reused.
+API and MCP access are free. Create an account and generate an API key in
+[Account settings](/settings). No subscription is required.
 
 
 Give your assistant access to real design references without running a local server.

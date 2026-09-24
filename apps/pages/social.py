@@ -49,7 +49,7 @@ PAGES = {
         "title": "Membership | TastefulKit",
         "description": (
             "Explore the landing page catalog, save references, discover your personal "
-            "ranking, and connect your coding agent with a TastefulKit membership."
+            "ranking, and connect your coding agent for free with TastefulKit."
         ),
         "headline": "Your taste.\nYour next landing page.",
         "label": "Membership",
