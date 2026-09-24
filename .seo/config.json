@@ -35,7 +35,7 @@
       "read_method": "repository files and public rendered pages",
       "write_method": "feature branch and PR",
       "body_format": "Markdown and Django templates",
-      "auth_note": "public docs and blog; member-only library is not a publishing surface"
+      "auth_note": "public docs and blog; account-only library is not a publishing surface"
     },
     "_comment_content_store": "Resolved by references/content-stores.md, which replaces this string with its object form (type, platform, base_url, read_method, write_method, model_or_collection, body_format, auth_note) once detected. For app_db stores, references/stacks/app-db.md adds the table, field, status, revision and preview fields the fix and programmatic lanes need.",
     "content_dir": "apps/pages/content/blog",

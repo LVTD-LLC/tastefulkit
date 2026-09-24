@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-20
+updated: 2026-09-24
 ---
 
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
@@ -45,7 +45,7 @@ Do the same with intent. “This arrangement makes the action visually prominent
 
 ## Retrieve references with TastefulKit's read-only MCP
 
-TastefulKit lets a compatible assistant search existing design references and retrieve their screenshots through hosted MCP. Access requires an active [membership](/pricing/) and a personal API key. Follow the current [MCP setup guide](/docs/api-reference/mcp/) for connection details rather than copying a configuration from a blog post.
+TastefulKit lets a compatible assistant search existing design references and retrieve their screenshots through hosted MCP. Access is free with an [account](/pricing/) and a personal API key. Follow the current [MCP setup guide](/docs/api-reference/mcp/) for connection details rather than copying a configuration from a blog post.
 
 Keep the bearer key in your client's private credential settings or supported secret storage. Do not place it in a public repository, a screenshot, a design brief, or a URL. The key authenticates access; it is not something the agent needs to print while discussing a reference.
 

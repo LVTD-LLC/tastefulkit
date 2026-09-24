@@ -2,6 +2,8 @@
 
 ## 2026-09-24
 
+- Correct the four starter blog posts to describe free-account access after the pricing change, preserve their publication dates, and align SEO product guidance and claim checks.
+
 - Make all current features free for accounts: Explore, For You, saved designs,
   design guides, API keys, REST and MCP no longer require a subscription.
 - Replace upgrade prompts with free-account guidance and disable new web checkouts;

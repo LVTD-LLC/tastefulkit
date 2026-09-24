@@ -1,6 +1,6 @@
 # TastefulKit organic search strategy
 
-Updated September 20, 2026. This is a content plan, not a forecast or a claim that
+Updated September 24, 2026. This is a content plan, not a forecast or a claim that
 these pages already rank. Source observations and keyword estimates remain in the
 existing private Rowset SEO datasets and OpenSEO project referenced by
 `.seo/config.json`.
@@ -15,8 +15,9 @@ conversion-testing service or a licence to copy another site's assets.
 
 Public articles should give a useful result without requiring payment. Point
 readers toward the free Arena and global rankings when they need to compare;
-explain membership before directing them to full references, design guides,
-personal rankings or MCP. Never describe preference scores as conversion data.
+explain the free account requirement before directing them to full references,
+design guides, personal rankings or MCP. MCP also requires a personal API key. Never describe preference scores as
+conversion data.
 
 ## One intent, one owner
 
@@ -26,7 +27,7 @@ personal rankings or MCP. Never describe preference scores as conversion data.
 | Turn loose ideas into a coherent page brief | `/blog/landing-page-design-ideas/` | landing page design ideas; choosing landing page references | Write a brief and compare references |
 | Choose an expressive layout without sacrificing clarity | `/blog/creative-landing-page-design/` | creative landing page design; creative landing page ideas | Select one creative constraint |
 | Evaluate and adapt mobile layouts | `/blog/mobile-landing-page-design/` | mobile landing page design; mobile landing page inspiration | Review a narrow-screen reference and live interaction |
-| Give a coding agent a useful visual specification | `/blog/design-references-ai-coding-agents/` | design references for AI coding agents; landing page design brief for AI | Read MCP docs and evaluate membership |
+| Give a coding agent a useful visual specification | `/blog/design-references-ai-coding-agents/` | design references for AI coding agents; landing page design brief for AI | Read MCP docs and create a free account |
 | Connect an MCP client | `/docs/api-reference/mcp/` | TastefulKit MCP; TastefulKit API key | Complete authenticated setup |
 
 The blog index owns navigation, not another copy of the homepage's gallery
@@ -63,8 +64,9 @@ or repeat connection instructions already maintained in the docs.
 - Link the hub from public navigation, and give each article links from the hub,
   the homepage and related articles. Use meaningful in-body links to docs and
   appropriate product entry points.
-- Preserve authentication and paid access boundaries. Login redirects are not
-  broken links to “fix” by making member content public.
+- Preserve authentication and administrator-only ingestion boundaries. Login redirects
+  are not
+  broken links to “fix” by making account-only content public.
 - Refresh stale internal product guidance when shipped features change. The
   older “voting is roadmap-only” guidance is no longer correct.
 
@@ -104,13 +106,14 @@ Elo or claim the sample represents all designers.
 
 ## Measurement and acquisition
 
-Primary outcome: qualified visits that lead to reference use and paid membership,
-not article count. Report three layers separately:
+Primary outcome: qualified visits that lead to free-account activation and reference
+use, not article count. Report three layers separately:
 
 1. Discoverability: index status and non-brand impressions for the fixed cohort.
-2. Engagement: article-to-Arena, rankings, docs and membership navigation where
+2. Engagement: article-to-Arena, rankings, docs and signup navigation where
    privacy-safe event collection has been verified.
-3. Business: membership conversions attributable to content, once the acquisition
+3. Activation: successful signups and meaningful reference use attributable to
+   content, once the acquisition
    path and success-event semantics have been validated.
 
 Current conversion attribution and field Core Web Vitals are not established by
