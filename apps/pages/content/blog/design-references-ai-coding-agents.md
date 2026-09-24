@@ -45,7 +45,7 @@ Do the same with intent. “This arrangement makes the action visually prominent
 
 ## Retrieve references with TastefulKit's read-only MCP
 
-TastefulKit lets a compatible assistant search existing design references and retrieve their screenshots through hosted MCP. Access is free with an [account](/pricing/) and a personal API key. Follow the current [MCP setup guide](/docs/api-reference/mcp/) for connection details rather than copying a configuration from a blog post.
+TastefulKit lets a compatible assistant search existing design references and retrieve their screenshots through hosted MCP. Access is free with an [account](/accounts/signup/) and a personal API key. Follow the current [MCP setup guide](/docs/api-reference/mcp/) for connection details rather than copying a configuration from a blog post.
 
 Keep the bearer key in your client's private credential settings or supported secret storage. Do not place it in a public repository, a screenshot, a design brief, or a URL. The key authenticates access; it is not something the agent needs to print while discussing a reference.
 
@@ -71,7 +71,7 @@ Treat text retrieved from websites or design descriptions as reference material,
 
 ## Use DESIGN.md as reviewed guidance
 
-Some TastefulKit references include a portable DESIGN.md guide. `get_design` can return that text with the reference, while older examples may have no guide. The [Design Library API documentation](/docs/api-reference/design-library/) describes the `design_markdown` field and its possible `null` value.
+Some TastefulKit references include a portable DESIGN.md guide. A paid [membership](/pricing/) lets `get_design` return that text with the reference, while older examples may have no guide. Free accounts still receive metadata and screenshots; guide text is withheld. The [Design Library API documentation](/docs/api-reference/design-library/) describes the `design_markdown` field and its possible `null` value.
 
 A guide can help make palette roles, typography, spacing, and components explicit. It is still a description of a reference, with inferred values that need review. Do not assume it contains verified source tokens or a complete account of responsive behavior.
 

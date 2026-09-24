@@ -35,8 +35,9 @@ Reload the detail page to request a fresh image link. If you copied an image URL
 
 ## Reuse a design guide
 
-When an example includes DESIGN.md, its detail page lets you view, copy, or download
-the same file. Place it in your project's repository and ask your coding agent to
+When an example includes DESIGN.md, an active [$10/month membership](/pricing/)
+lets you view, copy, or download the file. Free accounts see an upgrade prompt;
+the full guide is not included in the page or API/MCP response. Place it in your project's repository and ask your coding agent to
 follow that visual direction alongside the screenshot. Review inferred values
 against the original reference. This guide does not transfer ownership of the
 original site's assets. Some older examples do not have a guide yet.
@@ -50,8 +51,8 @@ can be revisited; return later as the collection grows if you run out of pairs.
 
 Guest votes count toward the global ranking. Create an account to have future
 votes build your personal taste profile; guest history stays separate.
-Global rankings are public. Browsing personalized rankings, full references and
-design guides requires a free account, not a subscription.
+Global rankings are public. Personalized rankings, screenshots, and saved references
+require a free account, not a subscription. Only DESIGN.md guides require a membership.
 
 [Global ranking](/rankings/) uses everyone's first vote per pair: Elo starts at
 1,000 and updates after each comparison. It is relative preference, not an

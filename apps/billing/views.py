@@ -13,8 +13,8 @@ from django.views.decorators.http import require_POST
 
 from apps.billing.access import has_paid_access
 from apps.billing.models import BillingAccount
-from apps.billing.services import handle_event, portal_url, refresh_user
-from apps.billing.stripe_api import BillingUnavailable, client
+from apps.billing.services import checkout_url, handle_event, portal_url, refresh_user
+from apps.billing.stripe_api import BillingUnavailable, client, configured
 
 logger = logging.getLogger(__name__)
 BILLING_ERRORS = (stripe.StripeError, BillingUnavailable)
@@ -38,6 +38,8 @@ def pricing(request):
         "billing/pricing.html",
         {
             "billing_account": account,
+            "paid_access": has_paid_access(request.user),
+            "billing_ready": configured(),
         },
     )
 
@@ -46,8 +48,10 @@ def pricing(request):
 @require_POST
 @never_cache
 def checkout(request):
-    messages.info(request, "All current TastefulKit features are free. No subscription is needed.")
-    return redirect("library")
+    try:
+        return redirect(checkout_url(request.user))
+    except BILLING_ERRORS:
+        return unavailable(request)
 
 
 @login_required
@@ -73,7 +77,7 @@ def billing_return(request):
         return unavailable(request)
     if has_paid_access(request.user):
         return redirect("library")
-    messages.info(request, "Billing status refreshed. All current features are free.")
+    messages.info(request, "Your payment is still being confirmed. Refresh billing status shortly.")
     return redirect("pricing")
 
 

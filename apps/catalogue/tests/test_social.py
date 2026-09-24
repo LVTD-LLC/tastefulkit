@@ -53,9 +53,15 @@ def test_design_sharing_requires_only_a_free_account(
         "https://tastefulkit.com" + reverse("design_social_image", args=[social_design.pk])
     ]
     if reader != "anonymous":
-        assert client.get(reverse("design_markdown", args=[social_design.pk])).status_code == 200
+        guide = client.get(reverse("design_markdown", args=[social_design.pk]))
+        if reader == "paid":
+            assert guide.status_code == 200
+            assert "Private design guide" in html
+        else:
+            assert guide.url == "/pricing/"
+            assert "Private design guide" not in html
+            assert "Unlock design guides" in html
         assert client.post(reverse("save_design", args=[social_design.pk])).status_code == 302
-        assert "Private design guide" in html
         assert "private-full-screenshot.png" in html
     else:
         assert "Create free account" in html

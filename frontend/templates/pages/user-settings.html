@@ -86,13 +86,12 @@
                 </div>
             </div>
         </section>
-        {% if billing_account.customer_id %}
-            <section class="py-10 border-b border-gray-950/10 dark:border-white/10">
-                <h2 class="text-xl font-semibold">Existing billing</h2>
-                <p class="mt-3">All current features are free. Manage or cancel an existing subscription below.</p>
-                <a class="app-button-secondary mt-4" href="{% url 'pricing' %}">Manage billing</a>
-            </section>
-        {% endif %}
+        <section class="py-10 border-b border-gray-950/10 dark:border-white/10">
+            <h2 class="text-xl font-semibold">Design guides</h2>
+            <p class="mt-3">{% if paid_access %}Your paid access to DESIGN.md guides is active.{% else %}Browse and save designs for free. Upgrade to view, copy, and download DESIGN.md guides for $10/month.{% endif %}</p>
+            <a class="app-button-secondary mt-4"
+               href="{% url 'pricing' %}">{% if billing_account.customer_id %}Manage billing{% else %}View membership{% endif %}</a>
+        </section>
         <section class="grid gap-6 border-b border-gray-950/10 py-10 md:grid-cols-[7fr_13fr] dark:border-white/10"
                  aria-labelledby="api-key-settings-heading">
             <div>

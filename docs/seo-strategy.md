@@ -16,7 +16,8 @@ conversion-testing service or a licence to copy another site's assets.
 Public articles should give a useful result without requiring payment. Point
 readers toward the free Arena and global rankings when they need to compare;
 explain the free account requirement before directing them to full references,
-design guides, personal rankings or MCP. MCP also requires a personal API key. Never describe preference scores as
+personal rankings or MCP. DESIGN.md guides require a paid membership; other reference
+metadata and screenshots stay free. MCP also requires a personal API key. Never describe preference scores as
 conversion data.
 
 ## One intent, one owner

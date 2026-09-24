@@ -18,6 +18,7 @@ from django.urls import reverse, reverse_lazy
 from django.views.decorators.http import require_POST
 from django.views.generic import TemplateView, UpdateView
 
+from apps.billing.access import has_paid_access
 from apps.billing.models import BillingAccount
 from apps.billing.services import cancel_for_deletion
 from apps.billing.views import BILLING_ERRORS
@@ -85,6 +86,7 @@ class UserSettingsView(LoginRequiredMixin, SuccessMessageMixin, UpdateView):
         ).exists()
 
         context["billing_account"] = BillingAccount.objects.filter(user=user).first()
+        context["paid_access"] = has_paid_access(user)
         context["api_key_prefix"] = profile.api_key_prefix
         context["has_api_key"] = profile.has_api_key
         context["new_api_key"] = self.request.session.pop(NEW_API_KEY_SESSION_KEY, "")

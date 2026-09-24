@@ -5,8 +5,9 @@ description: Search published design references, paginate results, and fetch fre
 
 # Search the design library
 
-API and MCP access are free. Create an account and generate an API key in
-[Account settings](/settings). No subscription is required.
+API and MCP access to design metadata and screenshots is free. Create an account
+and generate an API key in [Account settings](/settings). DESIGN.md guide text
+requires an active [$10/month membership](/pricing/).
 
 
 Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.
@@ -43,7 +44,7 @@ curl 'https://tastefulkit.com/api/v1/designs/DESIGN_ID' \
   -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-The detail response also includes `design_markdown`: the complete, portable DESIGN.md text, or `null` for an older reference that has not been backfilled. List/search results omit this large field.
+The detail response includes `design_markdown`: the complete DESIGN.md text for paid members, or `null` when access is locked or no guide is available. `design_markdown_locked` distinguishes those cases. List/search results omit guide fields.
 
 Screenshot links expire after 15 minutes. Fetch the design again for fresh links instead of storing an image URL as a permanent reference.
 
@@ -54,6 +55,15 @@ Screenshot links expire after 15 minutes. Fetch the design again for fresh links
 - **422:** Check parameter types, including the page number or design ID.
 
 Ordinary accounts only see published designs with ready screenshots. This read API does not manage your Saved list; use the website to save or remove references. The [interactive schema](/api/docs) provides the complete request details.
+
+## Paid design guides
+
+Design details remain available to free accounts. The `design_markdown` field
+contains guide text only for an active paid member (or an active administrator).
+Free accounts receive `design_markdown: null` and `design_markdown_locked: true`
+when a guide exists. A reference without a guide returns `null` and `false`.
+List and search responses never contain guide text. Subscription changes take
+effect on the next detail request; no new API key is needed.
 
 ## Submit a prepared example (administrators)
 

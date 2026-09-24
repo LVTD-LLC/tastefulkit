@@ -38,7 +38,7 @@ Use a short reference note with three fields:
 - **Adapt:** What your content requires you to change, such as replacing an abstract illustration with your own product example.
 - **Verify:** Anything the image cannot prove, such as menu focus behavior or image loading on a slower connection.
 
-TastefulKit's Arena compares mobile and desktop landing pages in separate pools. A preference ranking can help you explore visual directions; it does not establish conversion performance or accessibility. Full catalogue browsing and design guides are free with an [account](/pricing/). Use references to make a decision, not to outsource the decision to a score.
+TastefulKit's Arena compares mobile and desktop landing pages in separate pools. A preference ranking can help you explore visual directions; it does not establish conversion performance or accessibility. Full catalogue browsing is free with an [account](/accounts/signup/). DESIGN.md guides require a paid [membership](/pricing/). Use references to make a decision, not to outsource the decision to a score.
 
 ## Review reading order before adjusting spacing
 

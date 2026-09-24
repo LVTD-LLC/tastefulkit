@@ -31,9 +31,9 @@ historical and is superseded, not erased.
 
 | Claim | Maintained source |
 |---|---|
-| Arena/global rankings available to guests; full library/personal rankings/guides require a free account | `/docs/using-tastefulkit/browsing/`, `/pricing/`, catalogue access decorators |
+| Arena/global rankings available to guests; full library/personal rankings require a free account; DESIGN.md guides require paid membership | `/docs/using-tastefulkit/browsing/`, `/pricing/`, catalogue access decorators |
 | Rankings are relative preference, not conversion or objective quality | `/docs/using-tastefulkit/browsing/#compare-designs-and-discover-your-taste`, arena views/services |
-| MCP read-only, free account+personal key, no personalized ordering | `/docs/api-reference/mcp/`, hosted MCP tools |
+| MCP read-only, account+personal key, free metadata/screenshots, paid DESIGN.md text, no personalized ordering | `/docs/api-reference/mcp/`, hosted MCP tools |
 | Screenshot links expire15min; save ID and refresh | `/docs/api-reference/mcp/` |
 | DESIGN.md inferred, may be missing; no transfer of assets | `/docs/using-tastefulkit/browsing/` |
 | Responsive behavior must be checked beyond a screenshot | https://web.dev/articles/responsive-web-design-basics |
@@ -68,3 +68,5 @@ page body contains the actual instructional steps.
 Independent delta review: mobile5/5 on all five axes; AI facts5/gain5/AEO5/voice5/completeness4. Applied concrete reference-ID/source slots and corrected build-vs-diff wording. Reviewed first-two refinements accepted.
 
 Access claims reverified September 24, 2026 against PR #30 and the current public docs. The original launch dates remain September 20; the four articles were corrected September 24 after all current features became free. This does not promise free access forever.
+
+Follow-up product policy, September 24: PR #33 makes DESIGN.md guides the paid feature using the existing $10/month plan. Browsing, saves, screenshots, rankings and API/MCP metadata remain free.

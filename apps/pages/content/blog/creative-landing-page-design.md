@@ -70,7 +70,7 @@ The [reference brief](/blog/landing-page-design-ideas/#3-give-every-reference-a-
 
 For the workshop concept, imagine a desktop photograph with the instructor's hands at one side and the finished object at the other. A narrow center crop might keep the attractive clay texture but lose both pieces of useful evidence. Reject that version even if the crop looks elegant. An acceptable adaptation could use a different photograph showing the hands and object together, with the class explanation below it. The material-led idea survives; the desktop composition does not have to.
 
-This keeps the reference useful without treating it as a licensed template. TastefulKit's [browsing guide](/docs/using-tastefulkit/browsing/) explains how to inspect the full capture and original source. Full references and design guides are free with an [account](/pricing/); the [Arena](/arena/) lets you compare directions without signing in.
+This keeps the reference useful without treating it as a licensed template. TastefulKit's [browsing guide](/docs/using-tastefulkit/browsing/) explains how to inspect the full capture and original source. Full reference browsing is free with an [account](/accounts/signup/). DESIGN.md guides require a paid [membership](/pricing/); the [Arena](/arena/) lets you compare directions without signing in.
 
 When a reference includes DESIGN.md, treat inferred values as a starting point for review, not as the original site's authoritative design system. Your content may need different line lengths, image proportions or spacing even when the visual principle is the same.
 

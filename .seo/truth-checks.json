@@ -40,7 +40,7 @@
     "flags": "i"
   },
   {
-    "claim": "landing-page-design-ideas: current access is free with an account, not paid membership",
+    "claim": "landing-page-design-ideas: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
     "paths": [
       "apps/pages/content/blog/landing-page-design-ideas.md"
     ],
@@ -49,16 +49,18 @@
     ],
     "must_match": [
       "free with an",
-      "account"
+      "account",
+      "DESIGN\\.md",
+      "membership"
     ],
     "must_not_match": [
-      "requires? (?:an active |a )?(?:\\[)?membership",
-      "active paid membership"
+      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "mobile-landing-page-design: current access is free with an account, not paid membership",
+    "claim": "mobile-landing-page-design: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
     "paths": [
       "apps/pages/content/blog/mobile-landing-page-design.md"
     ],
@@ -67,16 +69,18 @@
     ],
     "must_match": [
       "free with an",
-      "account"
+      "account",
+      "DESIGN\\.md",
+      "membership"
     ],
     "must_not_match": [
-      "requires? (?:an active |a )?(?:\\[)?membership",
-      "active paid membership"
+      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "creative-landing-page-design: current access is free with an account, not paid membership",
+    "claim": "creative-landing-page-design: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
     "paths": [
       "apps/pages/content/blog/creative-landing-page-design.md"
     ],
@@ -85,16 +89,18 @@
     ],
     "must_match": [
       "free with an",
-      "account"
+      "account",
+      "DESIGN\\.md",
+      "membership"
     ],
     "must_not_match": [
-      "requires? (?:an active |a )?(?:\\[)?membership",
-      "active paid membership"
+      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "design-references-ai-coding-agents: current access is free with an account, not paid membership",
+    "claim": "design-references-ai-coding-agents: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
     "paths": [
       "apps/pages/content/blog/design-references-ai-coding-agents.md"
     ],
@@ -103,11 +109,13 @@
     ],
     "must_match": [
       "free with an",
-      "account"
+      "account",
+      "DESIGN\\.md",
+      "membership"
     ],
     "must_not_match": [
-      "requires? (?:an active |a )?(?:\\[)?membership",
-      "active paid membership"
+      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   }

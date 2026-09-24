@@ -5,8 +5,9 @@ description: Connect a script or agent to TastefulKit with a personal API key an
 
 # Read TastefulKit from a script or agent
 
-API and MCP access are free. Create an account and generate an API key in
-[Account settings](/settings). No subscription is required.
+API and MCP access to design metadata and screenshots is free. Create an account
+and generate an API key in [Account settings](/settings). DESIGN.md guide text
+requires an active [$10/month membership](/pricing/).
 
 
 The API lets you search the design library, fetch a design, and check which account a key belongs to. You can read this documentation without signing in; API requests require a personal API key.

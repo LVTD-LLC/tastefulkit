@@ -62,6 +62,8 @@ def search_designs(
 def get_design(design_id: UUID) -> dict:
     """Get metadata, DESIGN.md text and fresh signed screenshot/thumbnail references by ID.
 
+    DESIGN.md requires a paid membership; free accounts receive null with
+    design_markdown_locked=true when a guide exists. Metadata and screenshots stay free.
     Ordinary accounts can only retrieve published, ready designs. Administrators may
     also inspect pending/failed/unpublished entries and capture/indexing errors.
     """
