@@ -11,6 +11,7 @@ function contextSnapshot() {
     contentGroup: dataset.posthogContentGroup || "",
     enabled: dataset.posthogPageviewEnabled === "true",
     route: dataset.posthogRoute || "",
+    publicContentPath: dataset.posthogPublicContentPath || "",
   };
 }
 
@@ -64,7 +65,9 @@ function capturePosthogPageview(force = false) {
   }
 
   const campaign = campaignProperties(window.location.search);
-  const captureKey = JSON.stringify([context.route, context.contentGroup, campaign]);
+  const captureKey = JSON.stringify([
+    context.route, context.contentGroup, context.publicContentPath, campaign,
+  ]);
   if (force !== true && captureKey === lastCaptureKey) return false;
 
   const currentUrl = `${window.location.origin}${context.route}`;
@@ -103,12 +106,19 @@ function restoreContext() {
     `${window.location.origin}${window.location.pathname}`,
   );
   const dataset = document.body?.dataset;
-  if (!context || !dataset) return false;
+  if (!dataset) return false;
+  if (!context) {
+    delete dataset.posthogPublicContentPath;
+    syncPrivacyContext();
+    return false;
+  }
   dataset.posthogPageviewEnabled = context.enabled ? "true" : "false";
   if (context.route) dataset.posthogRoute = context.route;
   else delete dataset.posthogRoute;
   if (context.contentGroup) dataset.posthogContentGroup = context.contentGroup;
   else delete dataset.posthogContentGroup;
+  if (context.publicContentPath) dataset.posthogPublicContentPath = context.publicContentPath;
+  else delete dataset.posthogPublicContentPath;
   syncPrivacyContext();
   return true;
 }
@@ -131,12 +141,14 @@ function updateContextFromHtmxResponse(event) {
     dataset.posthogPageviewEnabled = "true";
     dataset.posthogRoute = responseContext.posthogRoute || "";
     dataset.posthogContentGroup = responseContext.posthogContentGroup || "";
+    dataset.posthogPublicContentPath = responseContext.posthogPublicContentPath || "";
     syncPrivacyContext();
     return "eligible";
   }
   dataset.posthogPageviewEnabled = "false";
   delete dataset.posthogRoute;
   delete dataset.posthogContentGroup;
+  delete dataset.posthogPublicContentPath;
   syncPrivacyContext();
   return "disabled";
 }

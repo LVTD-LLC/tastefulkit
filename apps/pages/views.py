@@ -246,6 +246,9 @@ def docs_page_view(request, category, page):
             "navigation": navigation,
             "current_category": category,
             "current_page": page,
+            "posthog_public_content_path": reverse(
+                "docs_page", kwargs={"category": category, "page": page}
+            ),
             "page_title": post.get("title", default_page_title),
             "category_title": default_category_title,
             "meta_description": post.get("description", ""),

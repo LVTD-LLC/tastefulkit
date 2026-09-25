@@ -23,7 +23,7 @@ function browser(cookie, identity = "") {
   globalThis.document = {
     body: {
       dataset: { posthogPageviewEnabled: "true", posthogRoute: "/", posthogContentGroup: "marketing" },
-      addEventListener() {},
+      addEventListener(name, callback) { listeners[name] = callback; },
     },
     referrer: "https://example.org/article?private=value",
     addEventListener(name, callback) { listeners[name] = callback; },
@@ -52,7 +52,7 @@ function browser(cookie, identity = "") {
       },
     },
   };
-  return { cookies, captures, identities, listeners };
+  return { cookies, captures, identities, listeners, windowListeners };
 }
 
 for (const cookie of ["", "granted", "denied"]) {
@@ -103,4 +103,64 @@ test("private routes stay excluded and no-key pages remain functional", async ()
   delete window.SaasAnalytics;
   delete window.posthog;
   assert.doesNotThrow(() => initPosthog());
+});
+
+test("public article identity survives navigation without exposing arbitrary URLs", async () => {
+  const state = browser("");
+  const dataset = (path) => ({
+    posthogPageviewEnabled: "true", posthogRoute: "/blog/:slug/",
+    posthogContentGroup: "blog", posthogPublicContentPath: path,
+  });
+  document.body.dataset = dataset("/blog/first-guide/");
+  window.location.pathname = "/blog/first-guide/";
+  window.DOMParser = class {
+    parseFromString(text) { return { body: { dataset: JSON.parse(text.slice(6)) } }; }
+  };
+  const { initPosthogPageviews } = await import("../frontend/src/js/modules/posthog-pageviews.js?case=content");
+  sdkLoaded(window.posthog);
+  initPosthogPageviews();
+  initPosthogCtas();
+  assert.equal(state.captures[0].properties.public_content_path, "/blog/first-guide/");
+  assert.equal(state.captures[0].properties.$pathname, "/blog/:slug/");
+  state.listeners.click({ target: { closest: () => ({ href: "/accounts/signup/?token=secret", dataset: { posthogCta: "signup" } }) } });
+  assert.equal(state.captures[1].properties.public_content_path, "/blog/first-guide/");
+  window.location.pathname = "/blog/second-guide/";
+  const xhr = { responseText: "<body>" + JSON.stringify(dataset("/blog/second-guide/")) };
+  state.listeners["htmx:afterSwap"]({ detail: { xhr } });
+  state.listeners["htmx:afterSwap"]({ detail: { xhr } });
+  assert.equal(state.captures.filter((e) => e.event === "$pageview").length, 2);
+  assert.equal(state.captures.at(-1).properties.public_content_path, "/blog/second-guide/");
+  window.location.pathname = "/settings";
+  state.listeners["htmx:afterSwap"]({ detail: { xhr: { responseText: "<body>{}" } } });
+  const privateEvent = sanitizePosthogEvent({ event: "$pageview", properties: {
+    public_content_path: "/blog/stale-secret/", $current_url: "https://tastefulkit.com/settings?token=secret",
+  }, $set: { public_content_path: "/blog/stale-secret/" } });
+  assert.equal(privateEvent.properties.public_content_path, undefined);
+  assert.equal(privateEvent.$set.public_content_path, undefined);
+  assert.equal(privateEvent.properties.$current_url, "https://tastefulkit.com");
+  window.location.pathname = "/blog/first-guide/";
+  state.windowListeners.popstate();
+  assert.equal(state.captures.at(-1).properties.public_content_path, "/blog/first-guide/");
+  window.location.pathname = "/unknown-private-path/";
+  state.windowListeners.popstate();
+  assert.equal(window.SaasAnalytics.pageviewContext.publicContentPath, "");
+  assert.equal(JSON.stringify(state.captures).includes("secret"), false);
+});
+
+test("public content identity is scoped to successful content contexts and event types", () => {
+  browser("");
+  const context = { enabled: true, route: "/docs/:category/:page/", contentGroup: "docs",
+    publicContentPath: "/docs/api-reference/mcp/" };
+  window.SaasAnalytics.pageviewContext = context;
+  window.location.pathname = "/docs/api-reference/mcp/";
+  const event = { event: "$pageview", properties: { public_content_path: "untrusted" } };
+  assert.equal(sanitizePosthogEvent(event).properties.public_content_path, "/docs/api-reference/mcp/");
+  assert.equal(sanitizePosthogEvent({ ...event, event: "$set" }).properties.public_content_path, undefined);
+  for (const path of ["/settings", "//evil.test/blog/x/", "/docs/api-reference/mcp/?key=secret", "/blog/other/", "/docs/a/b/#secret"]) {
+    context.publicContentPath = path;
+    assert.equal(sanitizePosthogEvent(event).properties.public_content_path, undefined);
+  }
+  context.publicContentPath = "/docs/api-reference/mcp/";
+  context.enabled = false;
+  assert.equal(sanitizePosthogEvent(event).properties.public_content_path, undefined);
 });
