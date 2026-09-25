@@ -95,6 +95,7 @@ def test_publication_filter_sorting_and_dates(content_root):
 @pytest.mark.django_db
 def test_index_article_related_links_and_sitemap_agree(client, settings, content_root):
     settings.SITE_URL = "https://tastefulkit.com"
+    settings.POSTHOG_API_KEY = "phc_test"
     write_post(content_root, "sample-guide", updated="2026-09-19")
     write_post(content_root, "other-guide")
     write_post(content_root, "draft-secret", draft=True)
@@ -111,6 +112,9 @@ def test_index_article_related_links_and_sitemap_agree(client, settings, content
     article = client.get("/blog/sample-guide/?utm_source=test")
     assert article.status_code == 200
     html = article.content.decode()
+    assert 'data-posthog-public-content-path="/blog/sample-guide/"' in html
+    assert 'data-posthog-route="/blog/:slug/"' in html
+    assert "data-posthog-public-content-path" not in index.content.decode()
     assert html.count("<h1>") == 1
     assert 'href="#compare-references"' in html
     assert 'id="compare-references"' in html
@@ -145,6 +149,9 @@ def test_index_article_related_links_and_sitemap_agree(client, settings, content
         "<loc>https://tastefulkit.com/blog/sample-guide/</loc><lastmod>2026-09-19</lastmod>" in xml
     )
     for slug in ("draft-secret", "future-secret", "bad-secret", "missing"):
+        response = client.get(f"/blog/{slug}/")
+        assert response.status_code == 404
+        assert "data-posthog-public-content-path" not in response.content.decode()
         assert slug not in index.content.decode()
         assert slug not in html
         assert slug not in xml

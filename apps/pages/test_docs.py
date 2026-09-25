@@ -33,6 +33,7 @@ def test_docs_pages_and_links_are_public(
     client, django_user_model, settings, page, reader, grant_membership
 ):
     settings.SITE_URL = "https://tastefulkit.com"
+    settings.POSTHOG_API_KEY = "phc_test"
     if reader != "anonymous":
         user = django_user_model.objects.create_user(
             username="docs-reader", email="private-reader@example.com"
@@ -44,6 +45,8 @@ def test_docs_pages_and_links_are_public(
     response = client.get(page["url"])
     assert response.status_code == 200
     content = response.content.decode()
+    assert f'data-posthog-public-content-path="{page["url"]}"' in content
+    assert 'data-posthog-route="/docs/:category/:page/"' in content
     assert 'content="index, follow"' in content
     assert f'href="https://tastefulkit.com{page["url"]}"' in content
     assert "data-docs-page" in content

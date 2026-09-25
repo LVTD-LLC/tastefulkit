@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-09-25
+
+- Distinguish published blog articles and public docs in pageview and marketing
+  CTA analytics using a server-supplied public content path. Keep URL templates,
+  query stripping and private-route exclusions intact, clear content identity
+  on navigation, and explicitly disable session recording.
+
 ## 2026-09-24
 
 - Make DESIGN.md the paid feature: gate viewing, copying, downloads and API/MCP

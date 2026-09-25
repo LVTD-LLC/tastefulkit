@@ -53,6 +53,13 @@ function sanitizeProperties(properties, locationProperties) {
   if (!properties) return properties;
 
   const sanitized = { ...properties };
+  // Never trust an event, persisted super-property or person update to supply this.
+  delete sanitized.public_content_path;
+  ["$set", "$set_once"].forEach((property) => {
+    if (sanitized[property]) {
+      sanitized[property] = sanitizeProperties(sanitized[property], locationProperties);
+    }
+  });
   Object.entries(urlPropertyNames).forEach(([property, safeValue]) => {
     if (!(property in sanitized)) return;
     const value = safeValue ? locationProperties[safeValue] : "";
@@ -75,13 +82,34 @@ function sanitizeProperties(properties, locationProperties) {
   return sanitized;
 }
 
+function publicContentPath(eventName) {
+  const analytics = window.SaasAnalytics;
+  const context = analytics?.pageviewContext;
+  if (!context?.enabled) return "";
+  if (!["$pageview", `${analytics.eventPrefix}_marketing_cta_clicked`].includes(eventName)) {
+    return "";
+  }
+  // These identities come from successful public-content views, not location.pathname.
+  const path = context.publicContentPath || "";
+  if (path.length > 200 || path !== window.location.pathname) return "";
+  if (context.contentGroup === "blog" && context.route === "/blog/:slug/" &&
+      /^\/blog\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(path)) return path;
+  if (context.contentGroup === "docs" && context.route === "/docs/:category/:page/" &&
+      /^\/docs\/[a-z0-9]+(?:-[a-z0-9]+)*\/[a-z0-9]+(?:-[a-z0-9]+)*\/$/.test(path)) return path;
+  return "";
+}
+
 export function sanitizePosthogEvent(event) {
   if (!event) return event;
 
   const locationProperties = safeLocationProperties();
+  const contentPath = publicContentPath(event.event);
   return {
     ...event,
-    properties: sanitizeProperties(event.properties, locationProperties),
+    properties: {
+      ...sanitizeProperties(event.properties, locationProperties),
+      ...(contentPath ? { public_content_path: contentPath } : {}),
+    },
     ...(event.$set && { $set: sanitizeProperties(event.$set, locationProperties) }),
     ...(event.$set_once && {
       $set_once: sanitizeProperties(event.$set_once, locationProperties),

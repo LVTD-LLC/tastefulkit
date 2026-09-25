@@ -231,6 +231,8 @@ def blog_post(request, slug):
     context.update(
         {
             "post": post,
+            # Only a validated, published repository article can supply this identity.
+            "posthog_public_content_path": post.url,
             "content": scrollable_content(renderer.convert(post.body)),
             "related_posts": [other for other in posts if other.slug != slug][:3],
         }
