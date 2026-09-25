@@ -156,6 +156,12 @@ test("public content identity is scoped to successful content contexts and event
   const event = { event: "$pageview", properties: { public_content_path: "untrusted" } };
   assert.equal(sanitizePosthogEvent(event).properties.public_content_path, "/docs/api-reference/mcp/");
   assert.equal(sanitizePosthogEvent({ ...event, event: "$set" }).properties.public_content_path, undefined);
+  const personUpdate = sanitizePosthogEvent({ event: "$set", properties: {
+    $set: { public_content_path: "/docs/api-reference/mcp/" },
+    $set_once: { public_content_path: "/blog/private-slug/" },
+  } });
+  assert.equal(personUpdate.properties.$set.public_content_path, undefined);
+  assert.equal(personUpdate.properties.$set_once.public_content_path, undefined);
   for (const path of ["/settings", "//evil.test/blog/x/", "/docs/api-reference/mcp/?key=secret", "/blog/other/", "/docs/a/b/#secret"]) {
     context.publicContentPath = path;
     assert.equal(sanitizePosthogEvent(event).properties.public_content_path, undefined);

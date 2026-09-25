@@ -55,6 +55,11 @@ function sanitizeProperties(properties, locationProperties) {
   const sanitized = { ...properties };
   // Never trust an event, persisted super-property or person update to supply this.
   delete sanitized.public_content_path;
+  ["$set", "$set_once"].forEach((property) => {
+    if (sanitized[property]) {
+      sanitized[property] = sanitizeProperties(sanitized[property], locationProperties);
+    }
+  });
   Object.entries(urlPropertyNames).forEach(([property, safeValue]) => {
     if (!(property in sanitized)) return;
     const value = safeValue ? locationProperties[safeValue] : "";
