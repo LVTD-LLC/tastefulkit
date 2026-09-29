@@ -320,3 +320,19 @@ def test_guide_access_is_free_regardless_of_billing_state(http, user, design, gr
     grant_membership(user)
     BillingAccount.objects.filter(user=user).update(status="canceled")
     check(True)
+
+
+def test_site_filter_and_related_parity(http, client, key, design):
+    from apps.catalogue.models import Site
+
+    site = Site.objects.create(name="Example", url="https://example.com/")
+    design.site = site
+    design.save()
+    args = {"site": str(site.pk)}
+    assert (
+        data(http, "list_designs", **args)
+        == client.get("/api/v1/designs", args, HTTP_X_API_KEY=key).json()
+    )
+    assert data(http, "get_design", design_id=str(design.pk))["site"]["id"] == str(site.pk)
+    with patch("apps.catalogue.services.embed", side_effect=ValueError("offline")):
+        assert data(http, "search_designs", q="warm", **args)["total"] == 1

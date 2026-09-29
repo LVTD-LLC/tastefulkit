@@ -23,9 +23,10 @@ All query parameters are optional:
 | Parameter | Use |
 | --- | --- |
 | `q` | A text description, such as `warm minimal`. |
-| `kind` | Use `landing_page` for the landing-page catalog. |
+| `kind` | Use `landing_page`, `pricing_page`, `hero`, `cta`, `auth_form`, `blog`, `navigation`, `footer`, `dashboard`, or `other`. |
 | `tag` | A style tag from the library. |
 | `industry` | An industry from the library. |
+| `site` | A site UUID from a design response; returns references from that site. |
 | `page` | A page number, starting at `1`. |
 
 Filters combine, just as they do in Explore. URL-encode spaces and other special characters in parameter values.
@@ -138,3 +139,43 @@ no background retry or enrichment, and the old `/retry` endpoint is retired.
 Older examples remain usable while an agent prepares their missing files. Backfill
 through the same explicit replacement POST; the application does not generate
 DESIGN.md for them automatically.
+
+
+## Group references from the same site
+
+Each response includes `site`: either `null`, or an object with `id`, `name`, and
+`url`. Detail responses also include up to six published, ready `related_designs`
+from that site. Use the `site` filter to paginate the complete group. REST and MCP
+list/search tools accept this filter.
+
+Administrators can add an optional field to the existing multipart JSON payload:
+
+```json
+{"site": {"name": "Example", "url": "https://example.com/"}}
+```
+
+Use the same canonical homepage URL for a site's landing page, pricing page,
+hero, CTA, auth form, and other references. Host casing, paths, query strings,
+fragments and default ports are normalized to the site's origin. Different
+schemes or subdomains remain distinct: choose one canonical homepage consistently.
+The first submitted name is retained; administrators can correct it in Django admin.
+The reference's `source_url` still identifies the exact captured page.
+
+For an isolated component, set `kind` and a stable CSS `selector`, upload a screenshot
+of only that element, and prepare a component-specific thumbnail, DESIGN.md, and
+embedding. Do not submit a full-page screenshot labelled as a component.
+
+Omit `site` to create an independent reference. On explicit bundle replacement,
+omitting it preserves the existing relationship; `"site": null` clears it.
+An unchanged duplicate POST never changes its existing relationship.
+
+To link an older reference without replacing its files or embedding, administrators
+can send this JSON to `PATCH /api/v1/designs/DESIGN_ID/site`:
+
+```json
+{"site": {"name": "Example", "url": "https://example.com/"}}
+```
+
+Use `{"site": null}` on that endpoint to unlink it. Ordinary API keys cannot
+change these relationships. Existing references are not automatically assigned
+to sites: link them explicitly after verifying their source.

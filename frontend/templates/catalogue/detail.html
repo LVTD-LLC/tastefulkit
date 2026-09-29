@@ -22,6 +22,14 @@
 {% else %}
 <p class="tk-muted">A design guide is not available for this older reference yet.</p>
 {% endif %}
-<img class="tk-fullshot"
-     src="{{ design.screenshot.url }}"
-     alt="Full screenshot of {{ design.title }}"><p class="tk-muted">Design belongs to its original creator. Use this example for inspiration, not as a licensed template.</p></div>{% endblock %}
+<p class="tk-muted" id="preview-help">Scroll inside the preview to see the full design.</p>
+<div class="tk-shot-viewport"
+     tabindex="0"
+     role="region"
+     aria-label="{{ design.title }} screenshot"
+     aria-describedby="preview-help">
+    <img class="tk-fullshot"
+         src="{{ design.screenshot.url }}"
+         alt="Full screenshot of {{ design.title }}">
+</div>
+{% if design.site %}<section class="tk-related" aria-labelledby="related-title"><div class="tk-section-heading"><h2 id="related-title">More from {{ design.site.name }}</h2><a href="{% url 'library' %}?site={{ design.site_id }}">All designs from this site ↗</a></div><div class="design-grid">{% for design in related_designs %}{% include "catalogue/card.html" %}{% empty %}<p class="tk-muted">This is the first reference from this site.</p>{% endfor %}</div></section>{% endif %}<p class="tk-muted">Design belongs to its original creator. Use this example for inspiration, not as a licensed template.</p></div>{% endblock %}

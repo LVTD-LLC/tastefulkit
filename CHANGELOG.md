@@ -2,6 +2,9 @@
 
 ## 2026-09-29
 
+- Add square, keyboard-scrollable detail previews, optional shared sites, related references, and page/component browsing. Admin submissions support site metadata and CTA/auth-form kinds; an admin-only site-link endpoint connects existing references without replacing assets. REST/MCP expose site metadata, filtering and related designs. Existing references remain independent until explicitly linked.
+
+
 - Made all current features free, including DESIGN.md viewing, copying, downloading, REST and MCP retrieval. Account/API-key authentication and admin-only ingestion remain unchanged.
 - Disabled new checkout purchases and replaced membership upsells with free-access copy across pricing, settings, documentation, and articles. Existing subscription management, webhooks and deletion cleanup remain available; existing Stripe subscriptions and sessions are not changed by this release.
 

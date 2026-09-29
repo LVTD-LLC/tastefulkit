@@ -361,3 +361,5 @@ disclosure works without JavaScript. Links are underlined, heading anchors clear
 the sticky header, and tables/code overflow within labeled, keyboard-focusable regions inside the
 article, not the viewport.
 Shared blog rules live in `frontend/src/styles/tastefulkit.css`.
+
+Design detail screenshots use a square, keyboard-focusable scrolling viewport, capped at 800px wide. Preserve natural image height and width-fit; do not stretch short components. Related references use the existing catalogue cards below the preview.

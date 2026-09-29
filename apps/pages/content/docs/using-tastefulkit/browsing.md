@@ -9,7 +9,7 @@ Open [Explore](/explore/) after signing in. With no search or filters applied, t
 
 ## Look beyond the thumbnail
 
-Anyone can open a shared design link to preview its title and thumbnail. Share the
+Anyone can open a shared landing-page link to preview its title and thumbnail. Share the
 design page URL for a branded link preview; image URLs can expire.
 
 With a free account, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
@@ -78,3 +78,16 @@ unlinks vote history from your account while preserving community results.
 Votes need a fresh comparison. Each pair counts once per account or guest browser
 session toward global rankings; repeated clicks are safe. The limit is 30 comparison
 actions per minute per account or guest session, including skips.
+
+
+## Explore pages and components
+
+Explore's **Type** filter separates full landing and pricing pages from heroes,
+calls to action, auth forms, and other components. The screenshot on a design's
+detail page sits in a square preview: scroll inside it, swipe, or focus it with
+Tab and use the arrow keys to inspect the rest. Small components keep their natural height.
+
+When a reference belongs to a site, **More from [site name]** shows related
+references. Choose **All designs from this site** to browse the whole group.
+Independent references work without a site. Components require signing in;
+public link teasers and Arena remain focused on landing pages.

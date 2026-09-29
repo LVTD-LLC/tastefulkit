@@ -101,8 +101,10 @@ is the contribution and merge contract.
 
 ## Application contracts
 
-- The customer-facing catalog focuses on landing pages. The model retains other
-  kinds for future expansion; do not advertise them in UI/filter discovery. External agents prepare metadata, screenshots,
+- Explore supports pages and isolated components through a Type filter. Arena,
+  rankings and homepage previews remain landing-page focused. Optional Site links
+  group references by canonical origin; the admin ingestion POST accepts site metadata
+  and PATCH /api/v1/designs/{id}/site links existing entries without asset replacement. External agents prepare metadata, screenshots,
   thumbnails, DESIGN.md and embeddings; the admin-only multipart POST validates, stores
   and indexes them synchronously. Django admin handles visibility, not content creation.
 - Signup requires email verification. Account settings support passkeys and
