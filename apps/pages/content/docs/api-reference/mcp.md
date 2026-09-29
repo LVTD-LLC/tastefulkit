@@ -18,7 +18,7 @@ https://tastefulkit.com/mcp/
 
 ## Set up the connection
 
-1. Sign in and [create a personal API key](/docs/api-reference/introduction/).
+1. Sign in and [copy your personal API key](/docs/api-reference/introduction/).
 2. Add a remote MCP server in your assistant or editor. Choose **HTTP** or
    **Streamable HTTP**, and enter the endpoint above, including the trailing slash.
 3. Set the `Authorization` header to `Bearer YOUR_API_KEY` in your client's private
