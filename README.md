@@ -14,7 +14,7 @@
   <a href="CONTRIBUTING.md">Contribute</a>
 </p>
 
-TastefulKit is a searchable library of real landing-page design examples for you and
+TastefulKit is a searchable library of real landing-page and component design examples for you and
 your AI assistant. Find a layout, explore its typography and colors, and save
 useful references for your next project.
 
@@ -24,7 +24,7 @@ useful references for your next project.
 helps you turn it into examples you can actually look at, compare, and discuss.
 
 - **Search in your own words.** Describe the style or page you have in mind.
-- **Narrow the search.** Filter landing pages by style tag or industry.
+- **Narrow the search.** Filter pages and components by type, style tag, industry, or source site.
 - **Look beyond the thumbnail.** Open full screenshots, read descriptions, and
   visit the original websites.
 - **Take a design direction with you.** View, copy or download an example’s DESIGN.md
