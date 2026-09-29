@@ -115,3 +115,16 @@ def test_guides_still_require_an_active_account(client, user, guide_design):
     client.force_login(user)
     assert "/accounts/login/" in client.get(path).url
     assert GUIDE not in client.get(guide_design.get_absolute_url()).content.decode()
+
+
+def test_direct_views_reject_inactive_authenticated_user(rf, user, guide_design):
+    from apps.catalogue import views
+
+    user.is_active = False
+    for view in (views.detail, views.design_markdown):
+        request = rf.get(guide_design.get_absolute_url())
+        request.user = user
+        response = view(request, guide_design.pk)
+        assert response.status_code == 302
+        assert response.url == reverse("account_login")
+        assert GUIDE not in response.content.decode()

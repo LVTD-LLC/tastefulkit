@@ -60,6 +60,8 @@ def library(request):
 
 @never_cache
 def detail(request, pk):
+    if request.user.is_authenticated and not request.user.is_active:
+        return redirect("account_login")
     if not request.user.is_authenticated:
         design = get_object_or_404(
             visible_designs().filter(kind=Design.Kind.LANDING).only("id", "title", "thumbnail"),
@@ -100,6 +102,8 @@ def save_design(request, pk):
 @login_required
 @never_cache
 def design_markdown(request, pk):
+    if not request.user.is_active:
+        return redirect("account_login")
     design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
     response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")
     response["Content-Disposition"] = 'attachment; filename="DESIGN.md"'
