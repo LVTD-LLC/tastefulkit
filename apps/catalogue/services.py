@@ -2,7 +2,6 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 
-from apps.billing.access import has_paid_access
 from apps.catalogue.models import Design, Tag
 from apps.catalogue.providers import embed
 from apps.catalogue.vector_store import search_vectors
@@ -100,7 +99,10 @@ def design_detail(design_id, user):
     designs = Design.objects.all().defer("embedding") if admin else visible_designs()
     design = get_object_or_404(designs.prefetch_related("tags"), pk=design_id)
     return serialize_design(
-        design, admin=admin, detail=True, include_design_markdown=has_paid_access(user)
+        design,
+        admin=admin,
+        detail=True,
+        include_design_markdown=user.is_authenticated and user.is_active,
     )
 
 

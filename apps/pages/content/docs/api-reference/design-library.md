@@ -5,9 +5,8 @@ description: Search published design references, paginate results, and fetch fre
 
 # Search the design library
 
-API and MCP access to design metadata and screenshots is free. Create an account
-and generate an API key in [Account settings](/settings). DESIGN.md guide text
-requires an active [$10/month membership](/pricing/).
+API and MCP access, including available DESIGN.md guides, is free. Create an account
+and generate an API key in [Account settings](/settings). No subscription is required.
 
 
 Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.
@@ -44,7 +43,7 @@ curl 'https://tastefulkit.com/api/v1/designs/DESIGN_ID' \
   -H "Authorization: Bearer $TASTEFULKIT_API_KEY"
 ```
 
-The detail response includes `design_markdown`: the complete DESIGN.md text for paid members, or `null` when access is locked or no guide is available. `design_markdown_locked` distinguishes those cases. List/search results omit guide fields.
+The detail response includes `design_markdown`: the complete DESIGN.md text when available, or `null` when no guide is available. `design_markdown_locked` remains `false` for compatibility. List/search results omit guide fields.
 
 Screenshot links expire after 15 minutes. Fetch the design again for fresh links instead of storing an image URL as a permanent reference.
 
@@ -56,14 +55,12 @@ Screenshot links expire after 15 minutes. Fetch the design again for fresh links
 
 Ordinary accounts only see published designs with ready screenshots. This read API does not manage your Saved list; use the website to save or remove references. The [interactive schema](/api/docs) provides the complete request details.
 
-## Paid design guides
+## Free design guides
 
-Design details remain available to free accounts. The `design_markdown` field
-contains guide text only for an active paid member (or an active administrator).
-Free accounts receive `design_markdown: null` and `design_markdown_locked: true`
-when a guide exists. A reference without a guide returns `null` and `false`.
-List and search responses never contain guide text. Subscription changes take
-effect on the next detail request; no new API key is needed.
+Design details include available DESIGN.md text for every active account.
+A reference without a guide returns `design_markdown: null`.
+`design_markdown_locked` remains `false` for compatibility. List and search
+responses do not contain guide text; fetch a design by ID to retrieve its guide.
 
 ## Submit a prepared example (administrators)
 

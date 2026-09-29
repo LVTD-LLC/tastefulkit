@@ -9,7 +9,7 @@ from apps.catalogue.models import Design
 from apps.catalogue.services import serialize_design
 
 pytestmark = pytest.mark.django_db
-GUIDE = "# Paid-only guide\nUnique guide text that must not leak to free accounts."
+GUIDE = "# Free design guide\nAvailable to every active account."
 
 
 @pytest.fixture
@@ -28,20 +28,20 @@ def guide_design(user):
 
 
 @pytest.mark.parametrize(
-    "status,days,cancel_at_period_end,allowed",
+    "status,days,cancel_at_period_end",
     [
-        (None, 0, False, False),
-        ("active", 30, False, True),
-        ("active", 30, True, True),
-        ("active", -1, False, False),
-        ("canceled", 30, False, False),
-        ("past_due", 30, False, False),
-        ("trialing", 30, False, False),
-        ("unpaid", 30, False, False),
+        (None, 0, False),
+        ("active", 30, False),
+        ("active", 30, True),
+        ("active", -1, False),
+        ("canceled", 30, False),
+        ("past_due", 30, False),
+        ("trialing", 30, False),
+        ("unpaid", 30, False),
     ],
 )
 def test_guide_access_across_html_download_and_rest(
-    client, user, guide_design, status, days, cancel_at_period_end, allowed
+    client, user, guide_design, status, days, cancel_at_period_end
 ):
     if status is not None:
         BillingAccount.objects.create(
@@ -58,25 +58,21 @@ def test_guide_access_across_html_download_and_rest(
     html = page.content.decode()
     assert "free-screenshot.png" in html
     assert "Public reference metadata" in html
-    assert (GUIDE in html) == allowed
-    assert ('id="design-markdown"' in html) == allowed
-    assert ("Copy DESIGN.md" in html) == allowed
-    assert ("Download DESIGN.md" in html) == allowed
-    assert ("Unlock design guides" in html) != allowed
+    assert GUIDE in html
+    assert 'id="design-markdown"' in html
+    assert "Copy DESIGN.md" in html
+    assert "Download DESIGN.md" in html
+    assert "Unlock design guides" not in html
     download = client.get(reverse("design_markdown", args=[guide_design.pk]))
     assert "no-store" in download["Cache-Control"]
-    if allowed:
-        assert download.status_code == 200 and download.content.decode() == GUIDE
-    else:
-        assert download.status_code == 302 and download.url == "/pricing/"
-        assert GUIDE not in download.content.decode()
+    assert download.status_code == 200 and download.content.decode() == GUIDE
     for header in ["HTTP_X_API_KEY", "HTTP_AUTHORIZATION"]:
         auth = {header: key if header == "HTTP_X_API_KEY" else f"Bearer {key}"}
         detail = client.get(f"/api/v1/designs/{guide_design.pk}", **auth)
         assert detail.status_code == 200
         assert detail["Cache-Control"] == "private, no-store"
-        assert detail.json()["design_markdown"] == (GUIDE if allowed else None)
-        assert detail.json()["design_markdown_locked"] is not allowed
+        assert detail.json()["design_markdown"] == GUIDE
+        assert detail.json()["design_markdown_locked"] is False
         assert detail.json()["screenshot_url"].endswith("free-screenshot.png")
         listing = client.get("/api/v1/designs", **auth)
         assert listing.status_code == 200
@@ -86,7 +82,7 @@ def test_guide_access_across_html_download_and_rest(
     assert client.post(reverse("save_design", args=[guide_design.pk])).status_code == 302
 
 
-def test_missing_or_hidden_guides_are_not_sellable(client, user, guide_design):
+def test_missing_or_hidden_guides_remain_unavailable(client, user, guide_design):
     client.force_login(user)
     guide_design.design_markdown = ""
     guide_design.save()
@@ -103,7 +99,19 @@ def test_missing_or_hidden_guides_are_not_sellable(client, user, guide_design):
     assert client.get(f"/api/v1/designs/{guide_design.pk}", HTTP_X_API_KEY=key).status_code == 404
 
 
-def test_serializer_does_not_include_guide_without_explicit_entitlement(guide_design):
+def test_serializer_requires_explicit_guide_inclusion(guide_design):
     result = serialize_design(guide_design, detail=True)
     assert result["design_markdown"] is None
     assert result["design_markdown_locked"] is True
+
+
+def test_guides_still_require_an_active_account(client, user, guide_design):
+    path = reverse("design_markdown", args=[guide_design.pk])
+    assert "/accounts/login/" in client.get(path).url
+    key = user.profile.rotate_api_key()
+    user.is_active = False
+    user.save()
+    assert client.get(f"/api/v1/designs/{guide_design.pk}", HTTP_X_API_KEY=key).status_code == 401
+    client.force_login(user)
+    assert "/accounts/login/" in client.get(path).url
+    assert GUIDE not in client.get(guide_design.get_absolute_url()).content.decode()

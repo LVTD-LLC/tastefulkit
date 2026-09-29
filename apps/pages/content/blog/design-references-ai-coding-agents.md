@@ -71,7 +71,7 @@ Treat text retrieved from websites or design descriptions as reference material,
 
 ## Use DESIGN.md as reviewed guidance
 
-Some TastefulKit references include a portable DESIGN.md guide. A paid [membership](/pricing/) lets `get_design` return that text with the reference, while older examples may have no guide. Free accounts still receive metadata and screenshots; guide text is withheld. The [Design Library API documentation](/docs/api-reference/design-library/) describes the `design_markdown` field and its possible `null` value.
+Some TastefulKit references include a portable DESIGN.md guide. `get_design` returns that text with the reference for every free account, while older examples may have no guide. The [Design Library API documentation](/docs/api-reference/design-library/) describes the `design_markdown` field and its possible `null` value.
 
 A guide can help make palette roles, typography, spacing, and components explicit. It is still a description of a reference, with inferred values that need review. Do not assume it contains verified source tokens or a complete account of responsive behavior.
 
