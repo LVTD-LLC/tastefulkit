@@ -136,3 +136,13 @@ def test_docs_navigation_uses_product_guides_and_frontmatter_titles():
     ]
     assert navigation[0]["pages"][0]["title"] == "Start here"
     assert navigation[-1]["category"] == "API Reference"
+
+
+@pytest.mark.django_db
+def test_public_api_schema_only_documents_catalogue_reads(client):
+    schema = client.get("/api/openapi.json").json()
+    paths = schema["paths"]
+    assert "get" in paths["/api/v1/designs"]
+    assert "post" not in paths["/api/v1/designs"]
+    assert "/api/v1/designs/{design_id}/site" not in paths
+    assert "DesignIn" not in schema.get("components", {}).get("schemas", {})

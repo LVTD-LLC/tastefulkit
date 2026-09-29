@@ -161,7 +161,7 @@ Create an API key in Account settings. Keys are shown once and stored hashed.
 Only active superusers may submit; staff status and the first signup confer no
 write access. All catalogue creation/refreshes use `POST /api/v1/designs` as multipart:
 JSON `payload`, binary `screenshot`, `thumbnail`, and UTF-8 `design_md`.
-See [the submission contract](apps/pages/content/docs/api-reference/design-library.md)
+See [the submission contract](docs/maintainers/design-ingestion.md)
 for exact preparation requirements, limits, a curl example and the pinned DESIGN.md format.
 
 The payload supplies a timestamp and a finite nonzero 768-value embedding from
@@ -183,7 +183,7 @@ compatibility sinks so already-queued capture/index jobs cannot generate content
 rollout. Legacy entries stay visible; agents backfill them through explicit replacement
 POSTs. Do not hide or delete the catalogue as a migration shortcut.
 
-Interactive API schema: `/api/docs`. Search/read permissions and signed asset URLs remain
+Public read-only API schema: `/api/docs`; admin write endpoints are excluded. Search/read permissions and signed asset URLs remain
 unchanged. No externally supplied asset URL is fetched by the app.
 
 ## Hosted MCP
