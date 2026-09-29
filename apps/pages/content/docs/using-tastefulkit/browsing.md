@@ -84,8 +84,10 @@ actions per minute per account or guest session, including skips.
 
 Explore's **Type** filter separates full landing and pricing pages from heroes,
 calls to action, auth forms, and other components. The screenshot on a design's
-detail page sits in a square preview: scroll inside it, swipe, or focus it with
-Tab and use the arrow keys to inspect the rest. Small components keep their natural height.
+detail page keeps its original proportions. Short components fit without an empty
+square beneath them; tall screenshots scroll inside a bounded preview. Swipe, or
+focus the preview with Tab and use the arrow keys to inspect the rest. Small images
+are not enlarged. Thumbnails show the complete image without cropping.
 
 When a reference belongs to a site, **More from [site name]** shows related
 references. Choose **All designs from this site** to browse the whole group.
