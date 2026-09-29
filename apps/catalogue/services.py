@@ -135,6 +135,11 @@ def related_designs(design):
     )
 
 
+def visible_kinds():
+    kinds = set(visible_designs().order_by().values_list("kind", flat=True).distinct())
+    return [(value, label) for value, label in Design.Kind.choices if value in kinds]
+
+
 def design_filters(page=1):
     """Discover filter values from visible designs only, in bounded pages."""
     visible = visible_designs()
@@ -148,11 +153,7 @@ def design_filters(page=1):
     tag_page = Paginator(tags.values_list("name", flat=True), 100).get_page(page)
     industry_page = Paginator(industries, 100).get_page(page)
     return {
-        "kinds": [
-            {"value": value, "label": label}
-            for value, label in Design.Kind.choices
-            if visible.filter(kind=value).exists()
-        ],
+        "kinds": [{"value": value, "label": label} for value, label in visible_kinds()],
         "tags": list(tag_page),
         "industries": list(industry_page),
         "tags_page": tag_page.number,

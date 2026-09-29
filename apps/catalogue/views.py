@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
-from apps.catalogue.services import related_designs, search_designs, visible_designs
+from apps.catalogue.services import related_designs, search_designs, visible_designs, visible_kinds
 from apps.pages.blog import published_posts
 
 
@@ -48,7 +48,7 @@ def library(request):
             "industry": industry,
             "saved": saved,
             "search_mode": mode,
-            "kinds": Design.Kind.choices,
+            "kinds": visible_kinds(),
             "tags": Tag.objects.filter(designs__in=visible_designs()).distinct(),
             "industries": visible_designs()
             .exclude(industry="")
