@@ -1,3 +1,5 @@
+from uuid import UUID
+
 from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
@@ -13,9 +15,14 @@ def visible_designs():
     )
 
 
-def search_designs(query="", kind="", tag="", industry="", *, saved_by=None):
+def search_designs(query="", kind="", tag="", industry="", *, saved_by=None, site=""):
     query, kind, tag, industry = [clean_search_text(v) for v in (query, kind, tag, industry)]
-    designs = visible_designs().prefetch_related("tags")
+    designs = visible_designs().select_related("site").prefetch_related("tags")
+    if site:
+        try:
+            designs = designs.filter(site_id=UUID(str(site)))
+        except ValueError:
+            designs = designs.none()
     if kind:
         designs = designs.filter(kind=kind)
     if tag:
@@ -52,6 +59,9 @@ def serialize_design(design, *, admin=False, detail=False, include_design_markdo
         "id": str(design.pk),
         "title": design.title,
         "source_url": design.source_url,
+        "site": {"id": str(design.site_id), "name": design.site.name, "url": design.site.url}
+        if design.site_id
+        else None,
         "description": design.description,
         "kind": design.kind,
         "industry": design.industry,
@@ -80,9 +90,9 @@ def clean_search_text(value):
     return value.replace("\x00", "").encode("utf-8", "replace").decode()[:300]
 
 
-def design_page(query="", kind="", tag="", industry="", page=1):
+def design_page(query="", kind="", tag="", industry="", page=1, *, site=""):
     """Shared REST/MCP search, visibility, pagination and screenshot serialization."""
-    designs, mode = search_designs(query, kind, tag, industry)
+    designs, mode = search_designs(query, kind, tag, industry, site=site)
     pager = Paginator(designs, 24)
     current = pager.get_page(page)
     return {
@@ -96,14 +106,38 @@ def design_page(query="", kind="", tag="", industry="", page=1):
 
 def design_detail(design_id, user):
     admin = user.is_active and user.is_superuser
-    designs = Design.objects.all().defer("embedding") if admin else visible_designs()
-    design = get_object_or_404(designs.prefetch_related("tags"), pk=design_id)
-    return serialize_design(
+    designs = (
+        Design.objects.select_related("site").defer("embedding") if admin else visible_designs()
+    )
+    design = get_object_or_404(
+        designs.select_related("site").prefetch_related("tags"), pk=design_id
+    )
+    result = serialize_design(
         design,
         admin=admin,
         detail=True,
         include_design_markdown=user.is_authenticated and user.is_active,
     )
+
+    result["related_designs"] = [serialize_design(item) for item in related_designs(design)[:6]]
+    return result
+
+
+def related_designs(design):
+    if not design.site_id:
+        return visible_designs().none()
+    return (
+        visible_designs()
+        .select_related("site")
+        .filter(site_id=design.site_id)
+        .exclude(pk=design.pk)
+        .prefetch_related("tags")
+    )
+
+
+def visible_kinds():
+    kinds = set(visible_designs().order_by().values_list("kind", flat=True).distinct())
+    return [(value, label) for value, label in Design.Kind.choices if value in kinds]
 
 
 def design_filters(page=1):
@@ -119,10 +153,7 @@ def design_filters(page=1):
     tag_page = Paginator(tags.values_list("name", flat=True), 100).get_page(page)
     industry_page = Paginator(industries, 100).get_page(page)
     return {
-        "kinds": [
-            {"value": value, "label": label}
-            for value, label in [(Design.Kind.LANDING, Design.Kind.LANDING.label)]
-        ],
+        "kinds": [{"value": value, "label": label} for value, label in visible_kinds()],
         "tags": list(tag_page),
         "industries": list(industry_page),
         "tags_page": tag_page.number,

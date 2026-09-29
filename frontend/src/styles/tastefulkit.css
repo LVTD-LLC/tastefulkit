@@ -211,3 +211,8 @@
   .tk-blog-heading > p,.tk-blog-body { font-size: 17px; }
   .tk-blog-body h2 { font-size: 25px; }
 }
+
+.tk-shot-viewport{width:100%;max-width:800px;aspect-ratio:1;overflow-y:auto;border:1px solid var(--tk-line);border-radius:9px;margin:12px 0 24px;background:var(--tk-soft)}
+.tk-shot-viewport:focus-visible{outline:2px solid var(--tk-accent);outline-offset:4px}
+.tk-shot-viewport .tk-fullshot{display:block;width:100%;height:auto;border:0;border-radius:0;margin:0}
+.tk-related{margin:40px 0}.tk-filters{flex-wrap:wrap}

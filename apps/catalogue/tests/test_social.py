@@ -133,5 +133,5 @@ def test_unreadable_thumbnail_returns_png_without_leaking_content(client, social
 def test_nonlanding_designs_are_not_public_teasers(client, social_design):
     social_design.kind = Design.Kind.HERO
     social_design.save()
-    assert client.get(social_design.get_absolute_url()).status_code == 404
+    assert client.get(social_design.get_absolute_url()).status_code == 302
     assert client.get(reverse("design_social_image", args=[social_design.pk])).status_code == 404

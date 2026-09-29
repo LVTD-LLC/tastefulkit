@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
-from apps.catalogue.services import search_designs, visible_designs
+from apps.catalogue.services import related_designs, search_designs, visible_designs, visible_kinds
 from apps.pages.blog import published_posts
 
 
@@ -25,12 +25,13 @@ def landing(request):
 @never_cache
 def library(request):
     query = request.GET.get("q", "")[:300]
-    kind = Design.Kind.LANDING
+    kind = request.GET.get("kind", "")
+    site = request.GET.get("site", "")
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")
     saved = request.GET.get("saved") == "1"
     designs, mode = search_designs(
-        query, kind, tag, industry, saved_by=request.user if saved else None
+        query, kind, tag, industry, saved_by=request.user if saved else None, site=site
     )
     page = Paginator(designs, 24).get_page(request.GET.get("page"))
     params = request.GET.copy()
@@ -42,11 +43,12 @@ def library(request):
             "page": page,
             "q": query,
             "kind": kind,
+            "site": site,
             "tag": tag,
             "industry": industry,
             "saved": saved,
             "search_mode": mode,
-            "kinds": Design.Kind.choices,
+            "kinds": visible_kinds(),
             "tags": Tag.objects.filter(designs__in=visible_designs()).distinct(),
             "industries": visible_designs()
             .exclude(industry="")
@@ -64,9 +66,13 @@ def detail(request, pk):
         return redirect("account_login")
     if not request.user.is_authenticated:
         design = get_object_or_404(
-            visible_designs().filter(kind=Design.Kind.LANDING).only("id", "title", "thumbnail"),
+            visible_designs().select_related(None).only("id", "title", "thumbnail", "kind"),
             pk=pk,
         )
+        if design.kind != Design.Kind.LANDING:
+            from django.contrib.auth.views import redirect_to_login
+
+            return redirect_to_login(request.get_full_path())
         return render(
             request,
             "catalogue/teaser.html",
@@ -76,12 +82,15 @@ def detail(request, pk):
                 "preview_thumbnail_url": design.thumbnail.url if design.thumbnail else "",
             },
         )
-    design = get_object_or_404(visible_designs().prefetch_related("tags"), pk=pk)
+    design = get_object_or_404(
+        visible_designs().select_related("site").prefetch_related("tags"), pk=pk
+    )
     return render(
         request,
         "catalogue/detail.html",
         {
             "design": design,
+            "related_designs": related_designs(design)[:6],
             "is_saved": SavedDesign.objects.filter(user=request.user, design=design).exists(),
         },
     )

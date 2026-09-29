@@ -11,6 +11,7 @@ from django.utils.text import slugify
 from apps.catalogue.artifacts import read_design_markdown, read_image
 from apps.catalogue.models import Design, Tag
 from apps.catalogue.providers import public_url
+from apps.catalogue.sites import prepare_site, resolve_site
 from apps.catalogue.vector_store import (
     remove_vector,
     restore_vector,
@@ -49,6 +50,8 @@ def submit_design(payload, user, screenshot, thumbnail, design_md):
     if not user.is_active or not user.is_superuser:
         raise PermissionError("Only active administrators can submit designs.")
     data = payload.model_dump()
+    site_supplied = "site" in payload.model_fields_set
+    site_data = prepare_site(data.pop("site"))
     replace = data.pop("replace_existing")
     vector = data.pop("embedding")
     tags = sorted({slugify(tag) for tag in data.pop("tags") if slugify(tag)})
@@ -75,6 +78,8 @@ def submit_design(payload, user, screenshot, thumbnail, design_md):
             design_id = design.pk
             if not created and not replace:
                 return design, False
+            if created or site_supplied:
+                data["site"] = resolve_site(site_data)
             old_files = [field.name for field in (design.screenshot, design.thumbnail) if field]
             previous = snapshot_vector(design.pk) if not created else None
             for key, value in data.items():

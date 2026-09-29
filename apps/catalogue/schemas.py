@@ -8,6 +8,26 @@ from apps.catalogue.providers import EMBEDDING_MODEL
 from apps.catalogue.vector_store import validate_vector
 
 
+class SiteIn(Schema):
+    model_config = ConfigDict(extra="forbid")
+
+    name: str = Field(min_length=1, max_length=160)
+    url: str = Field(min_length=1, max_length=2048)
+
+    @field_validator("name", "url")
+    @classmethod
+    def valid_text(cls, value):
+        value = value.strip()
+        if not value or any(ord(c) < 32 or 0xD800 <= ord(c) <= 0xDFFF for c in value):
+            raise ValueError("Use nonempty text without control characters.")
+        return value
+
+
+class SiteLinkIn(Schema):
+    model_config = ConfigDict(extra="forbid")
+    site: SiteIn | None
+
+
 class DesignIn(Schema):
     model_config = ConfigDict(extra="forbid")
 
@@ -15,6 +35,7 @@ class DesignIn(Schema):
     embedding_model: Literal[EMBEDDING_MODEL]
     embedding: list[float] = Field(min_length=768, max_length=768)
     replace_existing: bool = False
+    site: SiteIn | None = None
 
     @field_validator("embedding")
     @classmethod

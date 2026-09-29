@@ -15,11 +15,27 @@ class Tag(models.Model):
         return self.name
 
 
+class Site(models.Model):
+    """Optional source identity shared by pages and isolated components."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=160)
+    url = models.URLField(max_length=2048, unique=True)
+
+    class Meta:
+        ordering = ["name", "id"]
+
+    def __str__(self):
+        return self.name
+
+
 class Design(models.Model):
     class Kind(models.TextChoices):
         LANDING = "landing_page", "Landing page"
         PRICING = "pricing_page", "Pricing page"
         HERO = "hero", "Hero"
+        CTA = "cta", "Call to action"
+        AUTH_FORM = "auth_form", "Auth form"
         BLOG = "blog", "Blog"
         NAVIGATION = "navigation", "Navigation"
         FOOTER = "footer", "Footer"
@@ -36,6 +52,9 @@ class Design(models.Model):
     fingerprint = models.CharField(max_length=64, unique=True, editable=False)
     title = models.CharField(max_length=160)
     source_url = models.URLField(max_length=2048)
+    site = models.ForeignKey(
+        Site, null=True, blank=True, on_delete=models.SET_NULL, related_name="designs"
+    )
     description = models.TextField(max_length=5000)
     kind = models.CharField(
         max_length=30, choices=Kind.choices, default=Kind.LANDING, db_index=True

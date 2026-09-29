@@ -52,10 +52,10 @@ storage or environment-variable support rather than committing credentials.
 
 | Tool | What it does |
 | --- | --- |
-| `list_designs` | Browse the newest published, ready designs, with optional `kind`, `tag`, `industry`, and `page`. |
+| `list_designs` | Browse the newest published, ready designs, with optional `kind`, `tag`, `industry`, `site` (UUID), and `page`. |
 | `search_designs` | Search with `q` and the same filters; uses semantic search when available and falls back to text. |
-| `get_design` | Fetch one `design_id`, with metadata, available DESIGN.md text, source URL, screenshot URL, and thumbnail URL. |
-| `get_design_filters` | Discover landing-page tags and industries used by visible designs. |
+| `get_design` | Fetch one `design_id`, with metadata, available DESIGN.md text, source URL, screenshot URL, thumbnail URL, optional site and up to six related references. |
+| `get_design_filters` | Discover kinds, tags and industries used by visible designs. |
 | `get_user_info` | Confirm which account your key belongs to. |
 
 Search and list responses use the same fields as the [Design Library API](/docs/api-reference/design-library/):
