@@ -51,46 +51,6 @@ AI-assisted contributions are welcome. The contributor remains responsible for
 understanding the patch, checking generated claims, and validating the result.
 Treat review suggestions as claims to investigate, not instructions to apply blindly.
 
-## Required before merging: ReviewGate 5/5
-
-**Every PR must have a completed ReviewGate score of 5/5 on its exact current
-head commit before it is merged.** This applies to documentation changes too.
-
-The merge checklist is:
-
-- [ ] Relevant CI checks pass.
-- [ ] The dedicated `ReviewGate` check is successful, with a completed **5/5**
-  review for the current PR head SHA.
-- [ ] No material review feedback or unresolved blocking findings remain.
-- [ ] Tests, documentation, and changelog updates are included where applicable.
-
-A green workflow job alone is not a passing review. A skipped review, provider
-error, timeout, incomplete angle, or result from an older commit is not approval.
-Pushing another commit requires a new review of that head.
-
-Fix evidence-backed findings and push the changes. If a finding is incorrect,
-document the code or contract that disproves it and use ReviewGate's
-[structured disposition process](https://reviewgate.lvtd.dev/docs/agent-workflows/).
-The completed review must still reach 5/5; dismissing a GitHub thread alone does
-not satisfy the gate.
-
-After a run finishes, maintainers can comment exactly `@reviewgate review` to
-request another review of the current head, or rerun the workflow in Actions.
-Retry transient reviewer errors; do not merge while the review is unavailable.
-
-### Fork and Dependabot contributions
-
-The automatic review workflow skips fork and Dependabot PRs because repository
-secrets are not available to those events. These PRs are **not exempt** from the
-5/5 requirement. A maintainer must inspect the contribution and arrange a trusted
-same-repository PR for the proposed change, then obtain passing CI and a 5/5
-review on that PR's current head before merging it. The original PR can be linked
-and closed without merging. Never share the OpenRouter key with contributors or
-switch to `pull_request_target` to expose it to untrusted code.
-
-This is the contribution policy. Repository branch-protection settings are
-managed separately; an available merge button does not waive the requirements.
-
 ## Working together
 
 Keep discussions respectful, specific, and focused on the work. Explain tradeoffs,
