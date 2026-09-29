@@ -81,3 +81,31 @@ def test_homepage_handles_a_small_or_empty_ranking(client, user, count):
     assert len(response.context["designs"]) == count
     assert response.content.count(b'class="design-card"') == count
     assert (b"We're collecting the first landing pages." in response.content) == (count == 0)
+
+
+@pytest.mark.parametrize("signed_in", [False, True])
+def test_install_prompt_is_public_and_never_exposes_or_rotates_account_key(client, user, signed_in):
+    from apps.core.views import NEW_API_KEY_SESSION_KEY
+
+    key = user.profile.rotate_api_key()
+    original_hash = user.profile.api_key_hash
+    if signed_in:
+        client.force_login(user)
+        session = client.session
+        session[NEW_API_KEY_SESSION_KEY] = key
+        session.save()
+    response = client.get("/")
+    html = response.content.decode()
+    assert response.status_code == 200
+    assert 'data-copy-source="#agent-install-prompt"' in html
+    assert (
+        "Look at https://github.com/LVTD-LLC/tastefulkit-skills and install the skills and MCP "
+        "for this agent. My API key is YOUR_API_KEY." in html
+    )
+    assert "Copy prompt" in html
+    assert 'href="/settings"' in html
+    assert key not in html
+    user.profile.refresh_from_db()
+    assert user.profile.api_key_hash == original_hash
+    if signed_in:
+        assert client.session[NEW_API_KEY_SESSION_KEY] == key
