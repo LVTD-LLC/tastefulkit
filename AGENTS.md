@@ -65,10 +65,7 @@ is the contribution and merge contract.
    before finishing.
 6. Update `CHANGELOG.md` under the current ISO date heading (`## YYYY-MM-DD`)
    for user-visible behavior changes.
-7. Before merging, require a completed ReviewGate **5/5** result and successful
-   `ReviewGate` check for the exact current PR head, passing CI, and addressed
-   material review feedback. A timeout, skipped review, stale result, or green
-   workflow without a passing review is not approval. See `CONTRIBUTING.md`.
+7. Follow `CONTRIBUTING.md` before merging and require passing CI.
 
 ## Repo-Scoped Skills
 
