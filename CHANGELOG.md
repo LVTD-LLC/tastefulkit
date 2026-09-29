@@ -2,6 +2,8 @@
 
 ## 2026-09-29
 
+- Automatically provision encrypted, copyable API keys for new accounts and add an idempotent existing-account backfill that preserves legacy keys. Include the owner’s key in the renamed hero installation prompt, disable it for guests with a sign-in tooltip, place it below the main CTAs, and remove the recent-guides section and placeholder helper. Explicit rotation revokes all prior keys.
+
 - Add a homepage hero “Copy prompt” action for installing the public TastefulKit skills and MCP, with an API-key placeholder and settings link. Preserve the original copy-button label after repeated clicks.
 
 - Share Explore, Arena, Global ranking and For you navigation across discovery pages, with content-type tabs that preserve selection; enable component comparisons/rankings and remove Explore’s duplicate Type filter.

@@ -26,7 +26,7 @@ Open **Account** from the library, or go to [Settings](/settings).
 
 ## Generate a key for a script or agent
 
-In Settings, find **API access** and choose **Generate key**. Copy the new key when it is shown; you cannot reveal that same key again later.
+Your account receives an API key automatically. Sign in and choose **Copy AI Tooling Installation Prompt** on the homepage to copy a prompt with your key already included. Keep this prompt private and share it only with an agent you trust.
 
 Choose **Rotate key** if you need a replacement. Rotation invalidates the old key, so update any scripts or agents that used it.
 

@@ -52,6 +52,7 @@ if POSTHOG_LOG_LEVEL not in logging.getLevelNamesMapping():
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = env("SECRET_KEY")
+SECRET_KEY_FALLBACKS = env.list("SECRET_KEY_FALLBACKS", default=[])
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env.bool("DEBUG", default=False)

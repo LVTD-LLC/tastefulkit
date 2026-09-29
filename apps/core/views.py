@@ -98,7 +98,7 @@ def rotate_api_key(request):
     profile, _created = Profile.objects.get_or_create(user=request.user)
     api_key = profile.rotate_api_key()
     request.session[NEW_API_KEY_SESSION_KEY] = api_key
-    messages.success(request, "New API key generated. Copy it now; it will only be shown once.")
+    messages.success(request, "New API key generated. Previous keys are now revoked.")
     return redirect("settings")
 
 

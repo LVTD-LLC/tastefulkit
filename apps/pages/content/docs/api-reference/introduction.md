@@ -6,14 +6,14 @@ description: Connect a script or agent to TastefulKit with a personal API key an
 # Read TastefulKit from a script or agent
 
 API and MCP access, including available DESIGN.md guides, is free. Create an account
-and generate an API key in [Account settings](/settings). No subscription is required.
+and use your automatically provisioned API key. No subscription is required.
 
 
 The API lets you search the design library, fetch a design, and check which account a key belongs to. You can read this documentation without signing in; API requests require a personal API key.
 
 ## Get a key
 
-Sign in and open [Settings](/settings). Under **API access**, choose **Generate key** and store the key securely as `TASTEFULKIT_API_KEY` in your local environment. If a key already exists and you no longer have it, **Rotate key** creates a replacement and invalidates the previous one.
+Sign in and choose **Copy AI Tooling Installation Prompt** on the homepage to copy a ready-to-use prompt containing your API key. For scripts, store the key securely as `TASTEFULKIT_API_KEY` in your local environment. **Rotate key** in [Settings](/settings) creates a replacement and invalidates all previous keys.
 
 ## Send the key in a header
 

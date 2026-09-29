@@ -1,6 +1,10 @@
+import base64
 import hashlib
 import hmac
 import secrets
+
+from cryptography.fernet import Fernet, MultiFernet
+from django.conf import settings
 
 API_KEY_PREFIX = "ak"
 API_KEY_ID_BYTES = 12
@@ -51,3 +55,26 @@ def verify_api_key(api_key: str, api_key_hash: str) -> bool:
 
 def _hash_api_key_with_salt(api_key: str, salt: str) -> str:
     return hashlib.sha256(f"{API_KEY_HASH_CONTEXT}:{salt}:{api_key}".encode()).hexdigest()
+
+
+def api_key_cipher():
+    """Domain-separated encryption; retain SECRET_KEY_FALLBACKS during key rotation."""
+    secrets_to_try = [settings.SECRET_KEY, *settings.SECRET_KEY_FALLBACKS]
+    return MultiFernet(
+        [
+            Fernet(
+                base64.urlsafe_b64encode(
+                    hmac.digest(secret.encode(), b"tastefulkit-api-key-encryption-v1", "sha256")
+                )
+            )
+            for secret in secrets_to_try
+        ]
+    )
+
+
+def encrypt_api_key(key):
+    return api_key_cipher().encrypt(key.encode()).decode()
+
+
+def decrypt_api_key(encrypted):
+    return api_key_cipher().decrypt(encrypted.encode()).decode()

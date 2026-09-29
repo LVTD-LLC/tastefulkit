@@ -159,7 +159,9 @@ Local settings use the database-backed task queue and in-memory cache. Productio
 
 ## Agent API
 
-Create an API key in Account settings. Keys are shown once and stored hashed.
+New users receive API keys automatically. The signed-in homepage installation prompt includes
+the owner’s key; encrypted recovery supplements hashed authentication. Legacy keys remain
+valid until explicit Settings rotation. See README for backfill and encryption-key rotation.
 Only active superusers may submit; staff status and the first signup confer no
 write access. All catalogue creation/refreshes use `POST /api/v1/designs` as multipart:
 JSON `payload`, binary `screenshot`, `thumbnail`, and UTF-8 `design_md`.

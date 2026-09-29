@@ -6,6 +6,7 @@ authors = [{ name = "LVTD, LLC", email = "hello@tastefulkit.com" }]
 requires-python = ">=3.14.5,<4.0"
 dependencies = [
     "boto3>=1.43.34",
+    "cryptography>=50.0.1",
     "django>=6.0.5",
     "django-allauth>=65.16.1",
     "django-anymail>=15.0",
