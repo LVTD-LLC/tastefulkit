@@ -339,7 +339,7 @@ def test_guest_skip_revisit_empty_and_filter(client, designs):
     assert len(response.context["pair"]) == 2
     ranking = client.get("/rankings/?kind=hero")
     assert ranking.status_code == 200
-    assert all(design.kind == "landing_page" for design in ranking.context["page"])
+    assert all(design.kind == "hero" for design in ranking.context["page"])
 
 
 def test_guest_tokens_are_session_bound_and_cannot_be_used_after_login(client, user, designs):
@@ -461,7 +461,7 @@ def test_screenshots_are_vote_buttons_and_no_element_controls(client, designs):
             if tag == "img" and "data-arena-full-src" in attrs:
                 images.append(attrs)
 
-    page = client.get("/arena/?kind=hero")
+    page = client.get("/arena/?kind=landing_page")
     PreviewParser().feed(page.content.decode())
     assert len(buttons) == 2
     assert {button["value"] for button in buttons} == {str(d.pk) for d in page.context["pair"]}

@@ -14,12 +14,6 @@
             </div>
         </div>
         {% include "catalogue/arena_nav.html" %}
-        <nav class="tk-tabs" aria-label="Comparison collection">
-            <a href="?kind=landing_page{% if mode %}&amp;mode={{ mode }}{% endif %}"
-               {% if kind == 'landing_page' %}aria-current="page"{% endif %}>Landing pages</a>
-            <a href="?kind=ui_library{% if mode %}&amp;mode={{ mode }}{% endif %}"
-               {% if kind == 'ui_library' %}aria-current="page"{% endif %}>UI libraries</a>
-        </nav>
         {% if pair %}
             <form method="post" action="{% url 'arena_vote' %}" data-arena-form>
                 {% csrf_token %}

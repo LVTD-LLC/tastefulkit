@@ -98,8 +98,10 @@ is the contribution and merge contract.
 
 ## Application contracts
 
-- Explore supports pages and isolated components through a Type filter. Arena,
-  rankings and homepage previews remain landing-page focused. Optional Site links
+- Explore, Arena, global rankings and For you share two-level navigation with
+  content-type tabs. Types with published ready examples appear automatically;
+  UI libraries and landing pages remain available even when empty. Arena and
+  rankings are scoped to the selected type; homepage previews remain landing-page focused. Optional Site links
   group references by canonical origin; the admin ingestion POST accepts site metadata
   and PATCH /api/v1/designs/{id}/site links existing entries without asset replacement. External agents prepare metadata, screenshots,
   thumbnails, DESIGN.md and embeddings; the admin-only multipart POST validates, stores

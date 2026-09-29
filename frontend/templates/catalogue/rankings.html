@@ -7,12 +7,6 @@
         {% for message in messages %}<p class="tk-arena-feedback" role="status">{{ message }}</p>{% endfor %}
         <div class="tk-arena-heading"><div><h1>{% if mode == "personal" %}Good, according to you.{% else %}The community's favorites.{% endif %}</h1><p class="tk-arena-intro">{% if mode == "personal" %}Your choices shape a ranking that is yours alone.{% else %}Real comparisons. Shared favorites. A ranking that grows with every vote.{% endif %}</p></div><a class="tk-button" href="{% url 'voting_arena' %}?kind={{ kind }}">Compare designs →</a></div>
         {% include "catalogue/arena_nav.html" %}
-        <nav class="tk-tabs" aria-label="Comparison collection">
-            <a href="?kind=landing_page{% if mode %}&amp;mode={{ mode }}{% endif %}"
-               {% if kind == 'landing_page' %}aria-current="page"{% endif %}>Landing pages</a>
-            <a href="?kind=ui_library{% if mode %}&amp;mode={{ mode }}{% endif %}"
-               {% if kind == 'ui_library' %}aria-current="page"{% endif %}>UI libraries</a>
-        </nav>
         {% if mode == "personal" %}
             <div class="tk-taste-summary">
                 {% if summary.has_taste %}<p>Based on <strong>{{ summary.votes }} comparison{{ summary.votes|pluralize }}</strong> and <strong>{{ summary.saves }} saved reference{{ summary.saves|pluralize }}</strong>.</p><p>Your votes lead; shared styles, industries and saves help suggest designs you haven't compared.</p>

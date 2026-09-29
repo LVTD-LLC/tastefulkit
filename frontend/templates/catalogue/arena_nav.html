@@ -1,10 +1,14 @@
-<nav class="tk-tabs" aria-label="Design discovery">
-    <a href="{% url 'library' %}">Explore</a>
-    <a href="{% url 'ui_libraries' %}">UI libraries</a>
-    <a href="{% url 'voting_arena' %}?kind={{ kind }}"
-       {% if request.resolver_match.url_name == 'voting_arena' %}aria-current="page"{% endif %}>Arena</a>
-    <a href="{% url 'design_rankings' %}?kind={{ kind }}"
-       {% if request.resolver_match.url_name == 'design_rankings' and mode == 'global' %}aria-current="page"{% endif %}>Global ranking</a>
-    {% if request.user.is_authenticated %}<a href="{% url 'design_rankings' %}?mode=personal&amp;kind={{ kind }}"
-   {% if mode == 'personal' %}aria-current="page"{% endif %}>For you</a>{% else %}<a href="{% url 'account_login' %}?next={% url 'design_rankings' %}%3Fmode%3Dpersonal">Sign in for your ranking</a>{% endif %}
-</nav>
+<div class="tk-discovery-nav">
+    <nav class="tk-tabs" aria-label="Design discovery">
+        {% for item in discovery_sections %}
+            <a href="{{ item.url }}"
+               {% if item.active %}aria-current="page"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+    </nav>
+    <nav class="tk-tabs" aria-label="Content types">
+        {% for item in discovery_types %}
+            <a href="{{ item.url }}"
+               {% if item.active %}aria-current="page"{% endif %}>{{ item.label }}</a>
+        {% endfor %}
+    </nav>
+</div>

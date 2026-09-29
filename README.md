@@ -99,3 +99,5 @@ researched pricing. Unknown pricing is labeled as unconfirmed. Library detail
 pages are public; no account is needed. Choose **UI libraries** in Arena or
 rankings to compare their landing-page designs separately from design references.
 Read-only REST and MCP access continues to use an active account's API key.
+
+Discovery pages share two navigation rows: Explore, Arena, Global ranking and For you, followed by content types. The selected type carries across sections. UI libraries and landing pages are always available; other types appear as published references are added. Explore defaults to landing pages and keeps saved references accessible below the tabs.

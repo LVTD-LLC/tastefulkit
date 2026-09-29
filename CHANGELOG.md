@@ -2,6 +2,8 @@
 
 ## 2026-09-29
 
+- Share Explore, Arena, Global ranking and For you navigation across discovery pages, with content-type tabs that preserve selection; enable component comparisons/rankings and remove Explore’s duplicate Type filter.
+
 - Fit detail previews to each image’s proportions without enlarging small assets or leaving empty square panels; retain bounded scrolling for tall captures. Show complete, uncropped catalogue thumbnails and apply the same preview behavior to UI library details.
 
 ### UI library directory

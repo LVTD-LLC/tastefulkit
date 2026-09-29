@@ -7,6 +7,7 @@ from django.shortcuts import get_object_or_404, render
 from django.views.decorators.cache import never_cache
 
 from apps.catalogue.models import Design
+from apps.catalogue.navigation import discovery_navigation
 from apps.catalogue.services import clean_search_text, visible_designs
 
 
@@ -58,6 +59,7 @@ def directory(request):
         {
             "page": page,
             "q": query,
+            **discovery_navigation(Design.Kind.UI_LIBRARY, "explore"),
             "canonical_url": settings.SITE_URL.rstrip("/") + "/ui-libraries/",
         },
     )
