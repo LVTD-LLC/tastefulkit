@@ -2,6 +2,8 @@
 
 ## 2026-09-29
 
+- Fit detail previews to each image’s proportions without enlarging small assets or leaving empty square panels; retain bounded scrolling for tall captures. Show complete, uncropped catalogue thumbnails and apply the same preview behavior to UI library details.
+
 ### UI library directory
 - Added public UI library directory/detail pages with screenshots, framework notes,
   website/GitHub links, multi-plan pricing and sitemap coverage.

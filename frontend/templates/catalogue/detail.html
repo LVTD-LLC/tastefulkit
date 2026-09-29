@@ -22,12 +22,10 @@
 {% else %}
 <p class="tk-muted">A design guide is not available for this older reference yet.</p>
 {% endif %}
-<p class="tk-muted" id="preview-help">Scroll inside the preview to see the full design.</p>
 <div class="tk-shot-viewport"
      tabindex="0"
      role="region"
-     aria-label="{{ design.title }} screenshot"
-     aria-describedby="preview-help">
+     aria-label="{{ design.title }} screenshot">
     <img class="tk-fullshot"
          src="{{ design.screenshot.url }}"
          alt="Full screenshot of {{ design.title }}">
