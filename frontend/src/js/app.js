@@ -1,5 +1,6 @@
 import { initArena } from "./modules/arena.js";
 import { initCopyButtons } from "./modules/copy.js";
+import { initDiscoveryNavigation } from "./modules/discovery.js";
 import { initDocsEnhancements } from "./modules/docs.js";
 import { initMessages } from "./modules/messages.js";
 import { initPosthog } from "./modules/posthog.js";
@@ -8,6 +9,7 @@ import { initUserSettingsCache } from "./modules/user-settings.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
+  initDiscoveryNavigation();
   initArena();
   initMessages();
   initCopyButtons();
