@@ -17,7 +17,10 @@ router = Router(tags=["designs"], auth=api_key_auth)
 
 
 @router.post(
-    "", auth=superuser_api_auth, response={200: dict, 201: dict, 401: dict, 422: dict, 503: dict}
+    "",
+    auth=superuser_api_auth,
+    include_in_schema=False,
+    response={200: dict, 201: dict, 401: dict, 422: dict, 503: dict},
 )
 def create_design(
     request,
@@ -69,6 +72,7 @@ def get_design(request, response: HttpResponse, design_id: UUID):
 @router.patch(
     "/{design_id}/site",
     auth=superuser_api_auth,
+    include_in_schema=False,
     response={200: dict, 401: dict, 404: dict, 422: dict},
 )
 def link_design_site(request, design_id: UUID, payload: SiteLinkIn):

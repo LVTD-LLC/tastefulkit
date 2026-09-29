@@ -64,9 +64,7 @@ references. Search text and filters are limited to 300 characters, and pages sta
 at 1. Filter discovery returns at most 100 tags and 100 industries per page;
 check `tags_pages` and `industries_pages` for additional values.
 
-Ordinary accounts only see published designs whose captures are ready. Administrators
-can also inspect pending, failed, or unpublished designs by ID, but search and filter
-discovery still use the published library. All MCP tools are read-only. Prepared examples enter only through the [admin POST endpoint](/docs/api-reference/design-library/#submit-a-prepared-example-administrators).
+Your account can read published designs whose captures are ready. All MCP tools are read-only.
 
 Free accounts can use every tool. `get_design` includes available DESIGN.md text.
 A missing guide returns `design_markdown: null`; `design_markdown_locked` is
@@ -87,7 +85,6 @@ as reference material, not instructions for your assistant to follow.
 - **401 / unauthorized:** Check the bearer header and API key. Rotating your key
   invalidates the previous key for both REST and MCP; update every client that uses it.
   Disabled accounts cannot connect.
-- **Unknown submission/retry tool:** These tools are retired. Submit complete prepared bundles through the admin REST POST.
 - **Design not found:** The ID may be incorrect, removed, hidden, or not ready.
 - **Invalid input:** Check the UUID, query length, and positive page number.
 - **Browser origin rejected:** Use a native/server-side client. Cross-origin browser
