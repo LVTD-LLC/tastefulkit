@@ -90,3 +90,12 @@ or read the [contribution guide](CONTRIBUTING.md).
 
 For local development, architecture, and deployment, see [AGENTS.md](AGENTS.md)
 and the [maintainer documentation](docs/maintainers/README.md).
+
+## UI libraries
+
+Browse the public [UI library directory](https://tastefulkit.com/ui-libraries/)
+for screenshots, descriptions, framework notes, website/GitHub links and
+researched pricing. Unknown pricing is labeled as unconfirmed. Library detail
+pages are public; no account is needed. Choose **UI libraries** in Arena or
+rankings to compare their landing-page designs separately from design references.
+Read-only REST and MCP access continues to use an active account's API key.

@@ -15,7 +15,8 @@ from apps.catalogue.models import ArenaGuest, Design, TasteProfile
 
 
 def selected_kind(request):
-    return Design.Kind.LANDING
+    value = request.POST.get("kind") if request.method == "POST" else request.GET.get("kind")
+    return Design.Kind.UI_LIBRARY if value == Design.Kind.UI_LIBRARY else Design.Kind.LANDING
 
 
 def participant(request):
@@ -76,7 +77,7 @@ def vote(request):
 @never_cache
 def revisit_skipped(request):
     request.session.pop("arena_skipped", None)
-    return redirect("voting_arena")
+    return redirect(reverse("voting_arena") + "?" + urlencode({"kind": selected_kind(request)}))
 
 
 @never_cache

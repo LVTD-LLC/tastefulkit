@@ -11,6 +11,7 @@ from apps.api.auth import api_key_auth, session_auth
 from apps.api.schemas import UserInfoOut, UserSettingsOut
 from apps.api.services import serialize_user_info
 from apps.catalogue.api import router as catalogue_router
+from apps.catalogue.library_api import router as library_router
 from apps.catalogue.vector_store import collection_healthy
 
 logger = logging.getLogger(__name__)
@@ -19,6 +20,7 @@ api = NinjaAPI(title="TastefulKit API", version="1.0")
 
 
 api.add_router("/v1/designs", catalogue_router)
+api.add_router("/v1/ui-libraries", library_router)
 
 
 @api.get(

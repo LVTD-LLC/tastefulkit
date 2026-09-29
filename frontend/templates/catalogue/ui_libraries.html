@@ -1,0 +1,41 @@
+{% extends "base_landing.html" %}
+{% block meta %}
+    <title>UI libraries for your next project · TastefulKit</title>
+    <meta name="description"
+          content="Browse UI libraries, compare frameworks and pricing, and find components for your next project.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% if q or request.GET.page %}<meta name="robots" content="noindex, follow">{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="tk-container library-page">
+        <div class="tk-detail-heading"><div><h1>UI libraries</h1><p class="tk-description">Find the components, frameworks, and pricing that fit your next project.</p></div><a class="tk-button" href="{% url 'voting_arena' %}?kind=ui_library">Compare libraries →</a></div>
+        <form method="get" class="tk-search">
+            <label for="library-search">Search UI libraries</label>
+            <div class="tk-search-row">
+                <input id="library-search"
+                       name="q"
+                       value="{{ q }}"
+                       type="search"
+                       placeholder="Name, framework, or use case"><button class="tk-button" type="submit">Search</button>
+            </div>
+        </form>
+        <p class="tk-muted">{{ page.paginator.count }} librar{{ page.paginator.count|pluralize:'y,ies' }}</p>
+        <div class="design-grid">
+            {% for design in page %}
+                <article class="design-card">
+                    <a class="design-preview" href="{{ design.get_absolute_url }}">
+                        <img src="{{ design.thumbnail.url }}"
+                             alt="{{ design.title }} landing page"
+                             loading="lazy"
+                             width="640"
+                             height="480">
+                    </a>
+                    <div class="tk-library-card-copy"><h2><a href="{{ design.get_absolute_url }}">{{ design.title }}</a></h2><p>{{ design.description|truncatechars:180 }}</p><div class="tk-tags">{% for framework in design.ui_library.frameworks %}<span>{{ framework }}</span>{% endfor %}</div></div>
+                </article>
+            {% empty %}
+                <div class="tk-empty"><h2>{% if q %}No libraries match that search.{% else %}The collection is getting started.{% endif %}</h2><p>{% if q %}Try a library name or a broader framework.{% else %}Check back for researched libraries with screenshots, framework notes, and pricing.{% endif %}</p><a href="{% url 'library' %}">Explore design references →</a></div>
+            {% endfor %}
+        </div>
+        {% if page.has_other_pages %}<nav class="tk-pagination" aria-label="Library pages">{% if page.has_previous %}<a href="?q={{ q|urlencode }}&page={{ page.previous_page_number }}">← Previous</a>{% endif %}<span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>{% if page.has_next %}<a href="?q={{ q|urlencode }}&page={{ page.next_page_number }}">Next →</a>{% endif %}</nav>{% endif %}
+    </div>
+{% endblock %}

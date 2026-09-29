@@ -23,7 +23,7 @@ All query parameters are optional:
 | Parameter | Use |
 | --- | --- |
 | `q` | A text description, such as `warm minimal`. |
-| `kind` | Use `landing_page`, `pricing_page`, `hero`, `cta`, `auth_form`, `blog`, `navigation`, `footer`, `dashboard`, or `other`. |
+| `kind` | Use `landing_page`, `pricing_page`, `hero`, `cta`, `auth_form`, `blog`, `navigation`, `footer`, `dashboard`, `other`, or `ui_library`. |
 | `tag` | A style tag from the library. |
 | `industry` | An industry from the library. |
 | `site` | A site UUID from a design response; returns references from that site. |
@@ -69,3 +69,21 @@ Each response includes `site`: either `null`, or an object with `id`, `name`, an
 `url`. Detail responses also include up to six published, ready `related_designs`
 from that site. Use the `site` filter to paginate the complete group. REST and MCP
 list/search tools accept this filter.
+
+## Browse UI libraries
+
+UI libraries have their own public [directory](/ui-libraries/) and detail pages.
+They include framework compatibility, editorial notes, website/GitHub links and
+pricing when it has been confirmed. Arena and rankings have a **UI libraries**
+collection; these votes compare library landing pages, not implementation quality.
+
+With your API key, use `GET /api/v1/ui-libraries?q=react&page=1` to list/search
+libraries and `GET /api/v1/ui-libraries/LIBRARY_ID` to read one. Lists return
+`items`, `page`, `pages` and `total`, with up to 24 items per page.
+
+You can also pass `kind=ui_library` to the existing design search or MCP search.
+Library responses include a `library` object with `website_url`, `github_url`,
+`frameworks`, `notes`, `pricing`, `pricing_url` and `pricing_checked_at`.
+Pricing may have several plans: `free`, `one_time`, `recurring` (month/year), or
+`contact`. An empty pricing list means unconfirmed, not free. Always check the
+original library for current prices and licensing terms.

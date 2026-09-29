@@ -1,0 +1,55 @@
+{% extends "base_landing.html" %}
+{% block meta %}
+    <title>{{ design.title }} — UI library · TastefulKit</title>
+    <meta name="description"
+          content="{{ design.description|truncatechars:160 }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:title" content="{{ design.title }} — UI library">
+    <meta property="og:description"
+          content="{{ design.description|truncatechars:200 }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:image" content="{{ design.thumbnail.url }}">
+    <meta property="og:type" content="website">
+{% endblock %}
+{% block content %}
+    <div class="tk-container library-page tk-ui-library-detail">
+        <a class="tk-back" href="{% url 'ui_libraries' %}">← UI libraries</a>
+        <h1>{{ design.title }}</h1>
+        <p class="tk-description">{{ design.description }}</p>
+        <div class="tk-tags">{% for framework in library.frameworks %}<span>{{ framework }}</span>{% endfor %}</div>
+        <div class="tk-source">
+            <a href="{% if library.website_url %}{{ library.website_url }}{% else %}{{ design.source_url }}{% endif %}"
+               target="_blank"
+               rel="noopener noreferrer">Visit library ↗</a>
+            {% if library.github_url %}<a href="{{ library.github_url }}"
+   target="_blank"
+   rel="noopener noreferrer">GitHub repository ↗</a>{% endif %}
+        </div>
+        {% if library.notes %}<section class="tk-related"><h2>Working with this library</h2><div class="tk-description">{{ library.notes|linebreaks }}</div></section>{% endif %}
+        <section class="tk-related" aria-labelledby="pricing-title">
+            <h2 id="pricing-title">Pricing</h2>
+            {% for plan in library.pricing %}
+                <div class="tk-library-plan"><h3>{% if plan.name %}{{ plan.name }}{% else %}Plan{% endif %}</h3><p>{% if plan.billing == "free" %}Free{% elif plan.billing == "contact" %}Contact for pricing{% else %}{{ plan.currency }} {{ plan.amount }}{% if plan.billing == "one_time" %} · one-time{% else %} / {{ plan.interval }}{% endif %}{% endif %}</p>{% if plan.notes %}<p>{{ plan.notes }}</p>{% endif %}</div>
+{% empty %}<p class="tk-muted">Pricing has not been confirmed. Check the library's website.</p>{% endfor %}
+{% if library.pricing_checked_at %}<p class="tk-muted">Last checked {{ library.pricing_checked_at|date:'M j, Y' }}. Prices and licensing may change.</p>{% endif %}
+{% if library.pricing_url %}<a href="{{ library.pricing_url }}"
+   target="_blank"
+   rel="noopener noreferrer">Check current pricing and terms ↗</a>{% endif %}
+    </section>
+    <section class="tk-related">
+        <h2>Landing page preview</h2>
+        <p class="tk-muted" id="preview-help">Scroll inside the preview to see the full page.</p>
+        <div class="tk-shot-viewport"
+             tabindex="0"
+             role="region"
+             aria-label="{{ design.title }} screenshot"
+             aria-describedby="preview-help">
+            <img class="tk-fullshot"
+                 src="{{ design.screenshot.url }}"
+                 alt="Landing page of {{ design.title }}">
+        </div>
+        <p class="tk-muted">Captured {{ design.captured_at|date:'M j, Y' }}. This is a visual reference; check the library's license before using its components.</p>
+    </section>
+    <a class="tk-button" href="{% url 'voting_arena' %}?kind=ui_library">Compare UI libraries →</a>
+    </div>
+{% endblock %}

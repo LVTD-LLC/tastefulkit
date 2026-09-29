@@ -14,6 +14,12 @@
             </div>
         </div>
         {% include "catalogue/arena_nav.html" %}
+        <nav class="tk-tabs" aria-label="Comparison collection">
+            <a href="?kind=landing_page{% if mode %}&amp;mode={{ mode }}{% endif %}"
+               {% if kind == 'landing_page' %}aria-current="page"{% endif %}>Landing pages</a>
+            <a href="?kind=ui_library{% if mode %}&amp;mode={{ mode }}{% endif %}"
+               {% if kind == 'ui_library' %}aria-current="page"{% endif %}>UI libraries</a>
+        </nav>
         {% if pair %}
             <form method="post" action="{% url 'arena_vote' %}" data-arena-form>
                 {% csrf_token %}
@@ -47,18 +53,18 @@
                             <a class="tk-arena-inspect"
                                href="{{ design.get_absolute_url }}"
                                target="_blank"
-                               rel="noopener">{% if request.user.is_authenticated %}View reference{% else %}Sign in to view reference{% endif %} ↗</a>
+                               rel="noopener">{% if request.user.is_authenticated or kind == "ui_library" %}View reference{% else %}Sign in to view reference{% endif %} ↗</a>
                         </article>
                     {% endfor %}
                 </div>
             </form>
         {% else %}
             <div class="tk-empty"><h2>No new pairs right now.</h2><p>You've reached the end of the available comparisons for now. Revisit skipped pairs or explore the rankings.</p><div class="tk-guide-actions tk-arena-empty-actions"><a class="tk-button"
-   href="{% url 'design_rankings' %}{% if request.user.is_authenticated %}?mode=personal{% endif %}">See {% if request.user.is_authenticated %}your{% else %}global{% endif %} rankings →</a></div></div>
+   href="{% url 'design_rankings' %}?kind={{ kind }}{% if request.user.is_authenticated %}&amp;mode=personal{% endif %}">See {% if request.user.is_authenticated %}your{% else %}global{% endif %} rankings →</a></div></div>
         {% endif %}
         {% if skipped %}<form class="tk-arena-revisit"
       method="post"
-      action="{% url 'arena_revisit' %}">{% csrf_token %}<button class="tk-button tk-button-quiet" type="submit">Revisit skipped pairs</button></form>{% endif %}
+      action="{% url 'arena_revisit' %}">{% csrf_token %}<input type="hidden" name="kind" value="{{ kind }}"><button class="tk-button tk-button-quiet" type="submit">Revisit skipped pairs</button></form>{% endif %}
         {% if not request.user.is_authenticated %}
             <p class="tk-arena-note">No account needed. Your votes count toward the global ranking. <a href="{% url 'account_signup' %}?next={% url 'voting_arena' %}">Create an account</a> to build a personal ranking with your future votes.</p>
         {% endif %}
