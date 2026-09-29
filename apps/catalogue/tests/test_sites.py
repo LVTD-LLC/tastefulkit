@@ -36,10 +36,14 @@ def test_site_groups_components_and_keeps_optional(client, user, admin_key, qdra
     assert [str(d.pk) for d in client.get("/explore/?kind=hero").context["page"]] == [
         second.json()["id"]
     ]
-    assert ("hero", "Hero") in client.get("/explore/").context["kinds"]
-    assert ("cta", "Call to action") not in client.get("/explore/").context["kinds"]
+    assert "Hero" in [item["label"] for item in client.get("/explore/").context["discovery_types"]]
+    assert "Call to action" not in [
+        item["label"] for item in client.get("/explore/").context["discovery_types"]
+    ]
     Design.objects.filter(pk=second.json()["id"]).update(published=False)
-    assert ("hero", "Hero") not in client.get("/explore/").context["kinds"]
+    assert "Hero" not in [
+        item["label"] for item in client.get("/explore/").context["discovery_types"]
+    ]
     assert (
         client.get(f"/api/v1/designs/{first.json()['id']}", HTTP_X_API_KEY=admin_key).json()[
             "related_designs"

@@ -9,6 +9,7 @@
 {% block content %}
     <div class="tk-container library-page">
         <div class="tk-detail-heading"><div><h1>UI libraries</h1><p class="tk-description">Find the components, frameworks, and pricing that fit your next project.</p></div><a class="tk-button" href="{% url 'voting_arena' %}?kind=ui_library">Compare libraries →</a></div>
+        {% include "catalogue/arena_nav.html" %}
         <form method="get" class="tk-search">
             <label for="library-search">Search UI libraries</label>
             <div class="tk-search-row">

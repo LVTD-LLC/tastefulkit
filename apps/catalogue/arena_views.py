@@ -11,12 +11,8 @@ from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
 
 from apps.catalogue import arena
-from apps.catalogue.models import ArenaGuest, Design, TasteProfile
-
-
-def selected_kind(request):
-    value = request.POST.get("kind") if request.method == "POST" else request.GET.get("kind")
-    return Design.Kind.UI_LIBRARY if value == Design.Kind.UI_LIBRARY else Design.Kind.LANDING
+from apps.catalogue.models import ArenaGuest, TasteProfile
+from apps.catalogue.navigation import discovery_navigation, selected_kind
 
 
 def participant(request):
@@ -46,7 +42,7 @@ def voting_arena(request):
             "pair": pair,
             "token": arena.pair_token(voter, generation, pair) if pair else "",
             "kind": kind,
-            "kinds": Design.Kind.choices,
+            **discovery_navigation(kind, "arena"),
             "skipped": bool(skipped),
             "vote_count": arena.comparison_ballots(voter, generation).count(),
         },
@@ -96,7 +92,7 @@ def rankings(request):
             "page": page,
             "mode": mode,
             "kind": kind,
-            "kinds": Design.Kind.choices,
+            **discovery_navigation(kind, mode),
             "summary": summary,
             "query_params": urlencode({"mode": mode, "kind": kind}),
         },

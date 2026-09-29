@@ -7,7 +7,8 @@ from django.views.decorators.http import require_POST
 
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
-from apps.catalogue.services import related_designs, search_designs, visible_designs, visible_kinds
+from apps.catalogue.navigation import discovery_navigation, selected_kind
+from apps.catalogue.services import related_designs, search_designs, visible_designs
 from apps.pages.blog import published_posts
 
 
@@ -25,7 +26,7 @@ def landing(request):
 @never_cache
 def library(request):
     query = request.GET.get("q", "")[:300]
-    kind = request.GET.get("kind", "")
+    kind = selected_kind(request)
     site = request.GET.get("site", "")
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")
@@ -48,7 +49,7 @@ def library(request):
             "industry": industry,
             "saved": saved,
             "search_mode": mode,
-            "kinds": visible_kinds(),
+            **discovery_navigation(kind, "explore"),
             "tags": Tag.objects.filter(designs__in=visible_designs()).distinct(),
             "industries": visible_designs()
             .exclude(industry="")

@@ -370,3 +370,5 @@ UI library pages reuse the catalogue's screenshot grid and adaptive scrollable
 preview. Keep framework labels and editorial notes readable; show pricing plans
 as border-separated rows, with billing cadence, source and verification date.
 Do not imply an unknown price is free. Library voting has its own collection tab.
+
+Discovery navigation uses two separate underlined tab rows: section first, content type second. Each row scrolls horizontally on narrow screens without widening the page; active states and keyboard focus remain visible in both themes.

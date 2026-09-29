@@ -227,3 +227,10 @@
 
 .tk-ui-library-detail h2 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
 .tk-tags span { font-size: 13px; background: var(--tk-soft); padding: 4px 8px; border-radius: 4px; color: var(--tk-muted); }
+
+/* Two discovery levels stay separate, scrollable, and keyboard accessible. */
+.tk-discovery-nav .tk-tabs { flex-wrap: nowrap; overflow-x: auto; scroll-padding-inline: 24px; gap: 24px; padding: 6px 4px 0; }
+.tk-discovery-nav .tk-tabs a { flex: none; white-space: nowrap; scroll-margin-inline: 24px; padding-top: 8px; }
+.tk-discovery-nav .tk-tabs + .tk-tabs { margin-top: -12px; }
+.tk-library-tools { margin: 0 0 24px; font-size: 14px; }
+@media (max-width: 600px) { .tk-discovery-nav .tk-tabs { gap: 16px; } }
