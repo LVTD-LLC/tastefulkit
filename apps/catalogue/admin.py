@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.catalogue.models import Design, SavedDesign, Site, Tag
+from apps.catalogue.models import Design, SavedDesign, Site, Tag, UILibrary
 
 
 @admin.register(Design)
@@ -50,4 +50,26 @@ class SiteAdmin(admin.ModelAdmin):
     readonly_fields = ["url"]
 
     def has_add_permission(self, request):
+        return False
+
+
+@admin.register(UILibrary)
+class UILibraryAdmin(admin.ModelAdmin):
+    list_display = ["design", "website_url", "github_url", "pricing_checked_at"]
+    search_fields = ["design__title", "website_url", "github_url"]
+    readonly_fields = [
+        "design",
+        "website_url",
+        "github_url",
+        "frameworks",
+        "notes",
+        "pricing",
+        "pricing_url",
+        "pricing_checked_at",
+    ]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
         return False

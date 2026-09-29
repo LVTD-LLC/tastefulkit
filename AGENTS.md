@@ -458,3 +458,15 @@ npm run lint
   before deleting the user. Provider failure keeps the account intact for retry.
 - Production web and worker need the same Stripe settings from `.env.example`.
   Register `/billing/webhook/` with the event types in `apps/billing/views.py`.
+
+## UI library collection
+
+- `Design.Kind.UI_LIBRARY` reuses assets, search, moderation and voting; the
+  one-to-one `UILibrary` owns website/GitHub, frameworks, editorial notes and
+  structured multi-plan pricing. Do not seed real libraries in migrations.
+- Public directory/detail pages and sitemap include only published ready
+  libraries. Arena/rankings allow a separate library collection; defaults and
+  homepage previews remain landing-only. Cross-kind ballots remain invalid.
+- Private write contract: `docs/maintainers/ui-library-ingestion.md`,
+  `POST /api/v1/ui-libraries`, active superusers only. Do not document admin
+  ingestion in public pages/OpenAPI. Generic design ingestion rejects this kind.

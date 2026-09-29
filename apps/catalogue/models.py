@@ -31,6 +31,7 @@ class Site(models.Model):
 
 class Design(models.Model):
     class Kind(models.TextChoices):
+        UI_LIBRARY = "ui_library", "UI library"
         LANDING = "landing_page", "Landing page"
         PRICING = "pricing_page", "Pricing page"
         HERO = "hero", "Hero"
@@ -87,7 +88,8 @@ class Design(models.Model):
         return self.title
 
     def get_absolute_url(self):
-        return reverse("design_detail", args=[self.pk])
+        route = "ui_library_detail" if self.kind == self.Kind.UI_LIBRARY else "design_detail"
+        return reverse(route, args=[self.pk])
 
 
 class SavedDesign(models.Model):
@@ -189,3 +191,21 @@ class DesignRating(models.Model):
 
     def __str__(self):
         return f"Rating {self.design_id}"
+
+
+class UILibrary(models.Model):
+    """Library-specific editorial metadata; Design owns assets, visibility and ballots."""
+
+    design = models.OneToOneField(
+        Design, primary_key=True, on_delete=models.CASCADE, related_name="ui_library"
+    )
+    website_url = models.URLField(max_length=2048, blank=True)
+    github_url = models.URLField(max_length=2048, blank=True)
+    frameworks = models.JSONField(default=list, blank=True)
+    notes = models.TextField(max_length=10000, blank=True)
+    pricing = models.JSONField(default=list, blank=True)
+    pricing_url = models.URLField(max_length=2048, blank=True)
+    pricing_checked_at = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.design.title

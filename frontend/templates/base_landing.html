@@ -62,6 +62,7 @@
                                {% if request.resolver_match.url_name == "blog_index" or request.resolver_match.url_name == "blog_post" %}aria-current="page"{% endif %}>blog</a>
                         </nav>
                         <div class="ml-auto hidden items-center gap-5 text-sm lg:flex">
+                            <a class="app-focus" href="{% url 'ui_libraries' %}">UI libraries</a>
                             <a class="app-focus" href="{% url 'voting_arena' %}">arena</a>
                             <a class="app-focus" href="{% url 'design_rankings' %}">rankings</a>
                             {% if user.is_authenticated %}
@@ -89,6 +90,7 @@
                                     <a class="app-focus"
                                        href="{% url 'blog_index' %}"
                                        {% if request.resolver_match.url_name == "blog_index" or request.resolver_match.url_name == "blog_post" %}aria-current="page"{% endif %}>blog</a>
+                                    <a class="app-focus" href="{% url 'ui_libraries' %}">UI libraries</a>
                                     <a class="app-focus" href="{% url 'voting_arena' %}">arena</a>
                                     <a class="app-focus" href="{% url 'design_rankings' %}">rankings</a>
                                     {% if user.is_authenticated %}

@@ -363,3 +363,10 @@ article, not the viewport.
 Shared blog rules live in `frontend/src/styles/tastefulkit.css`.
 
 Design detail screenshots use a square, keyboard-focusable scrolling viewport, capped at 800px wide. Preserve natural image height and width-fit; do not stretch short components. Related references use the existing catalogue cards below the preview.
+
+### UI library directory
+
+UI library pages reuse the catalogue's screenshot grid and square scrollable
+preview. Keep framework labels and editorial notes readable; show pricing plans
+as border-separated rows, with billing cadence, source and verification date.
+Do not imply an unknown price is free. Library voting has its own collection tab.

@@ -17,7 +17,7 @@ def visible_designs():
 
 def search_designs(query="", kind="", tag="", industry="", *, saved_by=None, site=""):
     query, kind, tag, industry = [clean_search_text(v) for v in (query, kind, tag, industry)]
-    designs = visible_designs().select_related("site").prefetch_related("tags")
+    designs = visible_designs().select_related("site", "ui_library").prefetch_related("tags")
     if site:
         try:
             designs = designs.filter(site_id=UUID(str(site)))
@@ -74,6 +74,10 @@ def serialize_design(design, *, admin=False, detail=False, include_design_markdo
         "created_at": design.created_at.isoformat(),
         "captured_at": design.captured_at.isoformat() if design.captured_at else None,
     }
+    if design.kind == Design.Kind.UI_LIBRARY:
+        from apps.catalogue.libraries import library_metadata
+
+        result["library"] = library_metadata(design)
     if detail:
         result["design_markdown"] = (
             (design.design_markdown or None) if include_design_markdown else None
@@ -107,10 +111,12 @@ def design_page(query="", kind="", tag="", industry="", page=1, *, site=""):
 def design_detail(design_id, user):
     admin = user.is_active and user.is_superuser
     designs = (
-        Design.objects.select_related("site").defer("embedding") if admin else visible_designs()
+        Design.objects.select_related("site", "ui_library").defer("embedding")
+        if admin
+        else visible_designs()
     )
     design = get_object_or_404(
-        designs.select_related("site").prefetch_related("tags"), pk=design_id
+        designs.select_related("site", "ui_library").prefetch_related("tags"), pk=design_id
     )
     result = serialize_design(
         design,
@@ -128,7 +134,7 @@ def related_designs(design):
         return visible_designs().none()
     return (
         visible_designs()
-        .select_related("site")
+        .select_related("site", "ui_library")
         .filter(site_id=design.site_id)
         .exclude(pk=design.pk)
         .prefetch_related("tags")

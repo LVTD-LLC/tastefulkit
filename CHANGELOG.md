@@ -2,6 +2,15 @@
 
 ## 2026-09-29
 
+### UI library directory
+- Added public UI library directory/detail pages with screenshots, framework notes,
+  website/GitHub links, multi-plan pricing and sitemap coverage.
+- Added an admin-only prepared-library API with atomic metadata replacement,
+  plus authenticated read endpoints and shared REST/MCP metadata.
+- Added separate UI-library arena/ranking selection without changing landing-page
+  rankings, homepage previews or existing vote protections.
+
+
 - Remove admin submission and site-linking instructions from public docs and hide write endpoints from the public OpenAPI schema; preserve the operator contract in repository-only maintainer notes. Endpoint behavior and permissions are unchanged.
 
 - Add square, keyboard-scrollable detail previews, optional shared sites, related references, and page/component browsing. Admin submissions support site metadata and CTA/auth-form kinds; an admin-only site-link endpoint connects existing references without replacing assets. REST/MCP expose site metadata, filtering and related designs. Existing references remain independent until explicitly linked.

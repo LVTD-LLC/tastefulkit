@@ -216,3 +216,14 @@
 .tk-shot-viewport:focus-visible{outline:2px solid var(--tk-accent);outline-offset:4px}
 .tk-shot-viewport .tk-fullshot{display:block;width:100%;height:auto;border:0;border-radius:0;margin:0}
 .tk-related{margin:40px 0}.tk-filters{flex-wrap:wrap}
+
+/* UI library editorial information uses the shared catalogue palette. */
+.tk-library-card-copy h2 { font-size: 20px; margin: 16px 0 8px; }
+.tk-library-card-copy p { color: var(--tk-muted); margin-bottom: 12px; }
+.tk-library-plan { padding: 16px 0; border-bottom: 1px solid var(--tk-line); }
+.tk-library-plan h3 { font-size: 18px; margin-bottom: 8px; }
+.tk-library-plan p + p { color: var(--tk-muted); }
+.tk-library-card-copy, .tk-library-plan, .tk-description { overflow-wrap: anywhere; }
+
+.tk-ui-library-detail h2 { font-size: 24px; font-weight: 600; margin-bottom: 16px; }
+.tk-tags span { font-size: 13px; background: var(--tk-soft); padding: 4px 8px; border-radius: 4px; color: var(--tk-muted); }

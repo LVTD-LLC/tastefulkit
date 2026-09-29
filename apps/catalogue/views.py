@@ -62,6 +62,8 @@ def library(request):
 
 @never_cache
 def detail(request, pk):
+    if visible_designs().filter(pk=pk, kind=Design.Kind.UI_LIBRARY).exists():
+        return redirect("ui_library_detail", pk=pk, permanent=True)
     if request.user.is_authenticated and not request.user.is_active:
         return redirect("account_login")
     if not request.user.is_authenticated:

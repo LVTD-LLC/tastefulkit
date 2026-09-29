@@ -229,7 +229,10 @@ def taste_scores(user, designs):
 
 
 def ranked_designs(user, mode="global", kind=""):
-    designs = list(eligible_designs().prefetch_related("tags"))
+    designs = eligible_designs()
+    if kind:
+        designs = designs.filter(kind=kind)
+    designs = list(designs.prefetch_related("tags"))
     ratings = DesignRating.objects.in_bulk([d.pk for d in designs])
     summary = taste_scores(user, designs) if mode == "personal" else {}
     for design in designs:
@@ -238,8 +241,6 @@ def ranked_designs(user, mode="global", kind=""):
         design.comparisons = rating.comparisons if rating else 0
         design.wins = rating.wins if rating else 0
         design.rank_score = design.personal_score if summary.get("has_taste") else design.elo
-    if kind:
-        designs = [d for d in designs if d.kind == kind]
     designs.sort(key=lambda d: (-d.rank_score, str(d.pk)))
     for _, group in groupby(enumerate(designs, 1), key=lambda entry: entry[1].rank_score):
         entries = list(group)
