@@ -84,28 +84,29 @@ def test_homepage_handles_a_small_or_empty_ranking(client, user, count):
 
 
 @pytest.mark.parametrize("signed_in", [False, True])
-def test_install_prompt_is_public_and_never_exposes_or_rotates_account_key(client, user, signed_in):
-    from apps.core.views import NEW_API_KEY_SESSION_KEY
-
-    key = user.profile.rotate_api_key()
-    original_hash = user.profile.api_key_hash
+def test_install_prompt_is_owner_only_and_preserves_key(client, user, signed_in):
+    key = user.profile.ensure_api_key()
     if signed_in:
         client.force_login(user)
-        session = client.session
-        session[NEW_API_KEY_SESSION_KEY] = key
-        session.save()
     response = client.get("/")
     html = response.content.decode()
     assert response.status_code == 200
-    assert 'data-copy-source="#agent-install-prompt"' in html
-    assert (
-        "Look at https://github.com/LVTD-LLC/tastefulkit-skills and install the skills and MCP "
-        "for this agent. My API key is YOUR_API_KEY." in html
-    )
-    assert "Copy prompt" in html
-    assert 'href="/settings"' in html
-    assert key not in html
-    user.profile.refresh_from_db()
-    assert user.profile.api_key_hash == original_hash
-    if signed_in:
-        assert client.session[NEW_API_KEY_SESSION_KEY] == key
+    assert "Copy AI Tooling Installation Prompt" in html
+    assert (key in html) == signed_in
+    assert ('id="agent-install-prompt"' in html) == signed_in
+    assert "YOUR_API_KEY" not in html
+    assert "From reference to finished page." not in html
+    assert "no-store" in response["Cache-Control"]
+    if not signed_in:
+        assert "disabled" in html
+        assert "Sign in to use this prompt." in html
+    assert user.profile.ensure_api_key() == key
+
+
+def test_landing_never_exposes_another_users_key(client, user):
+    from django.contrib.auth.models import User
+
+    other = User.objects.create_user(username="other-prompt-owner")
+    other_key = other.profile.ensure_api_key()
+    client.force_login(user)
+    assert other_key.encode() not in client.get("/").content

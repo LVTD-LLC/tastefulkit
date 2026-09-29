@@ -6,7 +6,7 @@ description: Verify a TastefulKit API key and check which account it belongs to.
 # Check your API access
 
 API and MCP access, including available DESIGN.md guides, is free. Create an account
-and generate an API key in [Account settings](/settings). No subscription is required.
+and use your automatically provisioned API key. No subscription is required.
 
 
 Use `GET /api/user` to verify a key before searching the catalogue. It returns the account associated with the supplied key, not any other user's account.

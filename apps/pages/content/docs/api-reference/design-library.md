@@ -6,7 +6,7 @@ description: Search published design references, paginate results, and fetch fre
 # Search the design library
 
 API and MCP access, including available DESIGN.md guides, is free. Create an account
-and generate an API key in [Account settings](/settings). No subscription is required.
+and use your automatically provisioned API key. No subscription is required.
 
 
 Use your [personal API key](/docs/api-reference/introduction/) to read published, ready-to-view designs.

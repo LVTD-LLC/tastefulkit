@@ -103,7 +103,7 @@ def test_index_article_related_links_and_sitemap_agree(client, settings, content
     write_post(content_root, "bad-secret", author=None)
     homepage = client.get("/")
     assert homepage.status_code == 200
-    assert 'href="/blog/sample-guide/"' in homepage.content.decode()
+    assert 'href="/blog/sample-guide/"' not in homepage.content.decode()
     assert "draft-secret" not in homepage.content.decode()
     index = client.get("/blog/")
     assert index.status_code == 200

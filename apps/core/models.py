@@ -1,10 +1,12 @@
 from django.contrib.auth.models import User
-from django.db import models
+from django.db import models, transaction
 from django_q.tasks import async_task
 
 from apps.core.base_models import BaseModel
 from apps.core.choices import EmailType, ProfileStates
 from apps.core.model_utils import (
+    decrypt_api_key,
+    encrypt_api_key,
     generate_api_key,
     get_api_key_prefix,
     hash_api_key,
@@ -22,6 +24,12 @@ class Profile(BaseModel):
         default=None,
     )
     api_key_hash = models.CharField(max_length=128, blank=True, default="")
+
+    api_key_encrypted = models.TextField(blank=True, default="", editable=False)
+    legacy_api_key_prefix = models.CharField(
+        max_length=32, unique=True, null=True, blank=True, default=None, editable=False
+    )
+    legacy_api_key_hash = models.CharField(max_length=128, blank=True, default="", editable=False)
 
     state = models.CharField(
         max_length=255,
@@ -60,19 +68,58 @@ class Profile(BaseModel):
 
         self.api_key_prefix = api_key_prefix
         self.api_key_hash = hash_api_key(api_key)
+        self.api_key_encrypted = encrypt_api_key(api_key)
         return api_key
+
+    def ensure_api_key(self):
+        """Provision once under lock, preserving an unrecoverable legacy credential."""
+        with transaction.atomic():
+            current = Profile.objects.select_for_update().get(pk=self.pk)
+            if current.api_key_encrypted:
+                key = decrypt_api_key(current.api_key_encrypted)
+            else:
+                if current.has_api_key:
+                    current.legacy_api_key_prefix = current.api_key_prefix
+                    current.legacy_api_key_hash = current.api_key_hash
+                key = current.set_api_key()
+                current.save(update_fields=self._key_fields())
+            self._copy_key_fields(current)
+            return key
+
+    @staticmethod
+    def _key_fields():
+        return [
+            "api_key_prefix",
+            "api_key_hash",
+            "api_key_encrypted",
+            "legacy_api_key_prefix",
+            "legacy_api_key_hash",
+            "updated_at",
+        ]
+
+    def _copy_key_fields(self, other):
+        for field in self._key_fields():
+            setattr(self, field, getattr(other, field))
 
     def rotate_api_key(self):
-        api_key = self.set_api_key()
-        self.save(update_fields=["api_key_prefix", "api_key_hash", "updated_at"])
-        return api_key
+        with transaction.atomic():
+            current = Profile.objects.select_for_update().get(pk=self.pk)
+            api_key = current.set_api_key()
+            current.legacy_api_key_prefix = None
+            current.legacy_api_key_hash = ""
+            current.save(update_fields=self._key_fields())
+            self._copy_key_fields(current)
+            return api_key
 
     def check_api_key(self, api_key):
-        api_key_prefix = get_api_key_prefix(api_key)
-        if not api_key_prefix or api_key_prefix != self.api_key_prefix or not self.api_key_hash:
+        prefix = get_api_key_prefix(api_key)
+        if not prefix:
             return False
-
-        return verify_api_key(api_key, self.api_key_hash)
+        if prefix == self.api_key_prefix:
+            return verify_api_key(api_key, self.api_key_hash)
+        if prefix == self.legacy_api_key_prefix:
+            return verify_api_key(api_key, self.legacy_api_key_hash)
+        return False
 
 
 class ProfileStateTransition(BaseModel):

@@ -104,8 +104,16 @@ Discovery pages share two navigation rows: Explore, Arena, Global ranking and Fo
 
 ### Install skills into your agent
 
-Use **Copy prompt** in the homepage hero, replace `YOUR_API_KEY` with your personal
-key from Account settings, and give it to your agent to install the
-[public TastefulKit skills and MCP integration](https://github.com/LVTD-LLC/tastefulkit-skills).
-Existing keys are stored hashed and cannot be prefilled; copying the prompt does
-not create or rotate a key.
+Sign in and use **Copy AI Tooling Installation Prompt** below the homepage hero CTAs.
+The prompt includes your API key and the [public skills + MCP repository](https://github.com/LVTD-LLC/tastefulkit-skills).
+Keep it private and paste it only into an agent you trust. New accounts receive a key automatically.
+Rotation in Account settings revokes all previous keys.
+
+Operator rollout: after both app services deploy, run `python manage.py provision_api_keys`.
+The command is idempotent and prints counts only. Unrecoverable legacy keys stay valid
+until explicit rotation. Recoverable keys are encrypted using a domain-separated key
+from Django's `SECRET_KEY`; keep the previous secret in `SECRET_KEY_FALLBACKS` when
+rotating it. Never discard those secrets until existing ciphertext is re-encrypted
+or account keys are explicitly rotated. API authentication continues to use hashes.
+The additive schema can be rolled back at the application layer without dropping fields,
+but old application versions do not recognize preserved legacy credentials after provisioning.

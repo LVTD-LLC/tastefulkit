@@ -234,3 +234,11 @@
 .tk-discovery-nav .tk-tabs + .tk-tabs { margin-top: -12px; }
 .tk-library-tools { margin: 0 0 24px; font-size: 14px; }
 @media (max-width: 600px) { .tk-discovery-nav .tk-tabs { gap: 16px; } }
+
+/* The installation CTA wraps on small screens; guests can focus its tooltip. */
+.tk-install-button { max-width: 100%; white-space: normal; }
+.tk-install-guest { position: relative; display: inline-block; max-width: 100%; cursor: not-allowed; }
+.tk-install-guest button { pointer-events: none; opacity: .5; }
+.tk-install-tooltip { display: none; position: absolute; left: 0; top: 100%; z-index: 10; margin-top: 8px; width: max-content; max-width: 100%; padding: 8px 12px; border-radius: 6px; background: var(--tk-ink); color: var(--tk-bg); font-size: 14px; }
+.tk-install-guest:hover .tk-install-tooltip,
+.tk-install-guest:focus .tk-install-tooltip { display: block; }

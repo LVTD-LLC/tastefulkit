@@ -6,7 +6,7 @@ description: Connect an AI assistant to TastefulKit to search real designs and r
 # Connect your assistant to TastefulKit
 
 API and MCP access, including available DESIGN.md guides, is free. Create an account
-and generate an API key in [Account settings](/settings). No subscription is required.
+and use your automatically provisioned API key. No subscription is required.
 
 
 Give your assistant access to real design references without running a local server.

@@ -24,13 +24,13 @@ class TestHomeView:
         assert profile.api_key_prefix
         assert profile.api_key_hash
         assert profile.api_key_hash not in content
-        assert "Copy this key now" in content
+        assert "Keep this key private" in content
         assert profile.api_key_prefix in content
 
         response = auth_client.get(reverse("settings"))
         content = response.content.decode()
 
-        assert "Copy this key now" not in content
+        assert "Keep this key private" not in content
         assert profile.api_key_prefix in content
 
     def test_settings_profile_form_cannot_change_login_email_directly(self, auth_client, user):

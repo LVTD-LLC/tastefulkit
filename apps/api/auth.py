@@ -27,16 +27,21 @@ def get_profile_for_api_key(key: str) -> Profile | None:
     try:
         profile = Profile.objects.select_related("user").get(api_key_prefix=api_key_prefix)
     except Profile.DoesNotExist:
-        logger.warning(
-            "api.authentication.completed",
-            extra={
-                "event.name": "api.authentication.completed",
-                "auth.method": "api_key",
-                "auth.reason": "invalid_credentials",
-                "outcome": "failure",
-            },
-        )
-        return None
+        try:
+            profile = Profile.objects.select_related("user").get(
+                legacy_api_key_prefix=api_key_prefix
+            )
+        except Profile.DoesNotExist:
+            logger.warning(
+                "api.authentication.completed",
+                extra={
+                    "event.name": "api.authentication.completed",
+                    "auth.method": "api_key",
+                    "auth.reason": "invalid_credentials",
+                    "outcome": "failure",
+                },
+            )
+            return None
 
     if not profile.user.is_active or not profile.check_api_key(key):
         logger.warning(
