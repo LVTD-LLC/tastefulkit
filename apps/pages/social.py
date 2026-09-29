@@ -46,13 +46,13 @@ PAGES = {
         "robots": "noindex, nofollow",
     },
     "pricing": {
-        "title": "Membership | TastefulKit",
+        "title": "Free access | TastefulKit",
         "description": (
             "Explore the landing page catalog, save references, discover your personal "
-            "ranking for free. Unlock DESIGN.md guides for your project with a paid membership."
+            "ranking and DESIGN.md guides for free. No subscription required."
         ),
         "headline": "Your taste.\nYour next landing page.",
-        "label": "Membership",
+        "label": "Free access",
         "robots": "noindex",
     },
     "privacy_policy": {

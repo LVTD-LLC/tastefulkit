@@ -11,7 +11,7 @@ TastefulKit is a library of real landing-page screenshots. Use it to find exampl
 
 Try the [Design Arena](/arena/) and browse the [global rankings](/rankings/) for free without an account. Sign in to start building your own taste profile.
 
-Explore, For You, saved designs, screenshots, and API/MCP access to design metadata are free. Create a free account to browse or connect your agent. Viewing, copying, downloading, or retrieving DESIGN.md guides requires a [$10/month membership](/pricing/).
+Explore, For You, saved designs, screenshots, and API/MCP access to design metadata are free. Create a free account to browse or connect your agent. Viewing, copying, downloading, and retrieving available DESIGN.md guides is also free. No subscription is required.
 
 1. [Create an account](/accounts/signup/) and confirm your email.
 2. Open **Explore** to browse the library, newest first.

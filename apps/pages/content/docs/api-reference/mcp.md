@@ -5,9 +5,8 @@ description: Connect an AI assistant to TastefulKit to search real designs and r
 
 # Connect your assistant to TastefulKit
 
-API and MCP access to design metadata and screenshots is free. Create an account
-and generate an API key in [Account settings](/settings). DESIGN.md guide text
-requires an active [$10/month membership](/pricing/).
+API and MCP access, including available DESIGN.md guides, is free. Create an account
+and generate an API key in [Account settings](/settings). No subscription is required.
 
 
 Give your assistant access to real design references without running a local server.
@@ -55,7 +54,7 @@ storage or environment-variable support rather than committing credentials.
 | --- | --- |
 | `list_designs` | Browse the newest published, ready designs, with optional `kind`, `tag`, `industry`, and `page`. |
 | `search_designs` | Search with `q` and the same filters; uses semantic search when available and falls back to text. |
-| `get_design` | Fetch one `design_id`, with metadata, DESIGN.md text for paid members, source URL, screenshot URL, and thumbnail URL. |
+| `get_design` | Fetch one `design_id`, with metadata, available DESIGN.md text, source URL, screenshot URL, and thumbnail URL. |
 | `get_design_filters` | Discover landing-page tags and industries used by visible designs. |
 | `get_user_info` | Confirm which account your key belongs to. |
 
@@ -69,10 +68,9 @@ Ordinary accounts only see published designs whose captures are ready. Administr
 can also inspect pending, failed, or unpublished designs by ID, but search and filter
 discovery still use the published library. All MCP tools are read-only. Prepared examples enter only through the [admin POST endpoint](/docs/api-reference/design-library/#submit-a-prepared-example-administrators).
 
-Free accounts can use every tool. `get_design` returns `design_markdown: null`
-and `design_markdown_locked: true` when a guide requires a membership. A missing
-guide returns `null` and `false`. Upgrades, expiration, and cancellation are
-reflected on the next request without rotating your key.
+Free accounts can use every tool. `get_design` includes available DESIGN.md text.
+A missing guide returns `design_markdown: null`; `design_markdown_locked` is
+always `false`. No subscription is required.
 
 ## Use screenshot references
 

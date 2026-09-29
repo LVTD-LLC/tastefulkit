@@ -113,10 +113,10 @@ def test_discovery_features_are_free_but_still_require_auth(client, user, status
     assert client.get("/api/user", HTTP_AUTHORIZATION=f"Bearer {key}").status_code == 401
 
 
-def test_pricing_separates_free_discovery_and_paid_guides(client, user, api):
+def test_pricing_offers_all_features_free_and_preserves_legacy_billing(client, user, api):
     response = client.get("/pricing/")
-    assert b"No subscription or credit card is needed to browse" in response.content
-    assert b"USD / month" in response.content
+    assert b"All current features are free" in response.content
+    assert b"USD / month" not in response.content
     assert b"billing/checkout" not in response.content
     client.force_login(user)
     BillingAccount.objects.create(user=user, customer_id="cus_local")
@@ -148,26 +148,17 @@ def test_expiration_and_inactive_accounts_fail_closed(paid_user):
     assert not has_paid_access(paid_user)
 
 
-def test_checkout_is_post_only_csrf_protected_and_uses_server_plan(user, api, auth_client):
+def test_checkout_is_post_only_and_csrf_protected(user, api, auth_client):
     assert auth_client.get("/billing/checkout/").status_code == 405
     csrf = Client(enforce_csrf_checks=True)
     csrf.force_login(user)
     assert csrf.post("/billing/checkout/").status_code == 403
-    for _ in range(2):
-        response = auth_client.post(
-            "/billing/checkout/",
-            {"price": "price_free", "customer": "cus_attacker", "next": "https://evil.test"},
-        )
-        assert response.url == "https://checkout.stripe.com/test"
-    api.v1.customers.create.assert_called_once()
-    api.v1.checkout.sessions.create.assert_called_once()
-    payload = api.v1.checkout.sessions.create.call_args.args[0]
-    assert payload["customer"] == "cus_local"
-    assert payload["line_items"] == [{"price": "price_membership", "quantity": 1}]
-    assert payload["success_url"] == "https://testserver/billing/return/"
-    assert payload["mode"] == "subscription"
-    assert "payment_method_types" not in payload
-    assert not has_paid_access(user)
+    response = auth_client.post(
+        "/billing/checkout/",
+        {"price": "price_free", "customer": "cus_attacker", "next": "https://evil.test"},
+    )
+    assert response.url == "/pricing/"
+    api.v1.checkout.sessions.create.assert_not_called()
 
 
 def test_checkout_failure_keeps_free_features_available(auth_client, api):
@@ -381,3 +372,11 @@ def test_basil_subscription_item_period_controls_access(client, user, api, billi
     account = BillingAccount.objects.get(user=user)
     assert int(account.paid_until.timestamp()) == end
     assert has_paid_access(user)
+
+
+def test_checkout_is_disabled_even_with_stripe_configured(auth_client, api):
+    response = auth_client.post("/billing/checkout/")
+    assert response.status_code == 302
+    assert response.url == "/pricing/"
+    api.v1.checkout.sessions.create.assert_not_called()
+    api.v1.customers.create.assert_not_called()

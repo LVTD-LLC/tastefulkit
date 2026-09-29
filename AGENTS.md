@@ -129,8 +129,8 @@ is the contribution and merge contract.
   accounts. Guest history is never imported into personal taste.
 - Published ready landing-page detail URLs expose a public title-and-thumbnail teaser
   and a generated social card. Full screenshots, metadata and saves require a free account. DESIGN.md text is
-  paid-only across HTML, direct downloads, REST and MCP. Free detail responses return
-  `design_markdown: null` and `design_markdown_locked: true` when a guide exists.
+  free across HTML, direct downloads, REST and MCP for active accounts. Detail responses
+  include available guide text and `design_markdown_locked: false`; missing guides are null.
   Social cards read only stored thumbnails, recheck publication before cache reads,
   and never fetch source URLs or expose full screenshots.
 - The daily research agent is external and submits via the ingestion API.
@@ -440,21 +440,21 @@ npm run lint
 
 ## Membership billing
 
-- DESIGN.md guides require the existing $10/month membership; other product features
-  remain free. Authentication, account ownership and admin-only ingestion boundaries
+- All current features, including DESIGN.md guides, are free. New checkout requests
+  redirect to pricing without creating a purchase. Authentication, account ownership and admin-only ingestion boundaries
   still apply. `apps/billing/` owns Checkout, customer portal, webhook reconciliation
   and account-deletion cancellation. Active superusers retain ingestion/guide access.
 - Credentials and the price/account/portal IDs are environment driven. Pin Stripe API
   client version `2025-03-31.basil`; organization keys require account context.
   Webhook snapshots may remain on `2024-06-20`: only customer identity is consumed,
   and current subscription state is fetched using the pinned client version.
-- Guide access requires `active` status and a future paid-through timestamp.
+- Legacy billing status remains separate from feature access.
   Reconcile current Stripe subscriptions under the account lock, never trust browser
   success parameters or stale event snapshots. Webhook retries are idempotent.
 - Signup grants free product access. Account settings, auth and legacy billing stay accessible.
   All product documentation, including API/MCP setup guides, is public and included
   in the sitemap; actual API/MCP access requires a valid key for an active account. The public homepage previews the
-  first six landing pages in global ranking order; full catalog browsing requires a free account; DESIGN.md guides require paid access.
+  first six landing pages in global ranking order; full catalog browsing requires a free account; DESIGN.md guides are included for free.
 - Account deletion cancels recurring subscriptions and expires open checkout sessions
   before deleting the user. Provider failure keeps the account intact for retry.
 - Production web and worker need the same Stripe settings from `.env.example`.

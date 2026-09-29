@@ -54,13 +54,9 @@ def test_design_sharing_requires_only_a_free_account(
     ]
     if reader != "anonymous":
         guide = client.get(reverse("design_markdown", args=[social_design.pk]))
-        if reader == "paid":
-            assert guide.status_code == 200
-            assert "Private design guide" in html
-        else:
-            assert guide.url == "/pricing/"
-            assert "Private design guide" not in html
-            assert "Unlock design guides" in html
+        assert guide.status_code == 200
+        assert "Private design guide" in html
+        assert "Unlock design guides" not in html
         assert client.post(reverse("save_design", args=[social_design.pk])).status_code == 302
         assert "private-full-screenshot.png" in html
     else:

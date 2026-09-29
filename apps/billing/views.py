@@ -13,8 +13,8 @@ from django.views.decorators.http import require_POST
 
 from apps.billing.access import has_paid_access
 from apps.billing.models import BillingAccount
-from apps.billing.services import checkout_url, handle_event, portal_url, refresh_user
-from apps.billing.stripe_api import BillingUnavailable, client, configured
+from apps.billing.services import handle_event, portal_url, refresh_user
+from apps.billing.stripe_api import BillingUnavailable, client
 
 logger = logging.getLogger(__name__)
 BILLING_ERRORS = (stripe.StripeError, BillingUnavailable)
@@ -38,8 +38,6 @@ def pricing(request):
         "billing/pricing.html",
         {
             "billing_account": account,
-            "paid_access": has_paid_access(request.user),
-            "billing_ready": configured(),
         },
     )
 
@@ -48,10 +46,8 @@ def pricing(request):
 @require_POST
 @never_cache
 def checkout(request):
-    try:
-        return redirect(checkout_url(request.user))
-    except BILLING_ERRORS:
-        return unavailable(request)
+    # Keep old links safe while pricing is undecided; never create new purchases.
+    return redirect("pricing")
 
 
 @login_required

@@ -5,38 +5,31 @@
 {% endblock %}
 {% block content %}
     <div class="tk-container library-page">
-        <h1>Find your taste for free. Build with a guide.</h1>
-        <p class="tk-description">Explore, For You, screenshots, and saved designs are free. Upgrade when you're ready to take a DESIGN.md guide into your project.</p>
-        <section class="tk-membership" aria-label="Design guide membership">
-            <h2>$10 <span>USD / month</span></h2>
-            <p>Unlock DESIGN.md guides for every reference that includes one.</p>
-            <p>Plus applicable tax, calculated at checkout. Cancel anytime.</p>
+        <h1>All current features are free.</h1>
+        <p class="tk-description">Find landing pages you like and bring their design into your project. No subscription or credit card required.</p>
+        <section class="tk-membership" aria-label="Free access">
+            <h2>Everything available today</h2>
             <ul>
-                <li>View and copy the full design guide</li>
-                <li>Download DESIGN.md into your project</li>
-                <li>Retrieve guide text through MCP and the API</li>
+                <li>Explore the catalog and save your favorites</li>
+                <li>Vote in Arena and discover your personal ranking</li>
+                <li>View, copy, and download available DESIGN.md guides</li>
+                <li>Connect your agent through MCP or the API</li>
             </ul>
-            {% if paid_access %}
-                <p>Your design guide access is active.{% if billing_account.cancel_at_period_end %} Paid access ends {{ billing_account.paid_until|date:"M j, Y" }}.{% endif %}</p>
+            {% if user.is_authenticated %}
                 <a class="tk-button" href="{% url 'library' %}">Explore catalog →</a>
-            {% elif user.is_authenticated %}
-                {% if billing_ready %}
-                    <form method="post" action="{% url 'billing_checkout' %}">{% csrf_token %}<button class="tk-button" type="submit">Unlock design guides · $10/month →</button></form>
-                {% else %}
-                    <p>Subscriptions are temporarily unavailable. You can still browse, save, and compare designs for free.</p>
-                {% endif %}
             {% else %}
-                <a class="tk-button"
-                   href="{% url 'account_signup' %}?next={% url 'pricing' %}">Create account →</a>
-                <p>Already have an account? <a href="{% url 'account_login' %}?next={% url 'pricing' %}">Sign in</a>.</p>
+                <a class="tk-button" href="{% url 'account_signup' %}">Create free account →</a>
+                <a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">Try Arena →</a>
+                <p>Already have an account? <a href="{% url 'account_login' %}">Sign in</a>.</p>
             {% endif %}
             {% if billing_account.customer_id %}
+                <p>Have an existing subscription? You can manage or cancel it below. It is no longer required for any feature.</p>
                 <div class="tk-guide-actions">
                     <form method="post" action="{% url 'billing_portal' %}">{% csrf_token %}<button class="tk-button tk-button-quiet" type="submit">Manage billing</button></form>
                     <a href="{% url 'billing_return' %}">Refresh billing status</a>
                 </div>
             {% endif %}
         </section>
-        <p class="tk-description">No subscription or credit card is needed to browse the catalog, use For You, save references, or connect an agent for design metadata and screenshots. <a href="{% url 'library' %}">Explore for free →</a></p>
+        <p class="tk-description">Arena and global rankings are open to everyone. Create a free account for the full catalog, guides, and personal features. API and MCP access requires your personal API key.</p>
     </div>
 {% endblock %}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-09-29
+
+- Made all current features free, including DESIGN.md viewing, copying, downloading, REST and MCP retrieval. Account/API-key authentication and admin-only ingestion remain unchanged.
+- Disabled new checkout purchases and replaced membership upsells with free-access copy across pricing, settings, documentation, and articles. Existing subscription management, webhooks and deletion cleanup remain available; existing Stripe subscriptions and sessions are not changed by this release.
+
 ## 2026-09-25
 
 - Distinguish published blog articles and public docs in pageview and marketing
