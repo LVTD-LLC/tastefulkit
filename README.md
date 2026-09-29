@@ -101,3 +101,11 @@ rankings to compare their landing-page designs separately from design references
 Read-only REST and MCP access continues to use an active account's API key.
 
 Discovery pages share two navigation rows: Explore, Arena, Global ranking and For you, followed by content types. The selected type carries across sections. UI libraries and landing pages are always available; other types appear as published references are added. Explore defaults to landing pages and keeps saved references accessible below the tabs.
+
+### Install skills into your agent
+
+Use **Copy prompt** in the homepage hero, replace `YOUR_API_KEY` with your personal
+key from Account settings, and give it to your agent to install the
+[public TastefulKit skills and MCP integration](https://github.com/LVTD-LLC/tastefulkit-skills).
+Existing keys are stored hashed and cannot be prefilled; copying the prompt does
+not create or rotate a key.

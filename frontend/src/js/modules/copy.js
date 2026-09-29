@@ -7,11 +7,11 @@ export function initCopyButtons(root = document) {
     }
 
     button.dataset.copyBound = "true";
+    const label = button.querySelector("[data-copy-label]") || button;
+    const original = label.textContent;
     button.addEventListener("click", async () => {
       const sourceSelector = button.dataset.copySource;
       const source = sourceSelector ? document.querySelector(sourceSelector) : null;
-      const label = button.querySelector("[data-copy-label]") || button;
-      const original = label.textContent;
       const text = source?.value || source?.textContent || "";
       const copied = await copyText(text);
 
