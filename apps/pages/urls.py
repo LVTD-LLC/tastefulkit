@@ -11,6 +11,7 @@ urlpatterns = [
         name="docs_social_image",
     ),
     path("", landing, name="landing"),
+    path("how-to-use/", views.how_to_use, name="how_to_use"),
     path("privacy-policy", views.PrivacyPolicyView.as_view(), name="privacy_policy"),
     path("terms-of-service", views.TermsOfServiceView.as_view(), name="terms_of_service"),
     path("blog/", blog.blog_index, name="blog_index"),

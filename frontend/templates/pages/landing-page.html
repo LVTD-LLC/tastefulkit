@@ -3,23 +3,5 @@
 {% block meta %}
     {% page_metadata "landing" %}
 {% endblock %}
-{% block content %}<div class="tk-container"><section class="tk-hero"><h1>Find your taste.<br>Build from <em>it.</em></h1><p>Compare landing pages to rank designs around your taste. Give your coding agent the references to bring that look to your project.</p><div class="tk-guide-actions"><a class="tk-button" href="{% url 'library' %}">Explore catalog ↗</a><a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">Vote on designs →</a></div><div class="mt-4">
-    {% if installation_api_key %}
-        <button type="button"
-                class="tk-button tk-button-quiet tk-install-button app-focus"
-                data-copy-button
-                data-copy-source="#agent-install-prompt"><span data-copy-label aria-live="polite">Copy AI Tooling Installation Prompt</span></button>
-        <textarea id="agent-install-prompt" class="ph-no-capture" hidden readonly>Look at https://github.com/LVTD-LLC/tastefulkit-skills and install the skills and MCP for this agent. My API key is {{ installation_api_key }}.</textarea>
-    {% else %}
-        <span class="tk-install-guest app-focus"
-              tabindex="0"
-              aria-describedby="agent-install-help">
-            <button type="button"
-                    class="tk-button tk-button-quiet tk-install-button"
-                    disabled>Copy AI Tooling Installation Prompt</button>
-            <span id="agent-install-help"
-                  role="tooltip"
-                  class="tk-install-tooltip">Sign in to use this prompt.</span></span>
-    {% endif %}
-</div></section><section class="tk-showcase pb-12 sm:pb-16"
+{% block content %}<div class="tk-container"><section class="tk-hero"><h1>Find your taste.<br>Build from <em>it.</em></h1><p>Compare landing pages to rank designs around your taste. Give your coding agent the references to bring that look to your project.</p><div class="tk-guide-actions"><a class="tk-button" href="{% url 'library' %}">Explore catalog ↗</a><a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">Vote on designs →</a></div></section><section class="tk-showcase pb-12 sm:pb-16"
          aria-labelledby="top-designs-heading"><div class="tk-section-heading"><h2 id="top-designs-heading">Top-ranked landing pages.</h2><a href="{% url 'design_rankings' %}">View global ranking ↗</a></div><div class="design-grid">{% for design in designs %}{% include "catalogue/card.html" %}{% empty %}<div class="tk-empty"><h3>A home for designs worth keeping.</h3><p>We're collecting the first landing pages. A growing library of real-world inspiration is on its way.</p></div>{% endfor %}</div></section></div>{% endblock %}

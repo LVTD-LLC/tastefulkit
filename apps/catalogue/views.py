@@ -9,20 +9,15 @@ from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
 from apps.catalogue.navigation import DIRECTORY_ROUTES, discovery_navigation, selected_kind
 from apps.catalogue.services import related_designs, search_designs, visible_designs
-from apps.core.models import Profile
 
 
 @never_cache
 def landing(request):
     designs, _ = ranked_designs(request.user, mode="global", kind=Design.Kind.LANDING)
-    api_key = ""
-    if request.user.is_authenticated and request.user.is_active:
-        profile, _ = Profile.objects.get_or_create(user=request.user)
-        api_key = profile.ensure_api_key()
     return render(
         request,
         "pages/landing-page.html",
-        {"designs": designs[:6], "installation_api_key": api_key},
+        {"designs": designs[:6]},
     )
 
 

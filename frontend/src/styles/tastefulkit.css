@@ -276,3 +276,23 @@
   .tk-header-menu { left: -50px; }
   .tk-account-dropdown .tk-header-menu { left: auto; }
 }
+
+/* Public getting-started guide: short, readable, border-separated sections. */
+.tk-how-to { max-width: 820px; margin: auto; padding: 64px 24px 80px; }
+.tk-how-to h1 { font-size: 44px; line-height: 1.12; letter-spacing: -0.035em; font-weight: 700; }
+.tk-how-to h2 { font-size: 26px; line-height: 1.25; font-weight: 600; }
+.tk-how-to p { margin-top: 18px; font-size: 18px; line-height: 1.7; color: var(--tk-muted); }
+.tk-how-to section { margin-top: 40px; padding-top: 32px; border-top: 1px solid var(--tk-line); }
+.tk-how-to .tk-guide-actions { margin-top: 24px; }
+.tk-how-to a:not(.tk-button) { text-decoration: underline; text-underline-offset: 4px; }
+.tk-how-to .tk-how-note { font-size: 14px; }
+.tk-header-link[aria-current="page"] { text-decoration: underline; text-underline-offset: 5px; }
+@media (max-width: 640px) {
+  .tk-header-brand { grid-column: 1; grid-row: 1; }
+  .tk-header-account { grid-column: 2; grid-row: 1; }
+  .tk-header-nav { grid-column: 1 / -1; grid-row: 2; gap: 20px; }
+  .tk-header-login { top: auto; bottom: 22px; }
+  .tk-how-to { padding: 40px 20px 56px; }
+  .tk-how-to h1 { font-size: 34px; }
+  .tk-how-to p { font-size: 17px; }
+}

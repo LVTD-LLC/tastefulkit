@@ -19,6 +19,9 @@
                     <a class="app-focus" href="{% url 'blog_index' %}">Blog</a>
                 </div>
             </details>
+            <a class="app-focus tk-header-link"
+               href="{% url 'how_to_use' %}"
+               {% if request.resolver_match.url_name == "how_to_use" %}aria-current="page"{% endif %}>How to Use</a>
         </nav>
         <div class="tk-header-account">
             {% if user.is_authenticated %}

@@ -2,6 +2,8 @@
 
 ## 2026-09-30
 
+- Add a public How to Use guide for Explore, Arena and AI workflows, linked third in the left navbar. Move the account-specific installation prompt from the homepage into the guide.
+
 - Simplify the shared navbar with Arena and Explore on the left, grouped catalogue/docs/blog links, and a username menu beside the theme toggle.
 
 - Show source-linked GitHub repository stars and skills.sh skill installs with checked dates; sort the AI skills directory and REST results by either count, with unknown values last. Add validated collector metrics and a metadata-preserving admin refresh endpoint.
