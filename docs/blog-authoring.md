@@ -41,7 +41,8 @@ The template supplies the H1. Use `##` and `###` headings in the body; these bui
 a server-rendered, keyboard-accessible table of contents. Fenced code and tables
 are supported. Write concise paragraphs and descriptive link labels. Include
 links to relevant sibling posts and product/docs pages, accurately distinguishing
-public features from paid catalogue/API/MCP access.
+guest-accessible features from free account/API-key access. Available DESIGN.md
+guides are included for active accounts; do not imply a paid tier or free-forever promise.
 
 Markdown is trusted, code-reviewed repository content, like the existing docs;
 raw HTML is not a user-upload surface. Do not add scripts or unreviewed embeds.

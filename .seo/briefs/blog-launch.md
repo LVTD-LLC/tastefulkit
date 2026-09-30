@@ -1,5 +1,10 @@
 # Blog launch editorial briefs — September 20, 2026
 
+> Current-policy note (September 30, 2026): the paid-guide statements in this
+> dated launch record are historical. PR #36 made all current features, including
+> available DESIGN.md guides, free on September 29. Use `.seo/truth.md` and
+> `truth-checks.json` for current claim guidance; preserve this launch history.
+
 User scope: repository-managed blog, keyword strategy and four starting posts.
 This explicit batch request overrides the daily skill's one-article default.
 Durable private demand, estimates and measurement history remain in the existing

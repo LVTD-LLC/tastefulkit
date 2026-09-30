@@ -3,7 +3,7 @@ title: "Landing Page Design Ideas: Choose a Direction"
 description: "Turn landing page design ideas into a useful brief. Match layouts to your visitor's task, compare references, and decide what to borrow."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-24
+updated: 2026-09-29
 ---
 
 Good landing page design ideas begin with the decision your visitor needs to make. Choose references that explain a similar offer, require similar evidence, and lead to a comparable action. Then borrow a specific principle—such as section order or visual hierarchy—rather than copying an entire page that solves a different problem.

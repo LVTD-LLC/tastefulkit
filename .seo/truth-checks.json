@@ -40,7 +40,7 @@
     "flags": "i"
   },
   {
-    "claim": "landing-page-design-ideas: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
+    "claim": "landing-page-design-ideas: available DESIGN.md guides are free with an active account",
     "paths": [
       "apps/pages/content/blog/landing-page-design-ideas.md"
     ],
@@ -51,16 +51,16 @@
       "free with an",
       "account",
       "DESIGN\\.md",
-      "membership"
+      "guides are included for free when available"
     ],
     "must_not_match": [
-      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
       "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "mobile-landing-page-design: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
+    "claim": "mobile-landing-page-design: available DESIGN.md guides are free with an active account",
     "paths": [
       "apps/pages/content/blog/mobile-landing-page-design.md"
     ],
@@ -71,16 +71,16 @@
       "free with an",
       "account",
       "DESIGN\\.md",
-      "membership"
+      "guides are included for free when available"
     ],
     "must_not_match": [
-      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
       "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "creative-landing-page-design: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
+    "claim": "creative-landing-page-design: available DESIGN.md guides are free with an active account",
     "paths": [
       "apps/pages/content/blog/creative-landing-page-design.md"
     ],
@@ -91,16 +91,16 @@
       "free with an",
       "account",
       "DESIGN\\.md",
-      "membership"
+      "guides are included for free when available"
     ],
     "must_not_match": [
-      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
       "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
     ],
     "flags": "i"
   },
   {
-    "claim": "design-references-ai-coding-agents: browsing/metadata are free with an account; DESIGN.md guides require paid membership",
+    "claim": "design-references-ai-coding-agents: available DESIGN.md guides are free with an active account",
     "paths": [
       "apps/pages/content/blog/design-references-ai-coding-agents.md"
     ],
@@ -111,11 +111,25 @@
       "free with an",
       "account",
       "DESIGN\\.md",
-      "membership"
+      "for every free account"
     ],
     "must_not_match": [
-      "(?:design guides|DESIGN\\.md guides) are free",
+      "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
       "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "Current SEO guidance must not restore the retired paid-guide requirement",
+    "paths": [
+      ".seo/truth.md",
+      ".seo/brand.md",
+      "docs/seo-strategy.md",
+      "docs/blog-authoring.md"
+    ],
+    "must_not_match": [
+      "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members|is paid)",
+      "paid catalogue/API/MCP access"
     ],
     "flags": "i"
   }

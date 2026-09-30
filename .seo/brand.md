@@ -1,6 +1,6 @@
 # TastefulKit — brand and public claim guidance
 
-Derived from the shipped repository and public product documentation on 2026-09-24. Revisit when the product changes.
+Derived from the shipped repository and public product documentation on 2026-09-30. Revisit when the product changes.
 
 ## Positioning and audience
 TastefulKit is a searchable library of real landing-page design references for people planning a website and agents helping build it. It offers visual references, not downloadable website templates or licensed source assets.
@@ -10,8 +10,8 @@ Concrete, warm, short and visually literate. Explain what a visitor can do: sear
 
 ## Shipped claims
 - Search existing designs by description and filters; save a personal shortlist.
-- Public documentation, the blog, Arena voting and global rankings are readable/usable without an account. Full catalogue browsing, saves and personal rankings require a free account. DESIGN.md viewing, copying, downloading and API/MCP guide text require the $10/month membership.
-- REST and hosted MCP use a personal API key for an active account; metadata and screenshots are free, guide text is paid. MCP is read-only; prepared-example ingestion uses the administrator-only REST endpoint.
+- Public documentation, the blog, Arena voting and global rankings are readable/usable without an account. Full catalogue browsing, saves and personal rankings require a free account. Available DESIGN.md viewing, copying, downloading and API/MCP guide text are free for active accounts; no subscription is required.
+- REST and hosted MCP use a personal API key for an active account; metadata, screenshots and available guide text are free. Keys are automatically provisioned; explicit rotation revokes previous keys. MCP is read-only; prepared-example ingestion uses the administrator-only REST endpoint.
 - Arena compares landing pages within mobile/desktop pools. Global Elo measures relative preference, not conversion performance. Personal web rankings use votes and metadata affinity; MCP does not use personal rankings.
 - Some references include a generated DESIGN.md guide; values are inferred and need review. A screenshot is not source code or a reusable asset licence.
 
