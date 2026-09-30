@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 
 from apps.catalogue import arena
 from apps.catalogue.models import ArenaGuest, TasteProfile
-from apps.catalogue.navigation import discovery_navigation, selected_kind
+from apps.catalogue.navigation import DIRECTORY_ROUTES, discovery_navigation, selected_kind
 
 
 def participant(request):
@@ -25,6 +25,8 @@ def participant(request):
 
 @never_cache
 def voting_arena(request):
+    if selected_kind(request) in DIRECTORY_ROUTES:
+        return redirect(DIRECTORY_ROUTES[selected_kind(request)])
     voter = participant(request)
     profile = (
         TasteProfile.objects.filter(user=request.user).first()
@@ -78,6 +80,8 @@ def revisit_skipped(request):
 
 @never_cache
 def rankings(request):
+    if selected_kind(request) in DIRECTORY_ROUTES:
+        return redirect(DIRECTORY_ROUTES[selected_kind(request)])
     mode = "personal" if request.GET.get("mode") == "personal" else "global"
     if mode == "personal":
         if not request.user.is_authenticated:

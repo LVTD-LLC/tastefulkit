@@ -1,0 +1,42 @@
+{% extends "base_landing.html" %}
+{% block meta %}
+    <title>{{ skill.name }} — AI skill · TastefulKit</title>
+    <meta name="description"
+          content="{{ skill.description|truncatechars:160 }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <meta property="og:title" content="{{ skill.name }} — AI skill">
+    <meta property="og:description"
+          content="{{ skill.description|truncatechars:200 }}">
+    <meta property="og:url" content="{{ canonical_url }}">
+    <meta property="og:type" content="website">
+{% endblock %}
+{% block content %}
+    <div class="tk-container library-page tk-skill-detail">
+        <a class="tk-back" href="{% url 'ai_skills' %}">← AI skills</a>
+        <h1>{{ skill.name }}</h1>
+        <p class="tk-description">{{ skill.description }}</p>
+        <div class="tk-tags">{% for tag in skill.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+        <div class="tk-source">
+            <a href="{{ skill.source_url }}"
+               target="_blank"
+               rel="noopener noreferrer">View skill source ↗</a>
+            {% if skill.repository_url %}<a href="{{ skill.repository_url }}"
+   target="_blank"
+   rel="noopener noreferrer">Repository ↗</a>{% endif %}
+            {% if skill.website_url %}<a href="{{ skill.website_url }}"
+   target="_blank"
+   rel="noopener noreferrer">Website ↗</a>{% endif %}
+        </div>
+        {% if skill.notes %}<section class="tk-related"><h2>When to use it</h2><div class="tk-description">{{ skill.notes|linebreaks }}</div></section>{% endif %}
+        <section class="tk-related">
+            <h2>Compatible agents</h2>
+            <div class="tk-tags">{% for agent in skill.compatible_agents %}<span>{{ agent }}</span>{% empty %}<p class="tk-muted">Check the source for agent compatibility.</p>{% endfor %}</div>
+        </section>
+        <section class="tk-related">
+            <h2>Installation</h2>
+            {% if skill.installation %}<pre class="tk-skill-install"><code>{{ skill.installation }}</code></pre>{% else %}<p class="tk-muted">Follow the setup instructions at the skill source.</p>{% endif %}
+            <p class="tk-muted">Review the source and instructions before installing in your agent.</p>
+        </section>
+        <section class="tk-related"><h2>License</h2><p>{{ skill.license|default:'Not confirmed. Check the source for usage terms.' }}</p>{% if skill.checked_at %}<p class="tk-muted">Last checked {{ skill.checked_at|date:'M j, Y' }}.</p>{% endif %}</section>
+    </div>
+{% endblock %}

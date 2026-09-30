@@ -209,3 +209,33 @@ class UILibrary(models.Model):
 
     def __str__(self):
         return self.design.title
+
+
+class AISkill(models.Model):
+    """Editorial directory entries, not executable code or visual arena references."""
+
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=160)
+    source_url = models.URLField(max_length=2048, unique=True)
+    website_url = models.URLField(max_length=2048, blank=True)
+    repository_url = models.URLField(max_length=2048, blank=True)
+    description = models.TextField(max_length=5000)
+    notes = models.TextField(max_length=10000, blank=True)
+    installation = models.TextField(max_length=10000, blank=True)
+    compatible_agents = models.JSONField(default=list, blank=True)
+    tags = models.JSONField(default=list, blank=True)
+    license = models.CharField(max_length=160, blank=True)
+    checked_at = models.DateField(null=True, blank=True)
+    published = models.BooleanField(default=True, db_index=True)
+    submitted_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ["name", "id"]
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("ai_skill_detail", args=[self.pk])

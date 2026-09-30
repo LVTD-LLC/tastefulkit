@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from apps.catalogue.models import Design, SavedDesign, Site, Tag, UILibrary
+from apps.catalogue.models import AISkill, Design, SavedDesign, Site, Tag, UILibrary
 
 
 @admin.register(Design)
@@ -72,4 +72,15 @@ class UILibraryAdmin(admin.ModelAdmin):
         return False
 
     def has_delete_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(AISkill)
+class AISkillAdmin(admin.ModelAdmin):
+    list_display = ["name", "source_url", "published", "checked_at"]
+    list_filter = ["published"]
+    search_fields = ["name", "source_url", "description"]
+    readonly_fields = [field.name for field in AISkill._meta.fields if field.name != "published"]
+
+    def has_add_permission(self, request):
         return False

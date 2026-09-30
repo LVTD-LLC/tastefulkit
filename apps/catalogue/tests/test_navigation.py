@@ -62,7 +62,8 @@ def test_guest_personal_link_preserves_kind(client, components):
 def test_directory_navigation_and_default_explore(client, user, components):
     response = client.get("/ui-libraries/")
     assert b'aria-label="Content types"' in response.content
-    assert b"/arena/?kind=ui_library" in response.content
+    assert b"/arena/?kind=ui_library" not in response.content
+    assert b"/ai-skills/" in response.content
     client.force_login(user)
     response = client.get("/explore/")
     assert all(d.kind == "landing_page" for d in response.context["page"])

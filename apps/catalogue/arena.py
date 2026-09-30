@@ -15,6 +15,7 @@ from apps.catalogue.models import (
     ArenaBallot,
     ArenaGuest,
     ArenaState,
+    Design,
     DesignRating,
     SavedDesign,
     TasteProfile,
@@ -31,6 +32,7 @@ class ArenaError(ValueError):
 def eligible_designs():
     return (
         visible_designs()
+        .exclude(kind=Design.Kind.UI_LIBRARY)
         .exclude(screenshot="")
         .exclude(thumbnail="")
         .defer("design_markdown", "description")

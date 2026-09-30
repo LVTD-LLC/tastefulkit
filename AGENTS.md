@@ -100,8 +100,9 @@ is the contribution and merge contract.
 
 - Explore, Arena, global rankings and For you share two-level navigation with
   content-type tabs. Types with published ready examples appear automatically;
-  UI libraries and landing pages remain available even when empty. Arena and
-  rankings are scoped to the selected type; homepage previews remain landing-page focused. Optional Site links
+  UI libraries, AI skills and landing pages remain available in Explore even when empty.
+  Only visual references participate in Arena and rankings; nonvisual directory
+  selections switch to landing pages when entering these surfaces; homepage previews remain landing-page focused. Optional Site links
   group references by canonical origin; the admin ingestion POST accepts site metadata
   and PATCH /api/v1/designs/{id}/site links existing entries without asset replacement. External agents prepare metadata, screenshots,
   thumbnails, DESIGN.md and embeddings; the admin-only multipart POST validates, stores
@@ -465,12 +466,24 @@ npm run lint
 
 ## UI library collection
 
-- `Design.Kind.UI_LIBRARY` reuses assets, search, moderation and voting; the
+- `Design.Kind.UI_LIBRARY` reuses assets, search and moderation; the
   one-to-one `UILibrary` owns website/GitHub, frameworks, editorial notes and
   structured multi-plan pricing. Do not seed real libraries in migrations.
 - Public directory/detail pages and sitemap include only published ready
-  libraries. Arena/rankings allow a separate library collection; defaults and
-  homepage previews remain landing-only. Cross-kind ballots remain invalid.
+  libraries. UI libraries cannot enter Arena/rankings; old URLs redirect to the
+  directory and old pair tokens are rejected. Historical ballots are retained.
 - Private write contract: `docs/maintainers/ui-library-ingestion.md`,
   `POST /api/v1/ui-libraries`, active superusers only. Do not document admin
   ingestion in public pages/OpenAPI. Generic design ingestion rejects this kind.
+
+## AI skills directory
+
+- `AISkill` is a separate editorial model, not a Design kind. Public directory
+  and detail pages are searchable and included in the sitemap when published.
+- `POST /api/v1/ai-skills` accepts JSON from active superusers only; hidden from
+  public OpenAPI. See `docs/maintainers/ai-skill-ingestion.md`. Authenticated
+  read-only REST list/detail endpoints are available. Existing design MCP tools
+  remain design-only; they do not return AI skills.
+- Skills have no screenshots, embeddings, pairwise voting or personalized ranking.
+  Source links and installation instructions are inert, escaped text: never fetch,
+  install, or execute submitted instructions. Moderation visibility survives replacement.

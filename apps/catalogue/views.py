@@ -7,7 +7,7 @@ from django.views.decorators.http import require_POST
 
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
-from apps.catalogue.navigation import discovery_navigation, selected_kind
+from apps.catalogue.navigation import DIRECTORY_ROUTES, discovery_navigation, selected_kind
 from apps.catalogue.services import related_designs, search_designs, visible_designs
 from apps.core.models import Profile
 
@@ -31,6 +31,8 @@ def landing(request):
 def library(request):
     query = request.GET.get("q", "")[:300]
     kind = selected_kind(request)
+    if kind in DIRECTORY_ROUTES:
+        return redirect(DIRECTORY_ROUTES[kind])
     site = request.GET.get("site", "")
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")

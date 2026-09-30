@@ -242,3 +242,6 @@
 .tk-install-tooltip { display: none; position: absolute; left: 0; top: 100%; z-index: 10; margin-top: 8px; width: max-content; max-width: 100%; padding: 8px 12px; border-radius: 6px; background: var(--tk-ink); color: var(--tk-bg); font-size: 14px; }
 .tk-install-guest:hover .tk-install-tooltip,
 .tk-install-guest:focus .tk-install-tooltip { display: block; }
+
+.tk-skill-detail { overflow-wrap: anywhere; }
+.tk-skill-install { max-width: 100%; overflow-x: auto; padding: 1rem; border: 1px solid var(--tk-line); white-space: pre-wrap; overflow-wrap: anywhere; }

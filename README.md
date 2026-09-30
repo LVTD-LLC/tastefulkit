@@ -96,11 +96,10 @@ and the [maintainer documentation](docs/maintainers/README.md).
 Browse the public [UI library directory](https://tastefulkit.com/ui-libraries/)
 for screenshots, descriptions, framework notes, website/GitHub links and
 researched pricing. Unknown pricing is labeled as unconfirmed. Library detail
-pages are public; no account is needed. Choose **UI libraries** in Arena or
-rankings to compare their landing-page designs separately from design references.
+pages are public; no account is needed. UI libraries are browse-only; Arena and rankings compare visual design references.
 Read-only REST and MCP access continues to use an active account's API key.
 
-Discovery pages share two navigation rows: Explore, Arena, Global ranking and For you, followed by content types. The selected type carries across sections. UI libraries and landing pages are always available; other types appear as published references are added. Explore defaults to landing pages and keeps saved references accessible below the tabs.
+Discovery pages share two navigation rows: Explore, Arena, Global ranking and For you, followed by content types. Visual reference types carry across sections. UI libraries and AI skills are Explore-only; entering Arena or rankings from these directories selects landing pages. UI libraries, AI skills and landing pages are always available in Explore; other types appear as published references are added. Explore defaults to landing pages and keeps saved references accessible below the tabs.
 
 ### Install skills into your agent
 
@@ -117,3 +116,12 @@ rotating it. Never discard those secrets until existing ciphertext is re-encrypt
 or account keys are explicitly rotated. API authentication continues to use hashes.
 The additive schema can be rolled back at the application layer without dropping fields,
 but old application versions do not recognize preserved legacy credentials after provisioning.
+
+### Design-focused AI skills
+
+Browse `/ai-skills/` for agent skills covering interface design, accessibility, and
+frontend workflows. Entries include source links, usage notes, compatible agents,
+installation instructions and licensing where confirmed. The directory is public;
+read-only REST list/detail endpoints at `/api/v1/ai-skills` require a free account's
+API key. Skills are not installed or executed by TastefulKit and do not participate
+in Arena or rankings. UI libraries also remain browse-only in Explore.

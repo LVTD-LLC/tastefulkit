@@ -2,7 +2,7 @@
 
 UI libraries are distinct catalogue records (`kind: ui_library`), with a one-to-one
 `UILibrary` metadata record. Design owns the screenshot, moderation, vector, saves
-and ballots, so visibility and vote security have one implementation. Do not
+and historical ballots; new library comparisons are disabled. Do not
 create standalone metadata or reuse a landing-page ID: a library and a reference
 from its website are different items. They may share optional `site` metadata.
 
@@ -17,7 +17,7 @@ Send JSON `payload`, `screenshot`, `thumbnail`, and UTF-8 `design_md` files. Sup
 `captured_at`, `viewport_width`, the prepared 768-dimensional `embedding` and
 `embedding_model` exactly as for designs. No capture, scraping or inference runs
 on the server. The screenshot should show the library's landing page; thumbnails
-are required for fast directory and arena previews. DESIGN.md describes that
+are required for fast directory previews. DESIGN.md describes that
 visual reference, not a license to use the library's source code.
 
 Payload additions/example (replace the illustrative fields and prepare the real
@@ -66,16 +66,15 @@ assets/vector before posting):
 - Read APIs: `GET /api/v1/ui-libraries?q=react&page=1` and
   `GET /api/v1/ui-libraries/{id}` (active-account API key). Existing design
   REST/MCP search also accepts `kind=ui_library` and returns `library` metadata.
-- Arena/rankings: `?kind=ui_library` compares libraries only, using screenshots
-  and the existing viewport-family rules. Default arena/rankings/homepage stay
-  landing-page focused. At least two compatible libraries are needed to vote.
+- UI libraries are Explore-only. Old Arena/ranking library URLs redirect to the
+  directory, and old library voting tokens are rejected. Historical ballots remain.
 
 ## Pilot checklist
 
 Research the requested candidates: shadcn/ui, Tailwind Plus, interior.dev,
 Beautiful UI and Cuelume. They are candidates, not seeded or verified records.
 Capture and inspect real screenshots; verify links, descriptions, framework
-claims, prices and licenses against their primary sources. Submit two compatible
+claims, prices and licenses against their primary sources. Submit researched
 libraries, read back metadata and image hashes, inspect public directory/detail,
-and confirm a library-only arena pair before expanding recurring collection.
-Do not cast production votes merely to test ingestion.
+and verify directory search before expanding recurring collection.
+Do not cast production votes to test ingestion.
