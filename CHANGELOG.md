@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-09-30
+
+- Align SEO claim guidance and checks with free DESIGN.md access. Correct the four
+  blog articles’ modification dates to September 29, when their access copy changed,
+  preserving September 20 publication dates and existing article content.
+
 ## 2026-09-29
 
 - Automatically provision encrypted, copyable API keys for new accounts and add an idempotent existing-account backfill that preserves legacy keys. Include the owner’s key in the renamed hero installation prompt, disable it for guests with a sign-in tooltip, place it below the main CTAs, and remove the recent-guides section and placeholder helper. Explicit rotation revokes all prior keys.

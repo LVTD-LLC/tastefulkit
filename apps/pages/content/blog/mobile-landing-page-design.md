@@ -3,7 +3,7 @@ title: "Mobile Landing Page Design: A Practical Review Checklist"
 description: "Review mobile landing page design with a practical checklist for reading order, image crops, reflow, controls, keyboard access, and sticky elements."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-24
+updated: 2026-09-29
 ---
 
 Good mobile landing page design preserves the page's argument on a narrow screen: what the product does, why it matters, and what to do next. Review reading order, image crops, text reflow, controls, keyboard access, and sticky elements together. A smaller screenshot of the desktop layout is not enough.
