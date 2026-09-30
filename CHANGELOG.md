@@ -2,6 +2,8 @@
 
 ## 2026-09-30
 
+- Keep the Has motion selector inside the public Explore search form for both guests and signed-in users.
+
 - Add optional validated silent MP4 motion previews for design references, on-demand gallery playback, Motion/Screenshot detail views and a Has motion filter. REST/MCP return clip metadata and motion notes; existing static submissions and Arena remain unchanged.
 
 - Make all Explore browsing public, including design/component details, full screenshots and DESIGN.md downloads. Preserve account-only saves/personal rankings and authenticated APIs.
