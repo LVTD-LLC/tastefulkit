@@ -127,3 +127,8 @@ API key. Skills are not installed or executed by TastefulKit and do not particip
 in Arena or rankings. UI libraries also remain browse-only in Explore.
 
 Use the header’s **Explore** menu for Designs (landing pages), UI libraries, AI skills, Docs and Blog. **Arena** opens design voting; rankings remain in discovery tabs. Open your username menu for Settings and Log out.
+
+AI skill listings include source-linked GitHub repository stars and skills.sh
+installs when checked. Sort by either popularity count or by name; unknown counts
+appear last. Stars describe the whole repository, while installs describe the
+specific skill. Checked dates show when each source was last verified.

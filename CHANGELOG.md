@@ -4,6 +4,8 @@
 
 - Simplify the shared navbar with Arena and Explore on the left, grouped catalogue/docs/blog links, and a username menu beside the theme toggle.
 
+- Show source-linked GitHub repository stars and skills.sh skill installs with checked dates; sort the AI skills directory and REST results by either count, with unknown values last. Add validated collector metrics and a metadata-preserving admin refresh endpoint.
+
 - Add a public, searchable design-focused AI skills directory with source links,
   compatibility, usage and installation notes, license metadata, and admin-only
   idempotent JSON ingestion. Published entries are included in the sitemap.

@@ -4,7 +4,7 @@
     <meta name="description"
           content="Find AI agent skills for interface design, accessibility, and frontend workflows, with source links and setup instructions.">
     <link rel="canonical" href="{{ canonical_url }}">
-    {% if q or request.GET.page %}<meta name="robots" content="noindex, follow">{% endif %}
+    {% if q or request.GET.page or request.GET.sort %}<meta name="robots" content="noindex, follow">{% endif %}
 {% endblock %}
 {% block content %}
     <div class="tk-container library-page">
@@ -19,6 +19,12 @@
                        value="{{ q }}"
                        type="search"
                        placeholder="Name, agent, or design task">
+                <label for="skill-sort">Sort by</label>
+                <select id="skill-sort" name="sort" class="app-input">
+                    {% for value, label in sort_options %}
+                        <option value="{{ value }}" {% if sort == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
                 <button class="tk-button" type="submit">Search</button>
             </div>
         </form>
@@ -27,6 +33,7 @@
             <article class="tk-related">
                 <h2><a href="{{ skill.get_absolute_url }}">{{ skill.name }}</a></h2>
                 <p class="tk-description">{{ skill.description|truncatechars:240 }}</p>
+                {% include "catalogue/skill_metrics.html" %}
                 <div class="tk-tags">{% for agent in skill.compatible_agents %}<span>{{ agent }}</span>{% endfor %}{% for tag in skill.tags %}<span>{{ tag }}</span>{% endfor %}</div>
                 <a href="{{ skill.get_absolute_url }}">View skill →</a>
             </article>
@@ -40,9 +47,9 @@
         {% endfor %}
         {% if page.has_other_pages %}
             <nav class="tk-pagination" aria-label="Skill pages">
-                {% if page.has_previous %}<a href="?q={{ q|urlencode }}&page={{ page.previous_page_number }}">← Previous</a>{% endif %}
+                {% if page.has_previous %}<a href="?q={{ q|urlencode }}&sort={{ sort|urlencode }}&page={{ page.previous_page_number }}">← Previous</a>{% endif %}
                 <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
-                {% if page.has_next %}<a href="?q={{ q|urlencode }}&page={{ page.next_page_number }}">Next →</a>{% endif %}
+                {% if page.has_next %}<a href="?q={{ q|urlencode }}&sort={{ sort|urlencode }}&page={{ page.next_page_number }}">Next →</a>{% endif %}
             </nav>
         {% endif %}
     </div>
