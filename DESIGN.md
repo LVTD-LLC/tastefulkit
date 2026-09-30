@@ -372,3 +372,5 @@ as border-separated rows, with billing cadence, source and verification date.
 Do not imply an unknown price is free. Library voting has its own collection tab.
 
 Discovery navigation uses two separate underlined tab rows: section first, content type second. Each row scrolls horizontally on narrow screens without widening the page; active states and keyboard focus remain visible in both themes.
+
+The shared header places Arena and Explore beside the brand, with account and theme controls on the right. Explore groups Designs, UI libraries and AI skills above a separator, then Docs and Blog. Account disclosure contains Settings and CSRF-protected logout. On narrow screens the brand sits above the controls; long usernames truncate. Native disclosures preserve no-JS access; Escape and outside clicks dismiss enhanced menus.
