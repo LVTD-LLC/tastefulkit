@@ -79,11 +79,11 @@ def test_homepage_handles_a_small_or_empty_ranking(client, user, count):
 
 
 @pytest.mark.parametrize("signed_in", [False, True])
-def test_install_prompt_is_owner_only_and_preserves_key(client, user, signed_in):
+def test_how_to_use_prompt_is_owner_only_and_preserves_key(client, user, signed_in):
     key = user.profile.ensure_api_key()
     if signed_in:
         client.force_login(user)
-    response = client.get("/")
+    response = client.get("/how-to-use/")
     html = response.content.decode()
     assert response.status_code == 200
     assert "Copy AI Tooling Installation Prompt" in html
@@ -98,10 +98,27 @@ def test_install_prompt_is_owner_only_and_preserves_key(client, user, signed_in)
     assert user.profile.ensure_api_key() == key
 
 
-def test_landing_never_exposes_another_users_key(client, user):
+def test_how_to_use_never_exposes_another_users_key(client, user):
     from django.contrib.auth.models import User
 
     other = User.objects.create_user(username="other-prompt-owner")
     other_key = other.profile.ensure_api_key()
     client.force_login(user)
-    assert other_key.encode() not in client.get("/").content
+    assert other_key.encode() not in client.get("/how-to-use/").content
+
+
+@pytest.mark.parametrize("signed_in", [False, True])
+def test_homepage_has_no_installation_prompt(client, user, signed_in):
+    if signed_in:
+        client.force_login(user)
+    html = client.get("/").content
+    assert b"Copy AI Tooling Installation Prompt" not in html
+    assert user.profile.ensure_api_key().encode() not in html
+
+
+def test_how_to_use_is_public_and_in_sitemap(client):
+    response = client.get("/how-to-use/")
+    assert response.status_code == 200
+    for text in [b"Explore", b"Arena", b"Using TastefulKit with AI", b"For you", b"Global ranking"]:
+        assert text in response.content
+    assert b"/how-to-use/" in client.get("/sitemap.xml").content

@@ -135,3 +135,5 @@ specific skill. Checked dates show when each source was last verified.
 ### Public browsing
 
 All Explore destinations are available without signing in: designs and components, UI libraries, AI skills, Docs and Blog. Published design details include full screenshots, related references and DESIGN.md downloads. Sign in only for saved collections, personalized rankings and your API/MCP key.
+
+Start with the public [How to Use guide](https://tastefulkit.com/how-to-use/) for Explore, Arena and AI setup. Signed-in users can copy their personal AI tooling installation prompt there.

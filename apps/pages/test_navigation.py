@@ -24,10 +24,22 @@ def test_shared_header_destinations_and_account_actions(base, member):
         base, {"user": user, "request": request, "csrf_token": "test-csrf-token"}
     )
     header = html.split("<header", 1)[1].split("</header>", 1)[0]
-    for route in ["voting_arena", "ui_libraries", "ai_skills", "docs_home", "blog_index"]:
+    for route in [
+        "voting_arena",
+        "ui_libraries",
+        "ai_skills",
+        "docs_home",
+        "blog_index",
+        "how_to_use",
+    ]:
         assert f'href="{reverse(route)}"' in header
     assert f'href="{reverse("home")}?kind=landing_page"' in header
     assert header.index(">AI skills</a>") < header.index("<hr") < header.index(">Docs</a>")
+    assert (
+        header.index(">Arena</a>")
+        < header.index(">Explore</summary>")
+        < header.index(">How to Use</a>")
+    )
     assert "data-theme-toggle" in header
     assert f'href="{reverse("design_rankings")}"' not in header
     if member:
