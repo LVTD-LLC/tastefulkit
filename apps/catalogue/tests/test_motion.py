@@ -159,3 +159,17 @@ def test_notes_are_escaped_and_no_js_static_fallback(client, admin_key, qdrant_s
     assert "&lt;script&gt;alert(1)&lt;/script&gt;" in html
     assert 'data-motion-panel="screenshot"' in html and design.screenshot.url in html
     assert client.get("/explore/?has_motion=1").context["page"].paginator.count == 1
+
+
+@pytest.mark.parametrize("signed_in", [False, True])
+def test_motion_filter_is_in_public_search_form(client, user, signed_in):
+    import re
+
+    if signed_in:
+        client.force_login(user)
+    html = client.get("/explore/?has_motion=1").content.decode()
+    forms = re.findall(r"<form\b[^>]*>.*?</form>", html, flags=re.S)
+    search = next(form for form in forms if 'class="tk-search"' in form)
+    assert 'name="has_motion"' in search
+    assert re.search(r'<option value="1"\s+selected', search)
+    assert html.count('name="has_motion"') == 1
