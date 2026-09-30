@@ -9,15 +9,22 @@ from apps.catalogue.providers import embed
 from apps.catalogue.vector_store import search_vectors
 
 
-def visible_designs():
-    return Design.objects.filter(published=True, capture_status=Design.Status.READY).defer(
+def visible_designs(*, has_motion=False):
+    designs = Design.objects.filter(published=True, capture_status=Design.Status.READY).defer(
         "embedding"
     )
+    return designs.exclude(video="") if has_motion else designs
 
 
-def search_designs(query="", kind="", tag="", industry="", *, saved_by=None, site=""):
+def search_designs(
+    query="", kind="", tag="", industry="", *, saved_by=None, site="", has_motion=False
+):
     query, kind, tag, industry = [clean_search_text(v) for v in (query, kind, tag, industry)]
-    designs = visible_designs().select_related("site", "ui_library").prefetch_related("tags")
+    designs = (
+        visible_designs(has_motion=has_motion)
+        .select_related("site", "ui_library")
+        .prefetch_related("tags")
+    )
     if site:
         try:
             designs = designs.filter(site_id=UUID(str(site)))
@@ -70,6 +77,11 @@ def serialize_design(design, *, admin=False, detail=False, include_design_markdo
         "viewport_width": design.viewport_width,
         "capture_status": design.capture_status,
         "screenshot_url": design.screenshot.url if design.screenshot else None,
+        "video_url": design.video.url if design.video else None,
+        "motion_notes": design.motion_notes,
+        "video_width": design.video_width,
+        "video_height": design.video_height,
+        "video_duration": design.video_duration,
         "thumbnail_url": design.thumbnail.url if design.thumbnail else None,
         "created_at": design.created_at.isoformat(),
         "captured_at": design.captured_at.isoformat() if design.captured_at else None,
@@ -94,9 +106,9 @@ def clean_search_text(value):
     return value.replace("\x00", "").encode("utf-8", "replace").decode()[:300]
 
 
-def design_page(query="", kind="", tag="", industry="", page=1, *, site=""):
+def design_page(query="", kind="", tag="", industry="", page=1, *, site="", has_motion=False):
     """Shared REST/MCP search, visibility, pagination and screenshot serialization."""
-    designs, mode = search_designs(query, kind, tag, industry, site=site)
+    designs, mode = search_designs(query, kind, tag, industry, site=site, has_motion=has_motion)
     pager = Paginator(designs, 24)
     current = pager.get_page(page)
     return {

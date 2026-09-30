@@ -336,3 +336,24 @@ def test_site_filter_and_related_parity(http, client, key, design):
     assert data(http, "get_design", design_id=str(design.pk))["site"]["id"] == str(site.pk)
     with patch("apps.catalogue.services.embed", side_effect=ValueError("offline")):
         assert data(http, "search_designs", q="warm", **args)["total"] == 1
+
+
+def test_motion_rest_mcp_parity_and_filter(http, client, key, design):
+    design.video = "designs/videos/clip.mp4"
+    design.motion_notes = "Cards slide on hover; no movement with reduced motion."
+    design.video_width, design.video_height, design.video_duration = 640, 480, 3.0
+    design.save()
+    headers = {"HTTP_X_API_KEY": key}
+    listed = data(http, "list_designs", has_motion=True)
+    assert listed == client.get("/api/v1/designs", {"has_motion": "true"}, **headers).json()
+    assert listed["total"] == 1
+    detail = data(http, "get_design", design_id=str(design.pk))
+    assert detail == client.get(f"/api/v1/designs/{design.pk}", **headers).json()
+    assert detail["video_url"].endswith("clip.mp4")
+    assert detail["motion_notes"] == design.motion_notes
+    with patch("apps.catalogue.services.embed", side_effect=ValueError("offline")):
+        assert data(http, "search_designs", q="warm", has_motion=True)["total"] == 1
+    design.published = False
+    design.save()
+    assert data(http, "list_designs", has_motion=True)["total"] == 0
+    assert call(http, "get_design", design_id=str(design.pk))["isError"]

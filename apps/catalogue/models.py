@@ -66,6 +66,11 @@ class Design(models.Model):
     viewport_width = models.PositiveIntegerField(default=1440)
     screenshot = models.ImageField(upload_to="designs/screenshots/", blank=True)
     thumbnail = models.ImageField(upload_to="designs/thumbnails/", blank=True)
+    video = models.FileField(upload_to="designs/videos/", blank=True)
+    motion_notes = models.TextField(max_length=5000, blank=True)
+    video_width = models.PositiveIntegerField(null=True, blank=True)
+    video_height = models.PositiveIntegerField(null=True, blank=True)
+    video_duration = models.FloatField(null=True, blank=True)
     capture_status = models.CharField(
         max_length=16, choices=Status.choices, default=Status.PENDING, db_index=True
     )

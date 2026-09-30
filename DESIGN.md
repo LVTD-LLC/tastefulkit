@@ -376,3 +376,12 @@ Discovery navigation uses two separate underlined tab rows: section first, conte
 The shared header places Arena, Explore and How to Use beside the brand, with account and theme controls on the right. Explore groups Designs, UI libraries and AI skills above a separator, then Docs and Blog. Account disclosure contains Settings and CSRF-protected logout. On narrow screens the brand sits above the controls; long usernames truncate. Native disclosures preserve no-JS access; Escape and outside clicks dismiss enhanced menus.
 
 The How to Use guide uses one readable column and three border-separated sections. On mobile, brand/account controls occupy the first row and main navigation the second.
+
+### Motion previews
+
+Keep screenshot fallback images in every catalogue card. Optional clips use the
+same frame without cropping, with a keyboard-accessible Play/Pause action outside
+the card link. Load clips on demand; autoplay no more than two visible clips and
+never autoplay under reduced-motion/data-saver preferences. Detail pages provide
+Motion/Screenshot toggle buttons and native playback controls; both assets remain
+accessible without JavaScript. Use existing neutral palette and focus treatments.

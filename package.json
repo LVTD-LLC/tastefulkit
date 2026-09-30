@@ -9,7 +9,8 @@
     "build:vendor": "node scripts/copy-vendor-assets.mjs",
     "watch": "npm run build:vendor && node scripts/watch-assets.mjs",
     "lint": "eslint \"frontend/src/js/**/*.js\" \"scripts/**/*.mjs\"",
-    "test:analytics": "node --test scripts/test-posthog.mjs"
+    "test:analytics": "node --test scripts/test-posthog.mjs",
+    "test:motion": "node --test scripts/test-motion.mjs"
   },
   "repository": {
     "type": "git",

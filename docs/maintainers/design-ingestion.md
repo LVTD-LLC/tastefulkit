@@ -111,3 +111,48 @@ can send this JSON to `PATCH /api/v1/designs/DESIGN_ID/site`:
 Use `{"site": null}` on that endpoint to unlink it. Ordinary API keys cannot
 change these relationships. Existing references are not automatically assigned
 to sites: link them explicitly after verifying their source.
+
+## Motion previews
+
+Design references (not UI libraries or AI skills) may include one optional binary
+`video` multipart field plus non-empty `motion_notes` in the JSON payload. All
+existing screenshot/thumbnail/DESIGN.md/embedding fields remain required. Omitting
+both new fields creates a static reference, exactly as before. Do not send a video URL.
+
+- MP4 container, H.264 codec, yuv420p pixel format, **no audio or other streams**.
+- **1–15 seconds**, at most **60 fps**, **20 MiB**, **2560px per side**, and
+  **4 million pixels per frame**. Aim for 5–10 seconds, 720–1080px and under 3 MiB.
+- Use fast-start MP4 (`-movflags +faststart`) so playback can begin promptly.
+- Server checks container, codec, duration, dimensions and every decoded frame in
+  an isolated PyAV subprocess (20-second deadline; Linux CPU/memory limits). It
+  never fetches external media, generates a clip, or transcodes accepted bytes.
+- Supply a representative static thumbnail as the poster. Keep the full screenshot
+  for layout inspection; for components, crop the video to that same component.
+- `motion_notes` is plain text, up to 5000 characters: describe the trigger
+  (load/scroll/hover/click), sequence, timing (label estimates), moving elements,
+  and a reduced-motion alternative. Include equivalent **Motion** guidance in
+  DESIGN.md so downloaded guides remain self-contained. Do not guess source code
+  or claim inferred easing/durations are measured values.
+- Capture actual site behavior, dismiss consent overlays, and avoid recording
+  private account content. Inspect the entire clip before submission. A scroll
+  recording should demonstrate a relevant interaction, not tour the whole page.
+
+Add this field to the existing curl command: `-F 'video=@motion.mp4;type=video/mp4'`.
+Add `"motion_notes": "On hover, cards rise ..."` to `payload.json`.
+
+A duplicate without `replace_existing` changes nothing, including its clip.
+An explicit replacement is a **complete bundle**: resend the video and notes to
+retain them; omit both to remove the previous clip. IDs and moderation remain
+unchanged. Failed storage/index writes roll back metadata and clean new files;
+previous files are removed only after a successful commit. No new identity field
+is introduced, so adding a clip to an existing design requires replacement.
+
+Verify returned `video_url`, measured `video_duration` (seconds), `video_width`,
+`video_height`, and `motion_notes`, then check playback on Explore and detail.
+REST/MCP `has_motion=true` finds published ready clips; URLs use existing signed
+storage access and expire after 15 minutes. Refresh the design to renew them.
+Static responses have `video_url: null`, null measured metadata, and empty notes.
+
+Pilot with a Raycast animated section and a Heyneuma animated section, grouped
+with their source sites. Verify one complete submission and playback before
+expanding daily collection. No existing screenshot-only record needs backfilling.

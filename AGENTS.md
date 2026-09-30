@@ -165,12 +165,12 @@ the owner’s key; encrypted recovery supplements hashed authentication. Legacy 
 valid until explicit Settings rotation. See README for backfill and encryption-key rotation.
 Only active superusers may submit; staff status and the first signup confer no
 write access. All catalogue creation/refreshes use `POST /api/v1/designs` as multipart:
-JSON `payload`, binary `screenshot`, `thumbnail`, and UTF-8 `design_md`.
+JSON `payload`, binary `screenshot`, `thumbnail`, UTF-8 `design_md`, and optional `video` MP4 plus `motion_notes` in the payload.
 See [the submission contract](docs/maintainers/design-ingestion.md)
 for exact preparation requirements, limits, a curl example and the pinned DESIGN.md format.
 
 The payload supplies a timestamp and a finite nonzero 768-value embedding from
-`@cf/baai/bge-base-en-v1.5`. No source fetching, rendering, resizing, content generation,
+`@cf/baai/bge-base-en-v1.5`. Optional MP4s are decoded in a bounded, protocol-disabled PyAV subprocess before storage; no transcoding occurs. No source fetching, rendering, resizing, content generation,
 example embedding inference or asynchronous processing occurs in the ingestion pipeline. Images are
 validated but stored byte-for-byte. DESIGN.md is stored durably in PostgreSQL, escaped
 in the detail page, available as a protected download and included in REST/MCP detail.

@@ -27,6 +27,7 @@ All query parameters are optional:
 | `tag` | A style tag from the library. |
 | `industry` | An industry from the library. |
 | `site` | A site UUID from a design response; returns references from that site. |
+| `has_motion` | Set `true` to find designs with a motion preview. |
 | `page` | A page number, starting at `1`. |
 
 Filters combine, just as they do in Explore. URL-encode spaces and other special characters in parameter values.
@@ -99,3 +100,14 @@ With your API key, use `GET /api/v1/ai-skills?q=accessibility&page=1` to search
 and `GET /api/v1/ai-skills/SKILL_ID` to read an entry. Lists return `items`,
 `page`, `pages` and `total`, with up to 24 entries per page. Existing design MCP
 tools do not include this directory. Review the upstream source before installing.
+
+## Use animated references
+
+Some designs include a silent looping video alongside the screenshot. Use
+`has_motion=true` in REST or MCP list/search to find them. `video_url` contains
+an expiring clip link (or `null` for a static reference). `video_duration` is in
+seconds; `video_width` and `video_height` describe the clip in pixels.
+
+Read `motion_notes` for the trigger, sequence, estimated timing and reduced-motion
+alternative. Agents that cannot view video can still use these notes alongside
+DESIGN.md and the screenshot. Refresh the design to renew expired asset links.

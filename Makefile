@@ -149,6 +149,7 @@ frontend-install:
 
 frontend-check:
 	$(NPM) run test:analytics
+	$(NPM) run test:motion
 	$(NPM) run lint
 	$(NPM) run build
 

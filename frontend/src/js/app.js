@@ -1,3 +1,4 @@
+import { initMotion } from "./modules/motion.js";
 import { initArena } from "./modules/arena.js";
 import { initCopyButtons } from "./modules/copy.js";
 import { initDiscoveryNavigation } from "./modules/discovery.js";
@@ -11,6 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initTheme();
   initDiscoveryNavigation();
   initArena();
+  initMotion();
   initMessages();
   initCopyButtons();
   initDocsEnhancements();
