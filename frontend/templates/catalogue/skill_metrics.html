@@ -1,0 +1,25 @@
+<div class="tk-muted">
+    <p>
+        {% if skill.github_stars != None %}
+            <a href="{{ skill.repository_url }}"
+               target="_blank"
+               rel="noopener noreferrer">{{ skill.github_stars }} GitHub stars</a>
+            <span>(repository-wide; checked {{ skill.github_stars_checked_at|date:'M j, Y' }})</span>
+        {% else %}
+            GitHub stars: not checked
+        {% endif %}
+    </p>
+    <p>
+        {% if skill.skills_sh_installs != None %}
+            <a href="{{ skill.skills_sh_url }}"
+               target="_blank"
+               rel="noopener noreferrer">{{ skill.skills_sh_installs }} skills.sh installs</a>
+            <span>(checked {{ skill.skills_sh_installs_checked_at|date:'M j, Y' }})</span>
+        {% else %}
+            skills.sh installs: not checked
+            {% if skill.skills_sh_url %}<a href="{{ skill.skills_sh_url }}"
+   target="_blank"
+   rel="noopener noreferrer">View on skills.sh</a>{% endif %}
+        {% endif %}
+    </p>
+</div>

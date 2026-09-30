@@ -66,3 +66,32 @@ row. No production entries are seeded by migrations. Django admin can hide/unhid
 Existing hosted MCP design tools do not include AI skills. Do not send skills to
 `/api/v1/designs` or `/api/v1/ui-libraries`. Scheduling/research remains the external
 collector's job; this feature does not change its cron.
+
+## Popularity snapshots
+
+Optional fields accepted by POST and returned by the read API:
+
+- `github_stars`: nullable, nonnegative integer; repository-wide `stargazers_count`
+  from the GitHub repository API, not a skill-specific rating. Requires a GitHub
+  `repository_url` and timezone-aware `github_stars_checked_at` timestamp.
+- `skills_sh_url`: the specific HTTPS `skills.sh` or `www.skills.sh` skill page,
+  without query or fragment; never substitute a repository leaderboard.
+- `skills_sh_installs`: nullable, nonnegative integer; the individual skill's
+  install count reported by skills.sh. Requires the source URL and timezone-aware
+  `skills_sh_installs_checked_at` timestamp.
+
+Unknown is null, not zero. Count and timestamp must be supplied together.
+Fetch sources externally; the application never fetches submitted URLs. Prefer an
+exact count from a verified skills.sh API/search result matched by repository and
+skill slug. Do not turn a rounded `12.3K` display into a falsely precise count or
+substitute weekly installs for the total. Leave it unknown if no exact value is available.
+
+Admin-only `PATCH /api/v1/ai-skills/{id}/metrics` replaces these five fields only,
+leaving editorial content, source identity, submitter and visibility untouched.
+Send the complete metrics snapshot: omitted fields clear to null/empty. On source
+failure preserve its previous count and timestamp, rather than zeroing it or
+marking stale data freshly checked. This endpoint is not in the public OpenAPI.
+
+Public `/ai-skills/?sort=stars` and `?sort=installs`, and authenticated
+`GET /api/v1/ai-skills?sort=stars|installs|name`, order descending by the selected
+count with nulls last and name/ID tie-breakers. Search and pagination retain sorting.

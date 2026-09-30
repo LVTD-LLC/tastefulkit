@@ -27,6 +27,7 @@
    target="_blank"
    rel="noopener noreferrer">Website ↗</a>{% endif %}
         </div>
+        {% include "catalogue/skill_metrics.html" %}
         {% if skill.notes %}<section class="tk-related"><h2>When to use it</h2><div class="tk-description">{{ skill.notes|linebreaks }}</div></section>{% endif %}
         <section class="tk-related">
             <h2>Compatible agents</h2>

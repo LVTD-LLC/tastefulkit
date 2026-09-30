@@ -1,6 +1,7 @@
 """Separate JSON ingestion: skills need no screenshot, DESIGN.md or embedding."""
 
-from datetime import date
+from datetime import date, datetime
+from typing import Literal
 from urllib.parse import urlsplit, urlunsplit
 from uuid import UUID
 
@@ -10,14 +11,59 @@ from django.core.validators import URLValidator
 from django.db import transaction
 from django.shortcuts import get_object_or_404
 from ninja import Router, Schema
-from pydantic import ConfigDict, Field, field_validator
+from pydantic import ConfigDict, Field, field_validator, model_validator
 
 from apps.api.auth import api_key_auth, superuser_api_auth
 from apps.catalogue.models import AISkill
 from apps.catalogue.skills import serialize_skill, skill_results
 
 
-class AISkillIn(Schema):
+class AISkillMetricsIn(Schema):
+    model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
+    github_stars: int | None = Field(default=None, ge=0, le=9223372036854775807, strict=True)
+    github_stars_checked_at: datetime | None = None
+    skills_sh_url: str = Field(default="", max_length=2048)
+    skills_sh_installs: int | None = Field(default=None, ge=0, le=9223372036854775807, strict=True)
+    skills_sh_installs_checked_at: datetime | None = None
+
+    @field_validator("skills_sh_url")
+    @classmethod
+    def skills_directory_url(cls, value):
+        if not value:
+            return value
+        parts = urlsplit(value)
+        if (
+            parts.scheme != "https"
+            or parts.netloc not in {"skills.sh", "www.skills.sh"}
+            or len(parts.path.strip("/").split("/")) < 2
+            or parts.query
+            or parts.fragment
+            or any(ord(c) < 33 for c in value)
+        ):
+            raise ValueError("Use the specific HTTPS skills.sh skill page URL.")
+        return value.rstrip("/")
+
+    @model_validator(mode="after")
+    def verified_counts(self):
+        for count, checked in [
+            (self.github_stars, self.github_stars_checked_at),
+            (self.skills_sh_installs, self.skills_sh_installs_checked_at),
+        ]:
+            if (count is None) != (checked is None):
+                raise ValueError("A count and its checked timestamp must be supplied together.")
+            if checked is not None and checked.utcoffset() is None:
+                raise ValueError("Checked timestamps must include a timezone.")
+        if self.skills_sh_installs is not None and not self.skills_sh_url:
+            raise ValueError("Install counts require a skills.sh source URL.")
+        return self
+
+
+def is_github_repository(url):
+    parts = urlsplit(url)
+    return parts.hostname == "github.com" and len(parts.path.strip("/").split("/")) == 2
+
+
+class AISkillIn(AISkillMetricsIn):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
     name: str = Field(min_length=2, max_length=160)
     source_url: str = Field(min_length=1, max_length=2048)
@@ -31,6 +77,12 @@ class AISkillIn(Schema):
     license: str = Field(default="", max_length=160)
     checked_at: date | None = None
     replace_existing: bool = False
+
+    @model_validator(mode="after")
+    def stars_source(self):
+        if self.github_stars is not None and not is_github_repository(self.repository_url):
+            raise ValueError("GitHub stars require a GitHub repository URL.")
+        return self
 
     @field_validator("name", "description", "notes", "installation", "license")
     @classmethod
@@ -72,7 +124,7 @@ class AISkillIn(Schema):
         return labels
 
 
-class AISkillOut(Schema):
+class AISkillOut(AISkillMetricsIn):
     id: UUID
     url: str
     name: str
@@ -120,8 +172,10 @@ def create_skill(request, payload: AISkillIn):
 
 
 @router.get("", response={200: AISkillListOut, 401: dict, 422: dict})
-def list_skills(request, q: str = "", page: int = 1):
-    current = Paginator(skill_results(q), 24).get_page(page)
+def list_skills(
+    request, q: str = "", page: int = 1, sort: Literal["name", "stars", "installs"] = "name"
+):
+    current = Paginator(skill_results(q, sort), 24).get_page(page)
     return {
         "items": [serialize_skill(item) for item in current],
         "page": current.number,
@@ -133,3 +187,22 @@ def list_skills(request, q: str = "", page: int = 1):
 @router.get("/{skill_id}", response={200: AISkillOut, 401: dict, 404: dict, 422: dict})
 def get_skill(request, skill_id: UUID):
     return serialize_skill(get_object_or_404(skill_results(), pk=skill_id))
+
+
+@router.patch(
+    "/{skill_id}/metrics",
+    auth=superuser_api_auth,
+    include_in_schema=False,
+    response={200: AISkillOut, 401: dict, 404: dict, 422: dict},
+)
+@transaction.atomic
+def update_skill_metrics(request, skill_id: UUID, payload: AISkillMetricsIn):
+    """Replace the metrics snapshot without overwriting editorial content or visibility."""
+    skill = get_object_or_404(AISkill.objects.select_for_update(), pk=skill_id)
+    if payload.github_stars is not None and not is_github_repository(skill.repository_url):
+        return 422, {"detail": "GitHub stars require a GitHub repository URL."}
+    data = payload.model_dump()
+    for field, value in data.items():
+        setattr(skill, field, value)
+    skill.save(update_fields=[*data, "updated_at"])
+    return serialize_skill(skill)
