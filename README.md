@@ -137,3 +137,17 @@ specific skill. Checked dates show when each source was last verified.
 All Explore destinations are available without signing in: designs and components, UI libraries, AI skills, Docs and Blog. Published design details include full screenshots, related references and DESIGN.md downloads. Sign in only for saved collections, personalized rankings and your API/MCP key.
 
 Start with the public [How to Use guide](https://tastefulkit.com/how-to-use/) for Explore, Arena and AI setup. Signed-in users can copy their personal AI tooling installation prompt there.
+
+### Animated design references
+
+Designs can include a short silent MP4 alongside their static screenshot. Explore's
+**Has motion** filter finds them. Visible gallery previews play at most two clips
+at once; reduced-motion and data-saver preferences disable automatic playback.
+Use the Play/Pause button to control a preview, or open the design for native video
+controls and **Motion / Screenshot** views. Arena continues comparing static images.
+
+API/MCP list and search accept `has_motion=true`; responses include `video_url`,
+`video_duration` (seconds), `video_width`, `video_height`, and `motion_notes`.
+Asset links expire: fetch the reference again to refresh them. Motion notes and
+DESIGN.md explain behavior for agents that cannot view video. Preparation and
+replacement rules are in [the maintainer contract](docs/maintainers/design-ingestion.md#motion-previews).

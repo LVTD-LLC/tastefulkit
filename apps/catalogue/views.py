@@ -32,10 +32,17 @@ def library(request):
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")
     saved = request.GET.get("saved") == "1"
+    has_motion = request.GET.get("has_motion") == "1"
     if saved and not request.user.is_authenticated:
         return redirect_to_login(request.get_full_path())
     designs, mode = search_designs(
-        query, kind, tag, industry, saved_by=request.user if saved else None, site=site
+        query,
+        kind,
+        tag,
+        industry,
+        saved_by=request.user if saved else None,
+        site=site,
+        has_motion=has_motion,
     )
     page = Paginator(designs, 24).get_page(request.GET.get("page"))
     params = request.GET.copy()
@@ -51,6 +58,7 @@ def library(request):
             "tag": tag,
             "industry": industry,
             "saved": saved,
+            "has_motion": has_motion,
             "search_mode": mode,
             **discovery_navigation(kind, "explore"),
             "tags": Tag.objects.filter(designs__in=visible_designs()).distinct(),

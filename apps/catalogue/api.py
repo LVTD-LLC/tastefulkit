@@ -28,6 +28,7 @@ def create_design(
     screenshot: File[UploadedFile],
     thumbnail: File[UploadedFile],
     design_md: File[UploadedFile],
+    video: File[UploadedFile] = None,
 ):
     """Admin-only prepared submission: store supplied assets and index supplied vector.
 
@@ -36,7 +37,7 @@ def create_design(
     """
     try:
         design, created = submit_design(
-            payload, request.auth.user, screenshot, thumbnail, design_md
+            payload, request.auth.user, screenshot, thumbnail, design_md, video=video
         )
     except ValueError as exc:
         raise HttpError(422, str(exc)) from None
@@ -58,9 +59,10 @@ def list_designs(
     industry: str = "",
     page: int = 1,
     site: UUID | None = None,
+    has_motion: bool = False,
 ):
     """Search published designs with text, semantic similarity, and filters."""
-    return design_page(q, kind, tag, industry, page, site=site)
+    return design_page(q, kind, tag, industry, page, site=site, has_motion=has_motion)
 
 
 @router.get("/{design_id}", response={200: dict, 401: dict, 402: dict, 404: dict, 422: dict})

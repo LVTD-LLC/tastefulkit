@@ -1,5 +1,31 @@
-<article class="design-card"><a href="{{ design.get_absolute_url }}" class="design-preview"><img src="{{ design.thumbnail.url }}"
-     alt="{{ design.title }} website screenshot"
-     loading="lazy"
-     width="720"
-     height="480"></a><h3><a href="{{ design.get_absolute_url }}">{{ design.title }} <span aria-hidden="true">↗</span></a></h3><p class="tk-muted">{{ design.get_kind_display }}{% if design.industry %} · {{ design.industry }}{% endif %}</p><div class="tk-tags">{% for item in design.tags.all|slice:':3' %}<a href="{% url 'library' %}?tag={{ item.name|urlencode }}">{{ item.name }}</a>{% endfor %}</div></article>
+<article class="design-card">
+    <div class="tk-preview-wrap"
+         {% if design.video %}data-motion-card{% endif %}>
+        <a href="{{ design.get_absolute_url }}" class="design-preview">
+            <img src="{{ design.thumbnail.url }}"
+                 alt="{{ design.title }} website screenshot"
+                 loading="lazy"
+                 width="720"
+                 height="480">
+            {% if design.video %}
+                <video data-motion-video
+                       data-src="{{ design.video.url }}"
+                       muted
+                       loop
+                       playsinline
+                       preload="none"
+                       aria-hidden="true"
+                       tabindex="-1">
+                </video>
+            {% endif %}
+        </a>
+        {% if design.video %}<button type="button"
+        class="tk-motion-toggle"
+        data-motion-toggle
+        hidden
+        aria-label="Play motion preview for {{ design.title }}">Play motion</button>{% endif %}
+    </div>
+    <h3><a href="{{ design.get_absolute_url }}">{{ design.title }} <span aria-hidden="true">↗</span></a></h3>
+    <p class="tk-muted">{{ design.get_kind_display }}{% if design.industry %} · {{ design.industry }}{% endif %}{% if design.video %} · Motion{% endif %}</p>
+    <div class="tk-tags">{% for item in design.tags.all|slice:':3' %}<a href="{% url 'library' %}?tag={{ item.name|urlencode }}">{{ item.name }}</a>{% endfor %}</div>
+</article>

@@ -10,6 +10,7 @@ from django.utils.text import slugify
 
 from apps.catalogue.artifacts import read_design_markdown, read_image
 from apps.catalogue.models import Design, Tag, UILibrary
+from apps.catalogue.motion import read_video
 from apps.catalogue.providers import public_url
 from apps.catalogue.sites import prepare_site, resolve_site
 from apps.catalogue.vector_store import (
@@ -46,7 +47,7 @@ def _cleanup_files(storage, names, design_id):
             _log_failure("design.asset_cleanup.failed", design_id, exc)
 
 
-def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=False):
+def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=False, video=None):
     if not user.is_active or not user.is_superuser:
         raise PermissionError("Only active administrators can submit designs.")
     data = payload.model_dump()
@@ -67,6 +68,8 @@ def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=Fa
         screenshot, viewport_width=None if data["selector"] else data["viewport_width"]
     )
     thumb = read_image(thumbnail, thumbnail=True)
+    clip, metadata = _prepare_motion(data, video, library)
+    data.update(metadata)
     stored = []
     design_id = None
     previous = None
@@ -84,7 +87,9 @@ def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=Fa
                 return design, False
             if created or site_supplied:
                 data["site"] = resolve_site(site_data)
-            old_files = [field.name for field in (design.screenshot, design.thumbnail) if field]
+            old_files = [
+                field.name for field in (design.screenshot, design.thumbnail, design.video) if field
+            ]
             previous = snapshot_vector(design.pk) if not created else None
             for key, value in data.items():
                 setattr(design, key, value)
@@ -96,6 +101,7 @@ def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=Fa
                     f"{design.pk}-{uuid4().hex}.{extension}", ContentFile(content), save=False
                 )
                 stored.append(field.name)
+            _save_motion(design, clip, stored)
             design.capture_status = Design.Status.READY
             design.capture_error = design.embedding_error = ""
             design.processing_at = None
@@ -147,3 +153,21 @@ def _prepare_library(payload, data, library):
 def _save_library(design, data):
     if data is not None:
         UILibrary.objects.update_or_create(design=design, defaults=data)
+
+
+def _prepare_motion(data, video, library):
+    if bool(video) != bool(data["motion_notes"].strip()):
+        raise ValueError("Video and non-empty motion_notes must be supplied together.")
+    if library and video:
+        raise ValueError("Motion previews are supported for design references only.")
+    if video:
+        return read_video(video)
+    return None, {"video_width": None, "video_height": None, "video_duration": None}
+
+
+def _save_motion(design, clip, stored):
+    if clip:
+        design.video.save(f"{design.pk}-{uuid4().hex}.mp4", ContentFile(clip), save=False)
+        stored.append(design.video.name)
+    else:
+        design.video = ""

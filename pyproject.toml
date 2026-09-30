@@ -41,6 +41,7 @@ dependencies = [
     "starlette>=0.52,<2",
     "uvicorn>=0.52,<1",
     "stripe>=12,<15",
+    "av>=16,<19",
 ]
 
 [dependency-groups]
