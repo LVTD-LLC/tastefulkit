@@ -74,8 +74,8 @@ list/search tools accept this filter.
 
 UI libraries have their own public [directory](/ui-libraries/) and detail pages.
 They include framework compatibility, editorial notes, website/GitHub links and
-pricing when it has been confirmed. Arena and rankings have a **UI libraries**
-collection; these votes compare library landing pages, not implementation quality.
+pricing when it has been confirmed. UI libraries are browsable in Explore;
+Arena and rankings are reserved for visual design references.
 
 With your API key, use `GET /api/v1/ui-libraries?q=react&page=1` to list/search
 libraries and `GET /api/v1/ui-libraries/LIBRARY_ID` to read one. Lists return
@@ -87,3 +87,15 @@ Library responses include a `library` object with `website_url`, `github_url`,
 Pricing may have several plans: `free`, `one_time`, `recurring` (month/year), or
 `contact`. An empty pricing list means unconfirmed, not free. Always check the
 original library for current prices and licensing terms.
+
+
+## Browse AI skills
+
+Find design-focused agent skills in the public [AI skills directory](/ai-skills/).
+Entries include source links, usage notes, compatible agents, installation instructions
+and license information when confirmed. Skills do not participate in voting or rankings.
+
+With your API key, use `GET /api/v1/ai-skills?q=accessibility&page=1` to search
+and `GET /api/v1/ai-skills/SKILL_ID` to read an entry. Lists return `items`,
+`page`, `pages` and `total`, with up to 24 entries per page. Existing design MCP
+tools do not include this directory. Review the upstream source before installing.

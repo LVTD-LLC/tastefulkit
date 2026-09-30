@@ -1,0 +1,49 @@
+{% extends "base_landing.html" %}
+{% block meta %}
+    <title>AI skills for design · TastefulKit</title>
+    <meta name="description"
+          content="Find AI agent skills for interface design, accessibility, and frontend workflows, with source links and setup instructions.">
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% if q or request.GET.page %}<meta name="robots" content="noindex, follow">{% endif %}
+{% endblock %}
+{% block content %}
+    <div class="tk-container library-page">
+        <h1>AI skills</h1>
+        <p class="tk-description">Give your agent a better eye for design.</p>
+        {% include "catalogue/arena_nav.html" %}
+        <form method="get" class="tk-search">
+            <label for="skill-search">Search AI skills</label>
+            <div class="tk-search-row">
+                <input id="skill-search"
+                       name="q"
+                       value="{{ q }}"
+                       type="search"
+                       placeholder="Name, agent, or design task">
+                <button class="tk-button" type="submit">Search</button>
+            </div>
+        </form>
+        <p class="tk-muted">{{ page.paginator.count }} skill{{ page.paginator.count|pluralize }}</p>
+        {% for skill in page %}
+            <article class="tk-related">
+                <h2><a href="{{ skill.get_absolute_url }}">{{ skill.name }}</a></h2>
+                <p class="tk-description">{{ skill.description|truncatechars:240 }}</p>
+                <div class="tk-tags">{% for agent in skill.compatible_agents %}<span>{{ agent }}</span>{% endfor %}{% for tag in skill.tags %}<span>{{ tag }}</span>{% endfor %}</div>
+                <a href="{{ skill.get_absolute_url }}">View skill →</a>
+            </article>
+        {% empty %}
+            <div class="tk-empty">
+                <h2>{% if q %}No skills match that search.{% else %}The collection is getting started.{% endif %}</h2>
+                <p>{% if q %}Try an agent name or a broader design task.{% else %}Check back for design skills with practical usage notes and setup instructions.{% endif %}</p>
+                <a href="{% url 'ai_skills' %}">{% if q %}Clear search{% else %}Browse AI skills{% endif %} →</a>
+                <a href="{% url 'ui_libraries' %}">Explore UI libraries →</a>
+            </div>
+        {% endfor %}
+        {% if page.has_other_pages %}
+            <nav class="tk-pagination" aria-label="Skill pages">
+                {% if page.has_previous %}<a href="?q={{ q|urlencode }}&page={{ page.previous_page_number }}">← Previous</a>{% endif %}
+                <span>Page {{ page.number }} of {{ page.paginator.num_pages }}</span>
+                {% if page.has_next %}<a href="?q={{ q|urlencode }}&page={{ page.next_page_number }}">Next →</a>{% endif %}
+            </nav>
+        {% endif %}
+    </div>
+{% endblock %}

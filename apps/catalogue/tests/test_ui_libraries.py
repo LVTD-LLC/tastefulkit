@@ -113,22 +113,21 @@ def test_bad_library_metadata_rejected(client, admin_key, metadata):
     assert not Design.objects.exists()
 
 
-def test_library_arena_is_separate(client, admin_key, qdrant_store):
+def test_library_arena_disabled_including_existing_tokens(client, user, admin_key, qdrant_store):
+    from apps.catalogue.arena import ArenaError, choose_pair, pair_token, submit_comparison
+    from apps.catalogue.models import ArenaBallot, ArenaGuest
+
     submission(client, admin_key)
     submission(client, admin_key, source_url="https://example.org/")
-    response = client.get("/arena/?kind=ui_library")
-    assert response.status_code == 200
-    assert len(response.context["pair"]) == 2
-    assert {item.kind for item in response.context["pair"]} == {"ui_library"}
+    pair = list(Design.objects.filter(kind="ui_library"))
+    for voter in [user, ArenaGuest.objects.create()]:
+        assert not choose_pair(voter, 0, "ui_library")
+        with pytest.raises(ArenaError, match="no longer available"):
+            submit_comparison(voter, pair_token(voter, 0, pair), str(pair[0].pk))
+    assert not ArenaBallot.objects.exists()
+    assert client.get("/arena/?kind=ui_library").url == "/ui-libraries/"
+    assert client.get("/rankings/?kind=ui_library").url == "/ui-libraries/"
     assert not client.get("/arena/").context["pair"]
-    winner = response.context["pair"][0]
-    result = client.post(
-        "/arena/vote/",
-        {"kind": "ui_library", "token": response.context["token"], "choice": str(winner.pk)},
-    )
-    assert result.status_code == 302 and "kind=ui_library" in result.url
-    assert len(client.get("/rankings/?kind=ui_library").context["page"]) == 2
-    assert len(client.get("/rankings/").context["page"]) == 0
 
 
 def test_generic_design_endpoint_cannot_create_library(client, admin_key):
@@ -137,13 +136,15 @@ def test_generic_design_endpoint_cannot_create_library(client, admin_key):
 
 
 def test_library_votes_do_not_personalize_landing_pages(client, user, admin_key, qdrant_store):
-    from apps.catalogue.arena import pair_token, ranked_designs, submit_comparison
+    from apps.catalogue.arena import ranked_designs
+    from apps.catalogue.models import ArenaBallot
     from apps.catalogue.tests.test_ingestion import submit
 
     submission(client, admin_key)
     submission(client, admin_key, source_url="https://example.org/")
     pair = list(Design.objects.filter(kind="ui_library"))
-    submit_comparison(user, pair_token(user, 0, pair), str(pair[0].pk))
+    a, b = sorted(d.pk for d in pair)
+    ArenaBallot.objects.create(user=user, design_a=a, design_b=b, winner=a)
     submit(client, admin_key, bundle())
     designs, summary = ranked_designs(user, "personal", "landing_page")
     assert len(designs) == 1

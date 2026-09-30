@@ -10,3 +10,6 @@ Qdrant recovery, and CapRover deployment/rollback procedure, use the
 `starter-reference/` preserves the generated development and alternate-hosting
 reference material. It is historical template guidance, not a description of
 TastefulKit features or the current production setup.
+
+Collector contracts: [design references](design-ingestion.md),
+[UI libraries](ui-library-ingestion.md), and [AI skills](ai-skill-ingestion.md).

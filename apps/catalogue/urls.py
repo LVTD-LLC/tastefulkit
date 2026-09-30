@@ -1,8 +1,10 @@
 from django.urls import path
 
-from apps.catalogue import arena_views, libraries, social, views
+from apps.catalogue import arena_views, libraries, skills, social, views
 
 urlpatterns = [
+    path("ai-skills/", skills.directory, name="ai_skills"),
+    path("ai-skills/<uuid:pk>/", skills.detail, name="ai_skill_detail"),
     path("ui-libraries/", libraries.directory, name="ui_libraries"),
     path("ui-libraries/<uuid:pk>/", libraries.detail, name="ui_library_detail"),
     path("arena/", arena_views.voting_arena, name="voting_arena"),

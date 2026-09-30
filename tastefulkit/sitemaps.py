@@ -52,6 +52,7 @@ class StaticViewSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
             "landing",
             "blog_index",
             "ui_libraries",
+            "ai_skills",
             "uses",
             "privacy_policy",
             "terms_of_service",
@@ -98,7 +99,18 @@ class UILibrarySitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
         return item.updated_at
 
 
+class AISkillSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
+    def items(self):
+        from apps.catalogue.skills import skill_results
+
+        return skill_results()
+
+    def lastmod(self, item):
+        return item.updated_at
+
+
 sitemaps = {
+    "ai_skills": AISkillSitemap,
     "ui_libraries": UILibrarySitemap,
     "static": StaticViewSitemap,
     "docs": DocumentationSitemap,

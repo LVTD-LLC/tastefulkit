@@ -2,6 +2,13 @@
 
 ## 2026-09-30
 
+- Add a public, searchable design-focused AI skills directory with source links,
+  compatibility, usage and installation notes, license metadata, and admin-only
+  idempotent JSON ingestion. Published entries are included in the sitemap.
+- Remove UI libraries from Arena and rankings while retaining Explore, metadata,
+  saved references and historical ballots. Old comparison tokens cannot cast votes.
+
+
 - Align SEO claim guidance and checks with free DESIGN.md access. Correct the four
   blog articles’ modification dates to September 29, when their access copy changed,
   preserving September 20 publication dates and existing article content.
