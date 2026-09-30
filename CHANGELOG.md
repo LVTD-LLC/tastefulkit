@@ -2,6 +2,8 @@
 
 ## 2026-09-30
 
+- Show source-linked GitHub repository stars and skills.sh skill installs with checked dates; sort the AI skills directory and REST results by either count, with unknown values last. Add validated collector metrics and a metadata-preserving admin refresh endpoint.
+
 - Add a public, searchable design-focused AI skills directory with source links,
   compatibility, usage and installation notes, license metadata, and admin-only
   idempotent JSON ingestion. Published entries are included in the sitemap.

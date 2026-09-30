@@ -125,3 +125,8 @@ installation instructions and licensing where confirmed. The directory is public
 read-only REST list/detail endpoints at `/api/v1/ai-skills` require a free account's
 API key. Skills are not installed or executed by TastefulKit and do not participate
 in Arena or rankings. UI libraries also remain browse-only in Explore.
+
+AI skill listings include source-linked GitHub repository stars and skills.sh
+installs when checked. Sort by either popularity count or by name; unknown counts
+appear last. Stars describe the whole repository, while installs describe the
+specific skill. Checked dates show when each source was last verified.
