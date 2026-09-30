@@ -6,6 +6,7 @@ from django.utils.module_loading import import_string
 from django.views.generic import TemplateView
 
 urlpatterns = [
+    path("how-to-use/", TemplateView.as_view(), name="how_to_use"),
     path("", TemplateView.as_view(), name="landing"),
     path("accounts/login/", TemplateView.as_view(), name="account_login"),
     path("accounts/signup/", TemplateView.as_view(), name="account_signup"),

@@ -132,3 +132,5 @@ AI skill listings include source-linked GitHub repository stars and skills.sh
 installs when checked. Sort by either popularity count or by name; unknown counts
 appear last. Stars describe the whole repository, while installs describe the
 specific skill. Checked dates show when each source was last verified.
+
+Start with the public [How to Use guide](https://tastefulkit.com/how-to-use/) for Explore, Arena and AI setup. Signed-in users can copy their personal AI tooling installation prompt there.

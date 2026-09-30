@@ -13,6 +13,15 @@ from django.views.decorators.http import require_safe
 from apps.pages.social_images import render_social_image
 
 PAGES = {
+    "how_to_use": {
+        "title": "How to Use TastefulKit",
+        "description": (
+            "Explore design references, discover your taste in the Arena, and bring "
+            "your favorite designs into your project with AI."
+        ),
+        "image": "brand/home-social-preview.png",
+        "alt": "TastefulKit design references",
+    },
     "landing": {
         "title": "Landing Page Inspiration for You & Your Agent | TastefulKit",
         "description": (

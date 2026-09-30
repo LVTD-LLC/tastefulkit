@@ -1,0 +1,49 @@
+{% extends "base_landing.html" %}
+{% load social_metadata %}
+{% block meta %}
+    {% page_metadata "how_to_use" %}
+{% endblock %}
+{% block content %}
+    <article class="tk-how-to">
+        <header>
+            <h1>How to Use TastefulKit</h1>
+            <p>Find designs you love. Learn what clicks. Bring that direction into your next build.</p>
+        </header>
+        <section aria-labelledby="explore-heading">
+            <h2 id="explore-heading">Explore</h2>
+            <p>Browse real landing pages and individual components, from heroes and calls to action to pricing sections and forms. Search for a style or idea, choose a type, and save your favorites.</p>
+            <p>Explore also includes UI libraries to build with and design-focused AI skills to help your coding agent. These are directories, not Arena competitors.</p>
+            <div class="tk-guide-actions">
+                <a class="tk-button tk-button-quiet"
+                   href="{% url 'home' %}?kind=landing_page">Explore designs ↗</a>
+                <a class="app-focus" href="{% url 'ui_libraries' %}">UI libraries →</a>
+                <a class="app-focus" href="{% url 'ai_skills' %}">AI skills →</a>
+            </div>
+        </section>
+        <section aria-labelledby="arena-heading">
+            <h2 id="arena-heading">Find your taste in the Arena</h2>
+            <p>See two designs side by side and click the one you prefer. Each comparison helps surface the community’s favorite designs in the Global ranking.</p>
+            <p>You can vote without an account. Sign in to build your own taste profile, too: For you ranks designs around what you like. Keep comparing to give it more to work with.</p>
+            <div class="tk-guide-actions">
+                <a class="tk-button tk-button-quiet" href="{% url 'voting_arena' %}">Try the Arena →</a>
+                <a class="app-focus" href="{% url 'design_rankings' %}">Global ranking →</a>
+                <a class="app-focus" href="{% url 'design_rankings' %}?mode=personal">For you →</a>
+            </div>
+        </section>
+        <section aria-labelledby="ai-heading">
+            <h2 id="ai-heading">Using TastefulKit with AI</h2>
+            <p>Copy the installation prompt below and paste it into your coding agent. It asks your agent to install TastefulKit’s skills and connect its MCP tools so it can find and read design references.</p>
+            <p>Then share a design you like and explain what to borrow: the typography, layout, colors, or a particular section. Ask your agent to adapt it to your project.</p>
+            {% include "components/installation_prompt.html" %}
+            {% if installation_api_key %}
+                <p class="tk-how-note">The prompt includes your personal API key. Share it only with your trusted coding agent.</p>
+            {% else %}
+                <p class="tk-how-note"><a class="app-focus"
+   href="{% url 'account_login' %}?next={% url 'how_to_use' %}">Sign in</a> or <a class="app-focus"
+    href="{% url 'account_signup' %}?next={% url 'how_to_use' %}">create a free account</a> to copy your installation prompt.</p>
+            {% endif %}
+            <p><a class="app-focus"
+   href="{% url 'docs_page' category='api-reference' page='mcp' %}">Read the MCP setup guide →</a></p>
+        </section>
+    </article>
+{% endblock %}

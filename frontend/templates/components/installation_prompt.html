@@ -1,0 +1,19 @@
+<div class="mt-4">
+    {% if installation_api_key %}
+        <button type="button"
+                class="tk-button tk-button-quiet tk-install-button app-focus"
+                data-copy-button
+                data-copy-source="#agent-install-prompt"><span data-copy-label aria-live="polite">Copy AI Tooling Installation Prompt</span></button>
+        <textarea id="agent-install-prompt" class="ph-no-capture" hidden readonly>Look at https://github.com/LVTD-LLC/tastefulkit-skills and install the skills and MCP for this agent. My API key is {{ installation_api_key }}.</textarea>
+    {% else %}
+        <span class="tk-install-guest app-focus"
+              tabindex="0"
+              aria-describedby="agent-install-help">
+            <button type="button"
+                    class="tk-button tk-button-quiet tk-install-button"
+                    disabled>Copy AI Tooling Installation Prompt</button>
+            <span id="agent-install-help"
+                  role="tooltip"
+                  class="tk-install-tooltip">Sign in to use this prompt.</span></span>
+    {% endif %}
+</div>

@@ -9,10 +9,12 @@ from django.conf import settings
 from django.http import Http404
 from django.shortcuts import redirect, render
 from django.urls import reverse
+from django.views.decorators.cache import never_cache
 from django.views.generic import TemplateView
 
 from apps.core.analytics import SIGNUP_COMPLETED, track_event
 from apps.core.choices import ProfileStates
+from apps.core.models import Profile
 from apps.core.views import build_absolute_public_url
 
 logger = logging.getLogger(__name__)
@@ -274,3 +276,12 @@ def docs_page_view(request, category, page):
             exc_info=True,
         )
         raise Http404("Documentation page not found") from None
+
+
+@never_cache
+def how_to_use(request):
+    api_key = ""
+    if request.user.is_authenticated and request.user.is_active:
+        profile, _ = Profile.objects.get_or_create(user=request.user)
+        api_key = profile.ensure_api_key()
+    return render(request, "pages/how-to-use.html", {"installation_api_key": api_key})
