@@ -167,7 +167,11 @@ def test_empty_blog_is_public_and_navigable(client, content_root):
     assert response.status_code == 200
     assert "Guides are on their way" in response.content.decode()
     assert 'href="/arena/"' in response.content.decode()
-    assert response.content.decode().count('href="/blog/"') >= 3
+    content = response.content.decode()
+    header = content.split("<header", 1)[1].split("</header>", 1)[0]
+    footer = content.split("<footer", 1)[1].split("</footer>", 1)[0]
+    assert 'href="/blog/"' in header
+    assert 'href="/blog/"' in footer
 
 
 @pytest.mark.django_db
