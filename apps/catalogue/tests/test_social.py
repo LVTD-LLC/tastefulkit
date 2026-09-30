@@ -34,9 +34,7 @@ def social_design(user):
 
 
 @pytest.mark.parametrize("reader", ["anonymous", "unpaid", "paid"])
-def test_design_sharing_requires_only_a_free_account(
-    client, social_design, user, grant_membership, reader, settings
-):
+def test_design_sharing_is_public(client, social_design, user, grant_membership, reader, settings):
     settings.SITE_URL = "https://tastefulkit.com"
     if reader != "anonymous":
         client.force_login(user)
@@ -52,25 +50,16 @@ def test_design_sharing_requires_only_a_free_account(
     assert head.tags["og:image"] == [
         "https://tastefulkit.com" + reverse("design_social_image", args=[social_design.pk])
     ]
-    if reader != "anonymous":
-        guide = client.get(reverse("design_markdown", args=[social_design.pk]))
-        assert guide.status_code == 200
-        assert "Private design guide" in html
-        assert "Unlock design guides" not in html
-        assert client.post(reverse("save_design", args=[social_design.pk])).status_code == 302
-        assert "private-full-screenshot.png" in html
-    else:
-        assert "Create free account" in html
-        assert social_design.thumbnail.url in html
-        for secret in (
-            "Private design guide",
-            "private-full-screenshot.png",
-            "Private full description",
-            "private-source.example",
-        ):
-            assert secret not in html
-        assert client.get(reverse("design_markdown", args=[social_design.pk])).status_code == 302
-        assert client.post(reverse("save_design", args=[social_design.pk])).status_code == 302
+    guide = client.get(reverse("design_markdown", args=[social_design.pk]))
+    assert guide.status_code == 200
+    assert "Private design guide" in html
+    assert "private-full-screenshot.png" in html
+    assert "Private full description" in html
+    assert "private-source.example" in html
+    saved = client.post(reverse("save_design", args=[social_design.pk]))
+    assert saved.status_code == 302
+    if reader == "anonymous":
+        assert "/accounts/login/" in saved.url
 
 
 def test_design_card_is_public_and_cache_cannot_bypass_visibility(client, social_design):
@@ -130,8 +119,8 @@ def test_unreadable_thumbnail_returns_png_without_leaking_content(client, social
         assert image.size == (1200, 630)
 
 
-def test_nonlanding_designs_are_not_public_teasers(client, social_design):
+def test_nonlanding_designs_are_public_without_social_cards(client, social_design):
     social_design.kind = Design.Kind.HERO
     social_design.save()
-    assert client.get(social_design.get_absolute_url()).status_code == 302
+    assert client.get(social_design.get_absolute_url()).status_code == 200
     assert client.get(reverse("design_social_image", args=[social_design.pk])).status_code == 404

@@ -88,7 +88,7 @@ def signed_event(
 
 
 @pytest.mark.parametrize("status", [None, "canceled", "past_due", "unpaid", "active"])
-def test_discovery_features_are_free_but_still_require_auth(client, user, status):
+def test_discovery_is_public_and_personal_features_require_auth(client, user, status):
     if status is not None:
         BillingAccount.objects.create(
             user=user, status=status, paid_until=timezone.now() - timedelta(days=1)
@@ -96,7 +96,9 @@ def test_discovery_features_are_free_but_still_require_auth(client, user, status
     key = user.profile.rotate_api_key()
     assert client.get("/arena/").status_code == 200
     assert client.get("/rankings/").status_code == 200
-    for path in ["/explore/", "/home", "/rankings/?mode=personal"]:
+    assert client.get("/explore/").status_code == 200
+    assert client.get("/home").status_code == 200
+    for path in ["/rankings/?mode=personal"]:
         assert "/accounts/login/" in client.get(path).url
     assert client.get("/api/v1/designs").status_code == 401
     client.force_login(user)

@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
@@ -26,7 +27,6 @@ def landing(request):
     )
 
 
-@login_required
 @never_cache
 def library(request):
     query = request.GET.get("q", "")[:300]
@@ -37,6 +37,8 @@ def library(request):
     tag = request.GET.get("tag", "")
     industry = request.GET.get("industry", "")
     saved = request.GET.get("saved") == "1"
+    if saved and not request.user.is_authenticated:
+        return redirect_to_login(request.get_full_path())
     designs, mode = search_designs(
         query, kind, tag, industry, saved_by=request.user if saved else None, site=site
     )
@@ -73,24 +75,6 @@ def detail(request, pk):
         return redirect("ui_library_detail", pk=pk, permanent=True)
     if request.user.is_authenticated and not request.user.is_active:
         return redirect("account_login")
-    if not request.user.is_authenticated:
-        design = get_object_or_404(
-            visible_designs().select_related(None).only("id", "title", "thumbnail", "kind"),
-            pk=pk,
-        )
-        if design.kind != Design.Kind.LANDING:
-            from django.contrib.auth.views import redirect_to_login
-
-            return redirect_to_login(request.get_full_path())
-        return render(
-            request,
-            "catalogue/teaser.html",
-            {
-                "design_id": design.pk,
-                "design_title": design.title,
-                "preview_thumbnail_url": design.thumbnail.url if design.thumbnail else "",
-            },
-        )
     design = get_object_or_404(
         visible_designs().select_related("site").prefetch_related("tags"), pk=pk
     )
@@ -100,7 +84,8 @@ def detail(request, pk):
         {
             "design": design,
             "related_designs": related_designs(design)[:6],
-            "is_saved": SavedDesign.objects.filter(user=request.user, design=design).exists(),
+            "is_saved": request.user.is_authenticated
+            and SavedDesign.objects.filter(user=request.user, design=design).exists(),
         },
     )
 
@@ -117,10 +102,9 @@ def save_design(request, pk):
     return redirect(design)
 
 
-@login_required
 @never_cache
 def design_markdown(request, pk):
-    if not request.user.is_active:
+    if request.user.is_authenticated and not request.user.is_active:
         return redirect("account_login")
     design = get_object_or_404(visible_designs().exclude(design_markdown=""), pk=pk)
     response = HttpResponse(design.design_markdown, content_type="text/plain; charset=utf-8")

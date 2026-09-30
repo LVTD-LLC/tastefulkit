@@ -12,7 +12,7 @@ Open [Explore](/explore/) after signing in. With no search or filters applied, t
 Anyone can open a shared landing-page link to preview its title and thumbnail. Share the
 design page URL for a branded link preview; image URLs can expire.
 
-With a free account, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
+Without signing in, open a design to see its description, style tags, full screenshot, and source link. The detail page also shows when the screenshot was captured and its capture width.
 
 Choose **Visit original website ↗** to open the source in a new tab. A screenshot records one page at one point in time: the live site may have changed, and interactions or responsive behavior are best checked on the original website.
 
@@ -35,8 +35,8 @@ Reload the detail page to request a fresh image link. If you copied an image URL
 
 ## Reuse a design guide
 
-When an example includes DESIGN.md, your free account lets you view, copy, or
-download the file, or retrieve its text through API/MCP. Place it in your project's repository and ask your coding agent to
+When an example includes DESIGN.md, anyone can view, copy, or download the file.
+Retrieving its text through API/MCP requires your free account API key. Place it in your project's repository and ask your coding agent to
 follow that visual direction alongside the screenshot. Review inferred values
 against the original reference. This guide does not transfer ownership of the
 original site's assets. Some older examples do not have a guide yet.
@@ -50,7 +50,7 @@ can be revisited; return later as the collection grows if you run out of pairs.
 
 Guest votes count toward the global ranking. Create an account to have future
 votes build your personal taste profile; guest history stays separate.
-Global rankings are public. Personalized rankings, screenshots, and saved references
+Global rankings are public. Personalized rankings and saved references
 require a free account, not a subscription. DESIGN.md guides are also free when available.
 
 [Global ranking](/rankings/) uses everyone's first vote per pair: Elo starts at

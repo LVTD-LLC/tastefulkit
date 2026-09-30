@@ -105,16 +105,16 @@ def test_serializer_requires_explicit_guide_inclusion(guide_design):
     assert result["design_markdown_locked"] is True
 
 
-def test_guides_still_require_an_active_account(client, user, guide_design):
+def test_public_guides_do_not_remove_api_authentication(client, user, guide_design):
     path = reverse("design_markdown", args=[guide_design.pk])
-    assert "/accounts/login/" in client.get(path).url
+    assert client.get(path).status_code == 200
     key = user.profile.rotate_api_key()
     user.is_active = False
     user.save()
     assert client.get(f"/api/v1/designs/{guide_design.pk}", HTTP_X_API_KEY=key).status_code == 401
     client.force_login(user)
-    assert "/accounts/login/" in client.get(path).url
-    assert GUIDE not in client.get(guide_design.get_absolute_url()).content.decode()
+    assert client.get(path).status_code == 200
+    assert GUIDE in client.get(guide_design.get_absolute_url()).content.decode()
 
 
 def test_direct_views_reject_inactive_authenticated_user(rf, user, guide_design):
