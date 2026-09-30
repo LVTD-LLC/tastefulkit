@@ -68,7 +68,7 @@ def test_semantic_results_include_related_designs(design, qdrant_store):
 
 
 def test_library_save_and_visibility(client, user, design):
-    assert client.get("/explore/").status_code == 302
+    assert client.get("/explore/").status_code == 200
     client.force_login(user)
     assert client.get("/explore/").status_code == 200
     assert client.get(design.get_absolute_url()).status_code == 200

@@ -2,6 +2,8 @@
 
 ## 2026-09-30
 
+- Make all Explore browsing public, including design/component details, full screenshots and DESIGN.md downloads. Preserve account-only saves/personal rankings and authenticated APIs.
+
 - Add a public How to Use guide for Explore, Arena and AI workflows, linked third in the left navbar. Move the account-specific installation prompt from the homepage into the guide.
 
 - Simplify the shared navbar with Arena and Explore on the left, grouped catalogue/docs/blog links, and a username menu beside the theme toggle.

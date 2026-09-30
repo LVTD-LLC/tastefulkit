@@ -88,7 +88,7 @@ def test_retired_and_unknown_docs_are_not_served(client, path):
 @pytest.mark.parametrize(
     "method,path",
     [
-        ("get", "/explore/"),
+        ("get", "/explore/?saved=1"),
         ("get", "/explore/?saved=1"),
         ("get", "/settings"),
         ("post", "/designs/00000000-0000-0000-0000-000000000001/save/"),

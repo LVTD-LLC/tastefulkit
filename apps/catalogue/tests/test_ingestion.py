@@ -244,7 +244,7 @@ def test_markdown_download_and_html_are_safe_and_scoped(client, user, admin_key,
     submit(client, admin_key, files)
     design = Design.objects.get()
     url = f"/designs/{design.pk}/DESIGN.md"
-    assert client.get(url).status_code == 302
+    assert client.get(url).status_code == 200
     client.force_login(user)
     response = client.get(url)
     assert response.content.decode() == malicious

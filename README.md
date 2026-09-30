@@ -36,16 +36,15 @@ helps you turn it into examples you can actually look at, compare, and discuss.
 
 Vote in the [Design Arena](https://tastefulkit.com/arena/) for free, with or without an account.
 Lightweight previews appear first; full screenshots load in the background for scrolling.
-Global rankings and shared design previews are public too. A shared design link shows
-its title and thumbnail; sign in for full details. The full catalog, personalized rankings, saved designs, screenshots, and API/MCP
+Global rankings, the full catalog and design details are public too, including full screenshots and DESIGN.md downloads. The full catalog, personalized rankings, saved designs, screenshots, and API/MCP
 access are free, including viewing, copying, downloading, and retrieving available
 DESIGN.md guides. No subscription or credit card is required.
 Signed-in votes shape your personal ranking;
 guest votes count globally and are not transferred on signup.
 
-1. [Create an account](https://tastefulkit.com/accounts/signup/) and confirm your email.
-2. Open [Explore](https://tastefulkit.com/explore/) to search and filter the full library.
-3. Open a design, inspect the screenshot, and choose **Save design +** to keep it.
+1. Open [Explore](https://tastefulkit.com/explore/) to search and filter the full library without signing in.
+2. Open a design to inspect its screenshot and design guide.
+3. Create a free account when you want to save designs or personalize your rankings.
 
 Start with the [browsing guide](https://tastefulkit.com/docs/using-tastefulkit/browsing/)
 or learn how to [search and filter](https://tastefulkit.com/docs/using-tastefulkit/search/).
@@ -132,5 +131,9 @@ AI skill listings include source-linked GitHub repository stars and skills.sh
 installs when checked. Sort by either popularity count or by name; unknown counts
 appear last. Stars describe the whole repository, while installs describe the
 specific skill. Checked dates show when each source was last verified.
+
+### Public browsing
+
+All Explore destinations are available without signing in: designs and components, UI libraries, AI skills, Docs and Blog. Published design details include full screenshots, related references and DESIGN.md downloads. Sign in only for saved collections, personalized rankings and your API/MCP key.
 
 Start with the public [How to Use guide](https://tastefulkit.com/how-to-use/) for Explore, Arena and AI setup. Signed-in users can copy their personal AI tooling installation prompt there.
