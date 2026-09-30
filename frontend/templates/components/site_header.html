@@ -1,0 +1,48 @@
+<header class="sticky top-0 z-20 tk-site-header">
+    <div class="tk-header-inner">
+        <a href="{% url 'landing' %}"
+           class="app-focus tk-header-brand"
+           aria-label="TastefulKit homepage">{% include "components/brand_mark.html" %}</a>
+        <nav class="tk-header-nav" aria-label="Main navigation">
+            <a class="app-focus tk-header-link" href="{% url 'voting_arena' %}">Arena</a>
+            <details class="tk-header-dropdown"
+                     x-data
+                     @click.outside="$el.open = false"
+                     @keydown.escape.stop="if ($el.open) { $el.open = false; $el.querySelector('summary').focus() }">
+                <summary class="app-focus tk-header-link">Explore</summary>
+                <div class="tk-header-menu">
+                    <a class="app-focus" href="{% url 'home' %}?kind=landing_page">Designs</a>
+                    <a class="app-focus" href="{% url 'ui_libraries' %}">UI libraries</a>
+                    <a class="app-focus" href="{% url 'ai_skills' %}">AI skills</a>
+                    <hr>
+                    <a class="app-focus" href="{% url 'docs_home' %}">Docs</a>
+                    <a class="app-focus" href="{% url 'blog_index' %}">Blog</a>
+                </div>
+            </details>
+        </nav>
+        <div class="tk-header-account">
+            {% if user.is_authenticated %}
+                <details class="tk-header-dropdown tk-account-dropdown"
+                         x-data
+                         @click.outside="$el.open = false"
+                         @keydown.escape.stop="if ($el.open) { $el.open = false; $el.querySelector('summary').focus() }">
+                    <summary class="app-focus tk-header-link"><span class="tk-header-username">{{ user.get_username }}</span></summary>
+                    <div class="tk-header-menu">
+                        <a class="app-focus" href="{% url 'settings' %}">Settings</a>
+                        <form method="post" action="{% url 'account_logout' %}">
+                            {% csrf_token %}
+                            <button class="app-focus" type="submit">Log out</button>
+                        </form>
+                    </div>
+                </details>
+            {% else %}
+                <a class="app-focus tk-header-login" href="{% url 'account_login' %}">Log in</a>
+                <a class="app-focus tk-header-signup"
+                   href="{% url 'account_signup' %}"
+                   data-posthog-cta="signup"
+                   data-posthog-cta-location="site_header">Get started</a>
+            {% endif %}
+            {% include "components/theme_toggle.html" %}
+        </div>
+    </div>
+</header>

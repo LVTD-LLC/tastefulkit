@@ -125,3 +125,5 @@ installation instructions and licensing where confirmed. The directory is public
 read-only REST list/detail endpoints at `/api/v1/ai-skills` require a free account's
 API key. Skills are not installed or executed by TastefulKit and do not participate
 in Arena or rankings. UI libraries also remain browse-only in Explore.
+
+Use the header’s **Explore** menu for Designs (landing pages), UI libraries, AI skills, Docs and Blog. **Arena** opens design voting; rankings remain in discovery tabs. Open your username menu for Settings and Log out.
