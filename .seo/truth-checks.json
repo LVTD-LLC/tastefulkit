@@ -40,7 +40,7 @@
     "flags": "i"
   },
   {
-    "claim": "landing-page-design-ideas: available DESIGN.md guides are free with an active account",
+    "claim": "landing-page-design-ideas: public browsing and guides; accounts for personal features",
     "paths": [
       "apps/pages/content/blog/landing-page-design-ideas.md"
     ],
@@ -48,19 +48,22 @@
       "/blog/landing-page-design-ideas/"
     ],
     "must_match": [
-      "free with an",
-      "account",
+      "Explore the full library",
+      "without an account",
+      "save references",
+      "personal rankings",
       "DESIGN\\.md",
       "guides are included for free when available"
     ],
     "must_not_match": [
       "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
-      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership",
+      "Full (?:reference|catalogue) browsing is free with an"
     ],
     "flags": "i"
   },
   {
-    "claim": "mobile-landing-page-design: available DESIGN.md guides are free with an active account",
+    "claim": "mobile-landing-page-design: public browsing and guides; accounts for personal features",
     "paths": [
       "apps/pages/content/blog/mobile-landing-page-design.md"
     ],
@@ -68,19 +71,22 @@
       "/blog/mobile-landing-page-design/"
     ],
     "must_match": [
-      "free with an",
-      "account",
+      "Explore the full library",
+      "without an account",
+      "save references",
+      "personal rankings",
       "DESIGN\\.md",
       "guides are included for free when available"
     ],
     "must_not_match": [
       "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
-      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership",
+      "Full (?:reference|catalogue) browsing is free with an"
     ],
     "flags": "i"
   },
   {
-    "claim": "creative-landing-page-design: available DESIGN.md guides are free with an active account",
+    "claim": "creative-landing-page-design: public browsing and guides; accounts for personal features",
     "paths": [
       "apps/pages/content/blog/creative-landing-page-design.md"
     ],
@@ -88,14 +94,17 @@
       "/blog/creative-landing-page-design/"
     ],
     "must_match": [
-      "free with an",
-      "account",
+      "Explore the full library",
+      "without an account",
+      "save references",
+      "personal rankings",
       "DESIGN\\.md",
       "guides are included for free when available"
     ],
     "must_not_match": [
       "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members)",
-      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership"
+      "(?:full (?:reference |catalogue )?browsing|screenshots) requires? (?:a |an active )?(?:\\[)?membership",
+      "Full (?:reference|catalogue) browsing is free with an"
     ],
     "flags": "i"
   },
@@ -130,6 +139,53 @@
     "must_not_match": [
       "(?:DESIGN\\.md|design guides|guide text)[^.\\n]{0,100}(?:require\\w*[^.\\n]{0,30}(?:paid|membership|subscription)|for paid members|is paid)",
       "paid catalogue/API/MCP access"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "Public browsing does not require an account",
+    "paths": [
+      "apps/pages/content/docs/getting-started/introduction.md",
+      "apps/pages/content/docs/getting-started/account.md",
+      "apps/pages/content/docs/using-tastefulkit/browsing.md",
+      "frontend/templates/billing/pricing.html",
+      "frontend/templates/catalogue/teaser.html"
+    ],
+    "urls": [
+      "/docs/getting-started/introduction/",
+      "/docs/getting-started/account/",
+      "/docs/using-tastefulkit/browsing/",
+      "/pricing/"
+    ],
+    "must_not_match": [
+      "Create a free account to browse",
+      "Open (?:\\[Explore\\]\\(/explore/\\)|Explore) after signing in",
+      "Components require signing in",
+      "Create a free account for the full catalog",
+      "Create a free account to explore the full screenshot"
+    ],
+    "flags": "i"
+  },
+  {
+    "claim": "Account/API setup prompt is on How to Use, not the homepage",
+    "paths": [
+      "apps/pages/content/docs/getting-started/account.md",
+      "apps/pages/content/docs/api-reference/introduction.md",
+      "README.md",
+      "AGENTS.md"
+    ],
+    "urls": [
+      "/docs/getting-started/account/",
+      "/docs/api-reference/introduction/"
+    ],
+    "must_match": [
+      "How to Use",
+      "API key"
+    ],
+    "must_not_match": [
+      "on the homepage",
+      "homepage hero CTAs",
+      "signed-in homepage installation prompt"
     ],
     "flags": "i"
   }

@@ -5,7 +5,7 @@ description: Create a TastefulKit account, confirm your email, manage sign-in me
 
 # Set up your account
 
-An account lets you browse the full library, open design details, and save references. Reading these docs does not require signing in.
+Browse the full library and open design details without signing in. A free account lets you save references, build personal rankings, and connect an agent with your personal API key. Reading these docs does not require an account.
 
 ## Sign up and confirm your email
 
@@ -26,7 +26,7 @@ Open **Account** from the library, or go to [Settings](/settings).
 
 ## Generate a key for a script or agent
 
-Your account receives an API key automatically. Sign in and choose **Copy AI Tooling Installation Prompt** on the homepage to copy a prompt with your key already included. Keep this prompt private and share it only with an agent you trust.
+Your account receives an API key automatically. Sign in and choose **Copy AI Tooling Installation Prompt** on the [How to Use guide](/how-to-use/) to copy a prompt with your key already included. Keep this prompt private and share it only with an agent you trust.
 
 Choose **Rotate key** if you need a replacement. Rotation invalidates the old key, so update any scripts or agents that used it.
 

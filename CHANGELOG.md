@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-01
+
+- Correct pricing, onboarding docs and three reference guides to explain public
+  Explore, screenshots and DESIGN.md access. Preserve account requirements for
+  saves, personal rankings and API/MCP; point key setup to How to Use. Update
+  article modification dates and SEO claim checks to match the shipped policy.
+
 ## 2026-09-30
 
 - Keep the Has motion selector inside the public Explore search form for both guests and signed-in users.

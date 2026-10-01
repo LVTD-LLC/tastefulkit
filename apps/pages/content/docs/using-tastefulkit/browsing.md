@@ -5,7 +5,7 @@ description: Explore website screenshots, follow style tags, and inspect origina
 
 # Browse and inspect designs
 
-Open [Explore](/explore/) after signing in. With no search or filters applied, the library shows the newest examples first. Use **Next** and **Previous** when results span more than one page.
+Open [Explore](/explore/) without signing in. With no search or filters applied, the library shows the newest examples first. Use **Next** and **Previous** when results span more than one page.
 
 ## Look beyond the thumbnail
 
@@ -91,5 +91,6 @@ are not enlarged. Thumbnails show the complete image without cropping.
 
 When a reference belongs to a site, **More from [site name]** shows related
 references. Choose **All designs from this site** to browse the whole group.
-Independent references work without a site. Components require signing in;
-public link teasers and Arena remain focused on landing pages.
+Independent references work without a site. Published pages and components are
+public, including full screenshots and available DESIGN.md guides. Saving a
+reference requires a free account.

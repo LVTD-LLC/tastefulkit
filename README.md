@@ -102,7 +102,7 @@ Discovery pages share two navigation rows: Explore, Arena, Global ranking and Fo
 
 ### Install skills into your agent
 
-Sign in and use **Copy AI Tooling Installation Prompt** below the homepage hero CTAs.
+Sign in and use **Copy AI Tooling Installation Prompt** in the [How to Use guide](https://tastefulkit.com/how-to-use/).
 The prompt includes your API key and the [public skills + MCP repository](https://github.com/LVTD-LLC/tastefulkit-skills).
 Keep it private and paste it only into an agent you trust. New accounts receive a key automatically.
 Rotation in Account settings revokes all previous keys.
