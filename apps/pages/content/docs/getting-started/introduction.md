@@ -11,12 +11,12 @@ TastefulKit is a library of real landing-page screenshots. Use it to find exampl
 
 Try the [Design Arena](/arena/) and browse the [global rankings](/rankings/) for free without an account. Sign in to start building your own taste profile.
 
-Explore, For You, saved designs, screenshots, and API/MCP access to design metadata are free. Create a free account to browse or connect your agent. Viewing, copying, downloading, and retrieving available DESIGN.md guides is also free. No subscription is required.
+Explore, full screenshots, and available DESIGN.md guides are public: you can browse, view, copy, and download without signing in. A free account is needed for saved designs and personal rankings. API/MCP access also requires your personal API key. No subscription is required.
 
-1. [Create an account](/accounts/signup/) and confirm your email.
-2. Open **Explore** to browse the library, newest first.
-3. Search for a description such as `minimal landing page with bold typography`.
-4. Open a result to see its full screenshot and visit the original website.
+1. Open [Explore](/explore/) to browse the library, newest first.
+2. Search for a description such as `minimal landing page with bold typography`.
+3. Open a result to see its full screenshot and visit the original website.
+4. To keep a shortlist, [create an account](/accounts/signup/) and confirm your email.
 5. Choose **Save design +** to keep it in your **Saved** list.
 
 ## Choose a guide

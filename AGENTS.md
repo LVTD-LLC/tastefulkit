@@ -160,7 +160,7 @@ Local settings use the database-backed task queue and in-memory cache. Productio
 
 ## Agent API
 
-New users receive API keys automatically. The signed-in homepage installation prompt includes
+New users receive API keys automatically. The signed-in How to Use installation prompt includes
 the owner’s key; encrypted recovery supplements hashed authentication. Legacy keys remain
 valid until explicit Settings rotation. See README for backfill and encryption-key rotation.
 Only active superusers may submit; staff status and the first signup confer no
@@ -173,7 +173,7 @@ The payload supplies a timestamp and a finite nonzero 768-value embedding from
 `@cf/baai/bge-base-en-v1.5`. Optional MP4s are decoded in a bounded, protocol-disabled PyAV subprocess before storage; no transcoding occurs. No source fetching, rendering, resizing, content generation,
 example embedding inference or asynchronous processing occurs in the ingestion pipeline. Images are
 validated but stored byte-for-byte. DESIGN.md is stored durably in PostgreSQL, escaped
-in the detail page, available as a protected download and included in REST/MCP detail.
+in the detail page, available as a public download for published ready references and included in REST/MCP detail.
 
 New submissions return 201 ready/published. Same URL + kind + selector + viewport width
 returns 200 unchanged; `replace_existing: true` replaces the full bundle while preserving

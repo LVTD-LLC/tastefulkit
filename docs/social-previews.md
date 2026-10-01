@@ -6,7 +6,7 @@
 | Arena | Approved 2400×1260 matchup PNG | Existing public voting page |
 | Global rankings, pricing, legal, technology | Generated 1200×630 PNG | Existing page content |
 | Docs | Generated title/description card for each navigable article | Repository-tracked documentation |
-| Published ready landing-page references | Generated title + stored thumbnail | Title-and-thumbnail teaser for guests; full screenshots/metadata for signed-in accounts; DESIGN.md for paid members |
+| Published ready landing-page references | Generated title + stored thumbnail | Public design details, including full screenshots, metadata and available DESIGN.md guides; saves require a free account |
 | Sign-in/signup | Homepage artwork with route-specific metadata | No account data or query parameters |
 | Personal rankings, saved library, settings, admin, password and verification flows | No personalized social card | Existing access restrictions |
 

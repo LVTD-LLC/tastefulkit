@@ -5,6 +5,11 @@
 > available DESIGN.md guides, free on September 29. Use `.seo/truth.md` and
 > `truth-checks.json` for current claim guidance; preserve this launch history.
 
+> Access-policy update (October 1, 2026): PR #50 made Explore, full design
+> details and available DESIGN.md downloads public on September 30. Account
+> requirements in the historical table below do not apply to public browsing.
+> Saves/personal rankings and API/MCP authentication remain account-based.
+
 User scope: repository-managed blog, keyword strategy and four starting posts.
 This explicit batch request overrides the daily skill's one-article default.
 Durable private demand, estimates and measurement history remain in the existing

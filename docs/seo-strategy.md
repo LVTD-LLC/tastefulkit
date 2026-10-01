@@ -1,6 +1,6 @@
 # TastefulKit organic search strategy
 
-Updated September 24, 2026. This is a content plan, not a forecast or a claim that
+Updated October 1, 2026. This is a content plan, not a forecast or a claim that
 these pages already rank. Source observations and keyword estimates remain in the
 existing private Rowset SEO datasets and OpenSEO project referenced by
 `.seo/config.json`.
@@ -13,12 +13,11 @@ pairwise voting, global and personal rankings, design guides and a read-only MCP
 connection. It is not a landing-page builder, a source-code marketplace, a
 conversion-testing service or a licence to copy another site's assets.
 
-Public articles should give a useful result without requiring payment. Point
-readers toward the free Arena and global rankings when they need to compare;
-explain the free account requirement before directing them to full references,
-personal rankings or MCP. Available DESIGN.md guides, reference metadata and screenshots are free with an
-active account; no subscription is required. MCP also requires a personal API key. Never describe preference scores as
-conversion data.
+Public articles should give a useful result without requiring payment. Explore,
+full screenshots, reference metadata and available DESIGN.md guides are public,
+as are Arena and global rankings. Explain the free account requirement for saves
+and personal rankings. REST and MCP additionally require a personal API key.
+No subscription is required. Never describe preference scores as conversion data.
 
 ## One intent, one owner
 

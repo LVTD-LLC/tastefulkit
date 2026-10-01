@@ -13,7 +13,7 @@ The API lets you search the design library, fetch a design, and check which acco
 
 ## Get a key
 
-Sign in and choose **Copy AI Tooling Installation Prompt** on the homepage to copy a ready-to-use prompt containing your API key. For scripts, store the key securely as `TASTEFULKIT_API_KEY` in your local environment. **Rotate key** in [Settings](/settings) creates a replacement and invalidates all previous keys.
+Sign in and choose **Copy AI Tooling Installation Prompt** on the [How to Use guide](/how-to-use/) to copy a ready-to-use prompt containing your API key. For scripts, store the key securely as `TASTEFULKIT_API_KEY` in your local environment. **Rotate key** in [Settings](/settings) creates a replacement and invalidates all previous keys.
 
 ## Send the key in a header
 
