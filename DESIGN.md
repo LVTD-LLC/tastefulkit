@@ -385,3 +385,11 @@ the card link. Load clips on demand; autoplay no more than two visible clips and
 never autoplay under reduced-motion/data-saver preferences. Detail pages provide
 Motion/Screenshot toggle buttons and native playback controls; both assets remain
 accessible without JavaScript. Use existing neutral palette and focus treatments.
+
+### Navbar traffic
+
+Show the cached PostHog count as muted, tabular-numeric text: `N views · 24h`.
+The accessible label spells out the rolling 24-hour window. Keep the counter
+inline before account actions on wide screens and in its own centered row on
+narrow screens; never crowd the existing navigation or account controls.
+Missing or stale analytics renders no counter, while a measured zero remains visible.
