@@ -2,6 +2,8 @@
 
 ## 2026-10-03
 
+- Add a shared navbar counter for PostHog production pageviews over the last 24 hours, refreshed in the background every five minutes with mobile/dark-mode support and stale-data hiding.
+
 - Prioritize the first UI-library directory preview so its visible image can
   load promptly; keep subsequent previews lazy-loaded and preserve image dimensions.
 

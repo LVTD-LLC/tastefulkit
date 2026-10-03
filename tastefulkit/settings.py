@@ -38,6 +38,10 @@ DEPLOYMENT_REVISION = env("DEPLOYMENT_REVISION", default="")
 POSTHOG_API_KEY = env("POSTHOG_API_KEY", default="")
 POSTHOG_HOST = env("POSTHOG_HOST", default="https://us.i.posthog.com").rstrip("/")
 POSTHOG_BROWSER_HOST = env("POSTHOG_BROWSER_HOST", default="").strip() or POSTHOG_HOST
+# Worker-only query credentials; never exposed to templates.
+POSTHOG_PERSONAL_API_KEY = env("POSTHOG_PERSONAL_API_KEY", default="")
+POSTHOG_PROJECT_ID = env("POSTHOG_PROJECT_ID", default="")
+POSTHOG_QUERY_HOST = env("POSTHOG_QUERY_HOST", default="https://us.posthog.com").rstrip("/")
 POSTHOG_LOGS_ENDPOINT = f"{POSTHOG_HOST}/i/v1/logs"
 POSTHOG_LOGS_ENABLED = env.bool(
     "POSTHOG_LOGS_ENABLED",
@@ -154,6 +158,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "apps.core.context_processors.current_state",
+                "apps.core.traffic.traffic_context",
                 "apps.core.context_processors.mfa_recovery_codes_settings",
                 "apps.core.context_processors.public_site_url",
                 "apps.core.context_processors.posthog_api_key",

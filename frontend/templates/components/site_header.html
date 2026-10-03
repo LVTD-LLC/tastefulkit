@@ -1,3 +1,4 @@
+{% load humanize %}
 <header class="sticky top-0 z-20 tk-site-header">
     <div class="tk-header-inner">
         <a href="{% url 'landing' %}"
@@ -23,6 +24,11 @@
                href="{% url 'how_to_use' %}"
                {% if request.resolver_match.url_name == "how_to_use" %}aria-current="page"{% endif %}>How to Use</a>
         </nav>
+        {% if navbar_pageviews is not None %}
+            <span class="tk-header-traffic"
+                  title="Pageviews measured by PostHog; refreshed every five minutes"
+                  aria-label="{{ navbar_pageviews|intcomma }} view{{ navbar_pageviews|pluralize }} in the last 24 hours">{{ navbar_pageviews|intcomma }} view{{ navbar_pageviews|pluralize }} · 24h</span>
+        {% endif %}
         <div class="tk-header-account">
             {% if user.is_authenticated %}
                 <details class="tk-header-dropdown tk-account-dropdown"
