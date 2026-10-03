@@ -32,7 +32,8 @@
                     <a class="design-preview" href="{{ design.get_absolute_url }}">
                         <img src="{{ design.thumbnail.url }}"
                              alt="{{ design.title }} landing page"
-                             loading="lazy"
+                             loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                             {% if forloop.first %}fetchpriority="high"{% endif %}
                              width="640"
                              height="480">
                     </a>

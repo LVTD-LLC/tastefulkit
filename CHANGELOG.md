@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-03
+
+- Prioritize the first UI-library directory preview so its visible image can
+  load promptly; keep subsequent previews lazy-loaded and preserve image dimensions.
+
 ## 2026-10-01
 
 - Correct pricing, onboarding docs and three reference guides to explain public

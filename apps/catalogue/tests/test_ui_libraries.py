@@ -1,4 +1,5 @@
 import json
+from html.parser import HTMLParser
 from unittest.mock import patch
 
 import pytest
@@ -65,6 +66,38 @@ def test_library_submission_public_pages_and_api(client, admin_key, qdrant_store
     design.save()
     assert client.get(design.get_absolute_url()).status_code == 404
     assert design.get_absolute_url() not in client.get("/sitemap.xml").content.decode()
+
+
+def test_directory_prioritizes_only_the_first_visible_thumbnail(client, admin_key, qdrant_store):
+    class ThumbnailParser(HTMLParser):
+        def __init__(self):
+            super().__init__()
+            self.images = []
+
+        def handle_starttag(self, tag, attrs):
+            attrs = dict(attrs)
+            if tag == "img" and attrs.get("alt", "").endswith(" landing page"):
+                self.images.append(attrs)
+
+    assert submission(client, admin_key, title="Alpha library").status_code == 201
+    assert (
+        submission(
+            client, admin_key, title="Beta library", source_url="https://example.org/"
+        ).status_code
+        == 201
+    )
+    for url, count in [("/ui-libraries/", 2), ("/ui-libraries/?q=Beta", 1)]:
+        response = client.get(url)
+        assert response.status_code == 200
+        parser = ThumbnailParser()
+        parser.feed(response.content.decode())
+        assert len(parser.images) == count
+        assert parser.images[0]["loading"] == "eager"
+        assert parser.images[0]["fetchpriority"] == "high"
+        for image in parser.images[1:]:
+            assert image["loading"] == "lazy"
+            assert "fetchpriority" not in image
+        assert all(image["width"] == "640" and image["height"] == "480" for image in parser.images)
 
 
 def test_submission_auth_idempotency_and_atomic_replace(client, user, admin_key, qdrant_store):
