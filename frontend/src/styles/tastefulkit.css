@@ -310,3 +310,22 @@
 .tk-motion-switch[hidden], .tk-motion-detail [hidden], .tk-motion-toggle[hidden] { display: none; }
 .tk-motion-switch button[aria-pressed="false"] { background: var(--tk-bg); color: var(--tk-ink)!important; border-color: var(--tk-line); }
 .tk-motion-notes { margin: 16px 0; color: var(--tk-muted); font-size: 15px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+
+/* Cached traffic stays visible without competing with mobile navigation. */
+.tk-header-inner:has(.tk-header-traffic) { grid-template-columns: auto 1fr auto auto; gap: 24px; }
+.tk-header-inner:has(.tk-header-traffic) .tk-header-account { grid-column: 4; grid-row: 1; }
+.tk-header-traffic { grid-column: 3; grid-row: 1; color: var(--tk-muted); font-size: 12px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+@media (max-width: 1000px) {
+  .tk-header-inner:has(.tk-header-traffic) { grid-template-columns: auto 1fr auto; gap: 6px 24px; padding-top: 8px; padding-bottom: 8px; }
+  .tk-header-inner:has(.tk-header-traffic) .tk-header-account { grid-column: 3; }
+  .tk-header-traffic { grid-column: 1 / -1; grid-row: 2; justify-self: center; }
+}
+@media (max-width: 700px) {
+  .tk-header-inner:has(.tk-header-traffic) { grid-template-columns: 1fr auto; gap: 6px 12px; }
+  .tk-header-inner:has(.tk-header-traffic) .tk-header-account { grid-column: 2; grid-row: 2; }
+  .tk-header-traffic { grid-row: 3; }
+}
+@media (max-width: 640px) {
+  .tk-header-inner:has(.tk-header-traffic) .tk-header-account { grid-row: 1; }
+  .tk-header-inner:has(.tk-header-traffic) .tk-header-login { bottom: 46px; }
+}

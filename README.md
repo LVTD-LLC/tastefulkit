@@ -151,3 +151,19 @@ API/MCP list and search accept `has_motion=true`; responses include `video_url`,
 Asset links expire: fetch the reference again to refresh them. Motion notes and
 DESIGN.md explain behavior for agents that cannot view video. Preparation and
 replacement rules are in [the maintainer contract](docs/maintainers/design-ingestion.md#motion-previews).
+
+### Navbar traffic counter
+
+The shared navbar displays production pageviews in the rolling last 24 hours
+(not unique people or sessions), sourced from PostHog. The worker refreshes the
+Redis aggregate every five minutes; page rendering only reads the cache. A
+measured zero is shown, while missing data or data older than 15 minutes is hidden.
+
+Set `POSTHOG_PERSONAL_API_KEY` (read/query access), `POSTHOG_PROJECT_ID`, and
+`POSTHOG_QUERY_HOST` on the worker only. Never replace the public capture token
+`POSTHOG_API_KEY` with a personal key. After deploying, install the idempotent
+schedule using `uv run python manage.py refresh_pageviews --schedule` and warm
+the cache using `uv run python manage.py refresh_pageviews` in the worker.
+The schedule persists across deploys; no startup or request-time queries run.
+To disable, remove the named `navbar-pageviews` schedule or unset the worker
+query credential; cached data expires within 15 minutes.
