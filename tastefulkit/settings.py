@@ -135,6 +135,7 @@ MIDDLEWARE = [
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
+    "tastefulkit.markdown.MarkdownMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django_htmx.middleware.HtmxMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -143,6 +144,19 @@ MIDDLEWARE = [
     "allauth.account.middleware.AccountMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
+
+# Public HTML pages negotiate Markdown by default; protocol/form routes stay native.
+MARKDOWN_EXCLUDED_PATH_PREFIXES = (
+    "/admin",
+    "/admin-panel",
+    "/accounts",
+    "/settings",
+    "/billing",
+    "/arena",
+    "/api",
+    "/mcp",
+)
+MARKDOWN_MAX_HTML_BYTES = 2 * 1024 * 1024
 
 ROOT_URLCONF = "tastefulkit.urls"
 

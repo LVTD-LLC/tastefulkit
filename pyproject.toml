@@ -42,6 +42,8 @@ dependencies = [
     "uvicorn>=0.52,<1",
     "stripe>=12,<15",
     "av>=16,<19",
+    "markdownify>=1.2,<2",
+    "beautifulsoup4>=4.13,<5",
 ]
 
 [dependency-groups]
