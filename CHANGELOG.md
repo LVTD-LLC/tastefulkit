@@ -1,5 +1,11 @@
 # Changelog
 
+## 2026-10-05
+
+- Return a Markdown explanation and documentation/sitemap links for missing pages
+  when clients prefer `text/markdown`, preserving HTTP 404 and the HTML browser
+  response with cache-safe `Vary: Accept` content negotiation.
+
 ## 2026-10-03
 
 - Add a shared navbar counter for PostHog production pageviews over the last 24 hours, refreshed in the background every five minutes with mobile/dark-mode support and stale-data hiding.

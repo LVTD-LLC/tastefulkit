@@ -43,3 +43,57 @@ def test_public_error_routes_do_not_depend_on_database(
         assert "posthog" not in content.lower()
         assert "public-test-capture-key" not in content
         assert path not in content
+
+
+@pytest.mark.parametrize("path", ["/some-path-that-does-not-exist", "/docs/missing/page/"])
+def test_missing_page_returns_markdown_when_requested(client, settings, path):
+    settings.DEBUG = False
+    response = client.get(path, HTTP_ACCEPT="text/markdown", follow=True)
+
+    assert response.status_code == 404
+    assert response["Content-Type"] == "text/markdown; charset=utf-8"
+    body = response.content.decode()
+    assert body.startswith("# 404")
+    assert len(body) >= 20
+    assert "[Documentation](/docs/)" in body
+    assert "[Sitemap](/sitemap.xml)" in body
+    assert "Accept" in response["Vary"]
+
+
+@pytest.mark.parametrize(
+    ("accept", "content_type"),
+    [
+        ("text/html", "text/html"),
+        ("*/*", "text/html"),
+        ("text/*", "text/html"),
+        ("text/markdown;q=0, text/html", "text/html"),
+        ("text/markdown;q=0.5, text/html;q=1", "text/html"),
+        ("text/html;q=0.5, text/markdown;q=1", "text/markdown"),
+    ],
+)
+def test_missing_page_respects_accept_preferences(client, settings, accept, content_type):
+    settings.DEBUG = False
+    response = client.get("/some-path-that-does-not-exist", HTTP_ACCEPT=accept)
+
+    assert response.status_code == 404
+    assert response["Content-Type"].startswith(content_type)
+    assert "Accept" in response["Vary"]
+
+
+def test_missing_page_defaults_to_html(client, settings):
+    settings.DEBUG = False
+    response = client.get("/some-path-that-does-not-exist")
+
+    assert response.status_code == 404
+    assert response["Content-Type"].startswith("text/html")
+    assert b"<html" in response.content
+
+
+def test_markdown_head_preserves_status_and_headers_without_body(client, settings):
+    settings.DEBUG = False
+    response = client.head("/some-path-that-does-not-exist", HTTP_ACCEPT="text/markdown")
+
+    assert response.status_code == 404
+    assert response["Content-Type"] == "text/markdown; charset=utf-8"
+    assert "Accept" in response["Vary"]
+    assert response.content == b""
