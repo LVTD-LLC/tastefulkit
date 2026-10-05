@@ -51,6 +51,22 @@ def test_homepage_matches_first_six_global_results_for_guests_and_members(client
         response = client.get("/?mode=personal")
         assert response.status_code == 200
         assert response.context["designs"] == expected
+        markdown = client.get("/", HTTP_ACCEPT="text/markdown")
+        assert markdown.status_code == 200
+        assert markdown["Content-Type"] == "text/markdown; charset=utf-8"
+        assert "Accept" in markdown["Vary"]
+        assert "Accept" in response["Vary"]
+        assert user.profile.ensure_api_key().encode() not in markdown.content
+        body = markdown.content.decode()
+        assert [design.get_absolute_url() for design in expected] == [
+            line.rsplit("](", 1)[1][:-1]
+            for line in body.splitlines()
+            if line.startswith("- [Landing example")
+        ]
+        head = client.head("/", HTTP_ACCEPT="text/markdown")
+        assert head.status_code == 200
+        assert head["Content-Type"] == markdown["Content-Type"]
+        assert head.content == b""
         ranking = client.get("/rankings/")
         assert response.context["designs"] == list(ranking.context["page"])[:6]
         html = response.content.decode()

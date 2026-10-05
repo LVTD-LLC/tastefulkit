@@ -2,6 +2,10 @@
 
 ## 2026-10-05
 
+- Serve a readable Markdown homepage with public top-ranked references and discovery
+  links when requested with `Accept: text/markdown`; preserve HTML defaults and
+  advertise both representations with `Vary: Accept`.
+
 - Return a Markdown explanation and documentation/sitemap links for missing pages
   when clients prefer `text/markdown`, preserving HTTP 404 and the HTML browser
   response with cache-safe `Vary: Accept` content negotiation.

@@ -3,8 +3,10 @@ from django.contrib.auth.views import redirect_to_login
 from django.core.paginator import Paginator
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
+from django.template.loader import render_to_string
 from django.views.decorators.cache import never_cache
 from django.views.decorators.http import require_POST
+from django.views.decorators.vary import vary_on_headers
 
 from apps.catalogue.arena import ranked_designs
 from apps.catalogue.models import Design, SavedDesign, Tag
@@ -13,13 +15,32 @@ from apps.catalogue.services import related_designs, search_designs, visible_des
 
 
 @never_cache
+@vary_on_headers("Accept")
 def landing(request):
     designs, _ = ranked_designs(request.user, mode="global", kind=Design.Kind.LANDING)
-    return render(
-        request,
-        "pages/landing-page.html",
-        {"designs": designs[:6]},
-    )
+    context = {"designs": designs[:6]}
+    # Prefer HTML for absent/wildcard Accept headers, just like the 404 handler.
+    if (
+        request.get_preferred_type(["text/html; charset=utf-8", "text/markdown; charset=utf-8"])
+        == "text/markdown; charset=utf-8"
+    ):
+        context["references"] = [
+            {"title": _markdown_label(design.title), "url": design.get_absolute_url()}
+            for design in context["designs"]
+        ]
+        return HttpResponse(
+            render_to_string("pages/landing-page.md", context),
+            content_type="text/markdown; charset=utf-8",
+        )
+    return render(request, "pages/landing-page.html", context)
+
+
+def _markdown_label(value):
+    """Keep catalogue titles on one line and literal inside Markdown links."""
+    value = " ".join(value.split())
+    for character in "\\`*_{}[]<>()!":
+        value = value.replace(character, "\\" + character)
+    return value
 
 
 @never_cache

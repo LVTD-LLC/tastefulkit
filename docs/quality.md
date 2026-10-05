@@ -191,3 +191,21 @@ CI exports test environment variables and runs against the PostgreSQL service
 defined in the workflow. Local development reads `.env`, so use
 `.env.terminal.example` for host-level checks or Docker Compose commands when
 you want Compose-managed services.
+
+## Homepage content negotiation
+
+The homepage `/` serves Markdown when `Accept` prefers `text/markdown` and HTML
+for browser/default requests. Both variants include `Vary: Accept` and retain
+the existing no-store policy. The Markdown template shares the public global
+top-six ranking with HTML; it does not include user keys or personalized data.
+When homepage positioning or navigation changes, update both landing templates.
+
+Verify final headers and bodies after deployment:
+
+```sh
+curl -sS -L -i -H 'Accept: text/markdown' https://tastefulkit.com/
+curl -sS -L -i -H 'Accept: text/html' https://tastefulkit.com/
+```
+
+Expect HTTP 200 for both, nonempty Markdown with `Content-Type: text/markdown`
+and `Vary: Accept` for the first, and HTML for the second.
