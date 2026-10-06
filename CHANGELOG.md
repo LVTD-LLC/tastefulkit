@@ -2,6 +2,11 @@
 
 ## 2026-10-05
 
+- Negotiate Markdown automatically from rendered public HTML pages with shared
+  middleware, preserving their content, links, permissions and HTML defaults.
+  Exclude account/admin/form and protocol routes, preserve cache behavior, and
+  provide explicit view/element opt-outs without separate Markdown templates.
+
 - Return a Markdown explanation and documentation/sitemap links for missing pages
   when clients prefer `text/markdown`, preserving HTTP 404 and the HTML browser
   response with cache-safe `Vary: Accept` content negotiation.

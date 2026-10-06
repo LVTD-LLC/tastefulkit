@@ -191,3 +191,60 @@ CI exports test environment variables and runs against the PostgreSQL service
 defined in the workflow. Local development reads `.env`, so use
 `.env.terminal.example` for host-level checks or Docker Compose commands when
 you want Compose-managed services.
+
+## Shared Markdown content negotiation
+
+`tastefulkit.markdown.MarkdownMiddleware` converts the existing rendered `<main>`
+content when a GET/HEAD request prefers `text/markdown`. Existing and new public
+HTML pages using the shared layout need no separate Markdown template or view
+changes. Ordinary requests continue to receive identical HTML bodies.
+
+- Uses `markdownify` and Beautiful Soup locally: no AI, URL fetching, browser or
+  background job. Only Markdown requests parse/convert HTML.
+- Includes headings, links, screenshot URLs, video links, lists, tables and code.
+  Preserves links inside `<main>` (including pagination and discovery tabs).
+  Removes the outer site shell, sidebars, scripts, forms/controls, hidden elements
+  and `.ph-no-capture` content. It does not evaluate CSS or JavaScript; this is a
+  readable server-rendered representation, not a recreation of interactive UI.
+- Reuses the view's queries and permissions. Hidden references stay hidden;
+  personal rankings and saved collections still require authentication. Cookies,
+  status and Cache-Control are preserved. Private results are not made public.
+- Adds `Vary: Accept, HX-Request, HX-History-Restore-Request` on eligible HTML and
+  Markdown. HTMX requests stay HTML. Stale body validators are removed and
+  Content-Length is recomputed after conversion. Keep this middleware inside
+  CommonMiddleware and any response compression/conditional-cache middleware so
+  those operate on the final representation.
+- Only converts status-200 HTML with `<main>`. Native Markdown (including the
+  existing 404 handler), APIs, redirects, attachments, streams, already-encoded
+  responses, fragments and non-GET/HEAD requests stay untouched.
+- `MARKDOWN_EXCLUDED_PATH_PREFIXES` excludes account/admin/settings/billing,
+  Arena voting, API and MCP paths with path-segment boundaries. Pricing and
+  rankings are not excluded. New private/interactive routes should use the
+  explicit opt-out or join this exclusion setting.
+- To opt a view out, apply `@markdown_exempt` from `tastefulkit.markdown` (decorate
+  the `as_view()` callable for class-based views). To omit one template fragment,
+  add `data-markdown-exclude` to its wrapper. On `<main>` it opts out the page.
+- A view can still return native `text/markdown` itself; the middleware leaves it
+  unchanged. Such an override owns its own negotiation and Vary header.
+- Empty conversions, missing `<main>`, responses exceeding
+  `MARKDOWN_MAX_HTML_BYTES` (2 MiB), or conversion errors fall back to HTML.
+  Errors log only an event and exception type, never page content. A fallback
+  is not successful Markdown support and must not be counted as such in checks.
+
+Run `uv run pytest apps/pages/test_markdown.py apps/pages/test_errors.py -q`.
+Coverage includes actual guest/member catalogue, directories/details, rankings,
+docs/blog/legal/How to Use routes; filters and pagination; HEAD; key stripping;
+HTML defaults; opt-outs; non-HTML handling and existing Markdown 404 behavior.
+
+Verify final headers **and bodies**, for example against a local checkout:
+
+```sh
+curl -sS -L -i -H 'Accept: text/markdown' http://localhost:8000/
+curl -sS -L -i -H 'Accept: text/html' http://localhost:8000/
+curl -sS -L -i -H 'Accept: text/markdown' http://localhost:8000/explore/
+```
+
+Expect HTTP 200 for eligible pages, nonempty Markdown with
+`Content-Type: text/markdown; charset=utf-8` and `Vary: Accept` for Markdown,
+and unchanged HTML for the browser request. Repeat against production only
+**after** deployment.
