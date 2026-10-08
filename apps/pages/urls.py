@@ -1,9 +1,11 @@
 from django.urls import path
 
 from apps.catalogue.views import landing
-from apps.pages import blog, social, views
+from apps.pages import blog, newsletter, social, views
 
 urlpatterns = [
+    path("newsletter/", newsletter.subscribe, name="newsletter"),
+    path("newsletter/thanks/", newsletter.thanks, name="newsletter_thanks"),
     path("social/pages/<slug:key>.png", social.page_social_image, name="page_social_image"),
     path(
         "social/docs/<slug:category>/<slug:page>.png",

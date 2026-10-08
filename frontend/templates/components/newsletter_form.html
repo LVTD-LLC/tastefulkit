@@ -1,0 +1,14 @@
+<form action="{% url 'newsletter' %}"
+      method="post"
+      class="tk-newsletter-form ph-no-capture"
+      data-markdown-exclude>
+    {% csrf_token %}
+    <label for="id_email">Email address</label>
+    <div class="tk-newsletter-controls">
+        {{ form.email }}
+        <button type="submit" class="tk-button">Subscribe</button>
+    </div>
+    {{ form.company }}
+    {% if form.email.errors %}<div role="alert" class="tk-newsletter-error">{{ form.email.errors }}</div>{% endif %}
+    <p class="tk-muted" id="newsletter-consent">Confirm by email to subscribe. Unsubscribe whenever you like. <a href="{% url 'privacy_policy' %}">Privacy policy</a></p>
+</form>

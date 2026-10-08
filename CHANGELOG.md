@@ -2,6 +2,8 @@
 
 ## 2026-10-08
 
+- Add weekly double-opt-in newsletter signup on the homepage and design/UI-library details, with CSRF protection, shared rate limits, validation, and recoverable provider errors. Listmonk manages confirmation/unsubscribe; no account or preconfirmed subscription is created.
+
 - Add Sentry error reporting, sampled traces and trace-lifecycle Python profiles,
   structured logs, request/job metrics, browser monitoring and masked anonymous
   replay. Exclude private replay surfaces and scrub request content. Document

@@ -1,0 +1,9 @@
+{% extends "base_landing.html" %}
+{% block content %}
+    <div class="tk-container tk-newsletter-page" data-markdown-exclude>
+        <h1>Check your inbox.</h1>
+        <p>If confirmation is needed, you’ll receive an email with a link to subscribe. Already subscribed? You’re all set.</p>
+        <p class="tk-muted">Can’t find it? Check your spam folder.</p>
+        <a class="tk-button" href="{% url 'library' %}">Explore designs →</a>
+    </div>
+{% endblock %}

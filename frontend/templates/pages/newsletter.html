@@ -1,0 +1,10 @@
+{% extends "base_landing.html" %}
+{% block content %}
+    <div class="tk-container tk-newsletter-page" data-markdown-exclude>
+        <h1>Design inspiration, weekly.</h1>
+        <p class="tk-muted">Standout designs and useful UI elements from TastefulKit.</p>
+        {% if service_error %}<p role="alert">Subscriptions are temporarily unavailable. Please try again shortly.</p>{% endif %}
+        {% if rate_limited %}<p role="alert">Too many attempts. Please try again in an hour.</p>{% endif %}
+        {% include "components/newsletter_form.html" %}
+    </div>
+{% endblock %}
