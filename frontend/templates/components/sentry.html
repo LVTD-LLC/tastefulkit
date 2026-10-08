@@ -1,0 +1,7 @@
+{% load static %}
+{% if sentry_config %}
+    <meta name="sentry-trace" content="{{ sentry_trace }}" />
+    <meta name="baggage" content="{{ sentry_baggage }}" />
+    {{ sentry_config|json_script:"sentry-config" }}
+    <script defer src="{% static 'js/sentry.js' %}"></script>
+{% endif %}

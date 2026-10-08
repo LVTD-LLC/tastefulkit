@@ -1,3 +1,4 @@
+import { buildSentry } from "./build-sentry.mjs";
 import { cp, mkdir, rm } from "node:fs/promises";
 import { pathToFileURL } from "node:url";
 
@@ -9,6 +10,7 @@ export async function copyAppJs() {
     recursive: true,
     force: true,
   });
+  await buildSentry();
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

@@ -9,7 +9,7 @@
     "build:vendor": "node scripts/copy-vendor-assets.mjs",
     "watch": "npm run build:vendor && node scripts/watch-assets.mjs",
     "lint": "eslint \"frontend/src/js/**/*.js\" \"scripts/**/*.mjs\"",
-    "test:analytics": "node --test scripts/test-posthog.mjs",
+    "test:analytics": "node --test scripts/test-posthog.mjs && node --test scripts/test-sentry.mjs",
     "test:motion": "node --test scripts/test-motion.mjs"
   },
   "repository": {
@@ -34,10 +34,12 @@
     "@tailwindcss/cli": "^4.3.0",
     "@tailwindcss/forms": "^0.5.10",
     "@tailwindcss/typography": "^0.5.16",
+    "esbuild": "0.28.2",
     "eslint": "^8.57.1",
     "tailwindcss": "^4.3.0"
   },
   "dependencies": {
+    "@sentry/browser": "11.5.0",
     "alpinejs": "^3.15.12",
     "htmx.org": "^2.0.10"
   }

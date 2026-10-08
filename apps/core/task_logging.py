@@ -10,8 +10,11 @@ from django.dispatch import receiver
 from django_q.signals import post_execute_in_worker, pre_execute
 
 from tastefulkit.logging_utils import bind_log_context, reset_log_context
+from tastefulkit.observability import start_task_trace
 
 logger = logging.getLogger(__name__)
+
+_TASK_TRACES: ContextVar[tuple] = ContextVar("sentry_task_traces", default=())
 
 _TASK_STARTED_AT: ContextVar[tuple[float, ...]] = ContextVar(
     "tastefulkit_task_started_at",
@@ -50,6 +53,7 @@ def bind_task_context(
     task: dict[str, Any],
     **kwargs: Any,
 ) -> None:
+    _TASK_TRACES.set((*_TASK_TRACES.get(), start_task_trace()))
     _TASK_STARTED_AT.set((*_TASK_STARTED_AT.get(), time.perf_counter()))
     token = bind_log_context(**_job_context(func, task))
     _TASK_CONTEXT_TOKENS.set((*_TASK_CONTEXT_TOKENS.get(), token))
@@ -91,7 +95,16 @@ def log_task_completion(
         attributes["error.type"] = "TaskExecutionError"
 
     try:
+        from tastefulkit.observability import record_completion
+
+        record_completion(attributes)
         log_method = logger.info if success else logger.error
         log_method("background_job.completed", extra=attributes)
     finally:
-        reset_log_context(context_token)
+        traces = _TASK_TRACES.get()
+        _TASK_TRACES.set(traces[:-1])
+        try:
+            if traces:
+                traces[-1].close()
+        finally:
+            reset_log_context(context_token)
