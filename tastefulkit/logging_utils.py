@@ -321,6 +321,9 @@ class RequestLogContextMiddleware:
                     if error is not None:
                         log_extra["error.type"] = error.__class__.__name__
 
+                    from tastefulkit.observability import record_completion
+
+                    record_completion(log_extra)
                     self.logger.log(
                         logging.ERROR if status_code >= 500 else logging.INFO,
                         "http.request.completed",

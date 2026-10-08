@@ -35,6 +35,14 @@ SERVICE_NAME = env("SERVICE_NAME", default=DEFAULT_SERVICE_NAME)
 SERVICE_VERSION = env("SERVICE_VERSION", default="")
 DEPLOYMENT_REVISION = env("DEPLOYMENT_REVISION", default="")
 
+# Empty DSNs disable Sentry in local development and tests.
+SENTRY_DSN = env("SENTRY_DSN", default="")
+SENTRY_BROWSER_DSN = env("SENTRY_BROWSER_DSN", default=SENTRY_DSN)
+SENTRY_TRACES_SAMPLE_RATE = env.float("SENTRY_TRACES_SAMPLE_RATE", default=0.2)
+SENTRY_PROFILE_SESSION_SAMPLE_RATE = env.float("SENTRY_PROFILE_SESSION_SAMPLE_RATE", default=1.0)
+SENTRY_REPLAY_SESSION_SAMPLE_RATE = env.float("SENTRY_REPLAY_SESSION_SAMPLE_RATE", default=0.1)
+SENTRY_REPLAY_ERROR_SAMPLE_RATE = env.float("SENTRY_REPLAY_ERROR_SAMPLE_RATE", default=1.0)
+
 POSTHOG_API_KEY = env("POSTHOG_API_KEY", default="")
 POSTHOG_HOST = env("POSTHOG_HOST", default="https://us.i.posthog.com").rstrip("/")
 POSTHOG_BROWSER_HOST = env("POSTHOG_BROWSER_HOST", default="").strip() or POSTHOG_HOST
@@ -175,6 +183,7 @@ TEMPLATES = [
                 "apps.core.traffic.traffic_context",
                 "apps.core.context_processors.mfa_recovery_codes_settings",
                 "apps.core.context_processors.public_site_url",
+                "tastefulkit.observability.browser_context",
                 "apps.core.context_processors.posthog_api_key",
                 "apps.core.context_processors.available_social_providers",
                 "apps.pages.context_processors.referrer_banner",
@@ -567,3 +576,6 @@ STRIPE_PRICE_ID = env("STRIPE_PRICE_ID", default="")
 STRIPE_WEBHOOK_SECRET = env("STRIPE_WEBHOOK_SECRET", default="")
 STRIPE_PORTAL_CONFIGURATION_ID = env("STRIPE_PORTAL_CONFIGURATION_ID", default="")
 STRIPE_LIVE_MODE = env.bool("STRIPE_LIVE_MODE", default=True)
+
+# The SDK reporter is a no-op when SENTRY_DSN is empty.
+Q_CLUSTER["error_reporter"] = {"sentry": {}}

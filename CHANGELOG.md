@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-10-08
+
+- Add Sentry error reporting, sampled traces and trace-lifecycle Python profiles,
+  structured logs, request/job metrics, browser monitoring and masked anonymous
+  replay. Exclude private replay surfaces and scrub request content. Document
+  sampling, verification and rollback; update the privacy notice.
+
 ## 2026-10-05
 
 - Negotiate Markdown automatically from rendered public HTML pages with shared

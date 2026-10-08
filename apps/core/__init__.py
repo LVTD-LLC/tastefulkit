@@ -11,6 +11,9 @@ class CoreConfig(AppConfig):
     label = "core"
 
     def ready(self):
+        from tastefulkit.observability import init_sentry
+
+        init_sentry()
         import apps.core.signals  # noqa
         import apps.core.task_logging  # noqa
 

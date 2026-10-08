@@ -44,7 +44,11 @@ dependencies = [
     "av>=16,<19",
     "markdownify>=1.2,<2",
     "beautifulsoup4>=4.13,<5",
+    "sentry-sdk[django]>=2.53,<3",
 ]
+
+[project.entry-points."djangoq.errorreporters"]
+sentry = "tastefulkit.observability:SentryTaskErrorReporter"
 
 [dependency-groups]
 dev = [
