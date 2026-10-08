@@ -187,6 +187,7 @@ TEMPLATES = [
                 "apps.core.context_processors.posthog_api_key",
                 "apps.core.context_processors.available_social_providers",
                 "apps.pages.context_processors.referrer_banner",
+                "apps.pages.newsletter.context",
             ],
         },
     },
@@ -579,3 +580,8 @@ STRIPE_LIVE_MODE = env.bool("STRIPE_LIVE_MODE", default=True)
 
 # The SDK reporter is a no-op when SENTRY_DSN is empty.
 Q_CLUSTER["error_reporter"] = {"sentry": {}}
+
+# Public newsletter: Listmonk owns double opt-in; no admin credentials in this app.
+NEWSLETTER_LISTMONK_URL = env("NEWSLETTER_LISTMONK_URL", default="")
+NEWSLETTER_LIST_UUID = env("NEWSLETTER_LIST_UUID", default="")
+NEWSLETTER_TRUST_PROXY = env.bool("NEWSLETTER_TRUST_PROXY", default=False)

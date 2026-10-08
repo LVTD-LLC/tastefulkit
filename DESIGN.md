@@ -393,3 +393,11 @@ The accessible label spells out the rolling 24-hour window. Keep the counter
 inline before account actions on wide screens and in its own centered row on
 narrow screens; never crowd the existing navigation or account controls.
 Missing or stale analytics renders no counter, while a measured zero remains visible.
+
+### Newsletter signup
+
+Use one border-led section below homepage references and design/UI-library details,
+with the existing warm palette and a visible email label. Stack the field/button
+on small screens. Explain weekly content, email confirmation and unsubscribe;
+never precheck consent or capture form contents in analytics. The shared component
+works without JavaScript and links to a dedicated recoverable validation/error page.

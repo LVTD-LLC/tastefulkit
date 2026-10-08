@@ -167,3 +167,10 @@ the cache using `uv run python manage.py refresh_pageviews` in the worker.
 The schedule persists across deploys; no startup or request-time queries run.
 To disable, remove the named `navbar-pageviews` schedule or unset the worker
 query credential; cached data expires within 15 minutes.
+
+## Newsletter
+
+Optional weekly design inspiration uses a dedicated Listmonk double-opt-in list.
+The homepage and design/UI-library details share the same signup component.
+See [newsletter operations](docs/maintainers/newsletter.md) for configuration,
+privacy, verification and rollback. Newsletter signup does not create an account.

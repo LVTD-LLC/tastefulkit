@@ -1,0 +1,11 @@
+{% if newsletter_enabled %}
+    <section class="tk-newsletter"
+             aria-labelledby="newsletter-heading"
+             data-markdown-exclude>
+        <div>
+            <h2 id="newsletter-heading">A little more taste in your inbox.</h2>
+            <p class="tk-muted">A weekly selection of standout designs, useful UI elements, and fresh inspiration from TastefulKit.</p>
+        </div>
+        {% include "components/newsletter_form.html" with form=newsletter_form %}
+    </section>
+{% endif %}
