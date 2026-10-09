@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-09-29
+updated: 2026-10-09
 ---
 
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
@@ -42,6 +42,20 @@ Use an observation ledger before writing implementation instructions:
 This distinction matters when the agent starts turning pixels into numbers. “The gap appears about twice as large” can be a reasonable visual estimate. “The site uses a 48-pixel spacing token” requires additional evidence. Treat estimated values as starting points for your project, not facts about the source.
 
 Do the same with intent. “This arrangement makes the action visually prominent” is an observation about hierarchy. “This button converts better” is a performance claim the screenshot cannot support. You can choose a pattern for clarity without inventing evidence that it increases revenue.
+
+## Choose the skill, reference, and components separately
+
+A design skill gives an agent instructions for doing a task. A visual reference gives it an example to inspect. A UI library supplies implementation building blocks. These serve different purposes; choosing one does not settle the other two.
+
+Start with the gap in your workflow:
+
+- **The agent needs a review method:** browse [AI skills for design](/ai-skills/). Read each skill's source, usage notes, and compatibility before installing it. A skill listing is not a guarantee that its instructions fit your project.
+- **The visual direction is unclear:** [explore design references](/explore/) and give each selected example one job. Inspect the screenshot instead of relying only on a description.
+- **You need components to implement the direction:** compare [UI libraries](/ui-libraries/) against your existing framework, styling conventions, and the components you actually need. Keep the current library if it already does the job.
+
+For a hypothetical signup page, you might use a skill to review the form, a reference to study the relationship between the explanation and fields, and your existing components to build it. The brief should say which source governs each decision. Do not let a newly added skill silently replace the project's design rules.
+
+TastefulKit's skill directory is separate from its design-reference MCP tools. Finding a skill on the website does not install it, and `search_designs` does not search the AI-skill directory. Use the source's setup instructions for skills; use the MCP workflow below to retrieve visual references.
 
 ## Retrieve references with TastefulKit's read-only MCP
 
