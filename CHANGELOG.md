@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-09
+
+- Connect AI-skill details to public design references, the coding-agent briefing guide and UI libraries. Explain how skills, visual references and implementation components work together without implying automatic installation or AI-skill search through the design MCP tools.
+
 ## 2026-10-08
 
 - Add weekly double-opt-in newsletter signup on the homepage and design/UI-library details, with CSRF protection, shared rate limits, validation, and recoverable provider errors. Listmonk manages confirmation/unsubscribe; no account or preconfirmed subscription is created.
