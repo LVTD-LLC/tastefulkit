@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-10
+
+- Add a pricing-page reference-selection guide with three sourced examples, a worked borrow/adapt/reject brief, and checks for billing clarity and mobile presentation.
+
 ## 2026-10-09
 
 - Connect AI-skill details to public design references, the coding-agent briefing guide and UI libraries. Explain how skills, visual references and implementation components work together without implying automatic installation or AI-skill search through the design MCP tools.
