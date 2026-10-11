@@ -52,10 +52,10 @@ jobs:
           tags: |
             ${{ steps.image.outputs.image_name }}:${{ github.sha }}
 
-      - name: Snapshot public URLs before deployment
+      - name: Snapshot public content before deployment
         run: python apps/pages/indexnow.py --site-url https://tastefulkit.com --snapshot indexnow-before.json
 
-      - name: Retain URL snapshot for submission recovery
+      - name: Retain content snapshot for submission recovery
         uses: actions/upload-artifact@v4
         with:
           name: indexnow-before-${{ github.sha }}
@@ -89,6 +89,7 @@ jobs:
           image: ${{ steps.image.outputs.image_name }}:${{ github.sha }}
 
       # For a failed notification, download the original indexnow-before-<sha> artifact.
+      # Use the same revision of this script; URL-list snapshots from older runs are incompatible.
       # Retry without redeploying: python apps/pages/indexnow.py --site-url https://tastefulkit.com --previous indexnow-before.json
       - name: Verify live revision and notify IndexNow
         timeout-minutes: 15

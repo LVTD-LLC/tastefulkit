@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-11
+
+- Limit deployment IndexNow notifications to new, changed or removed public content. Compare content fingerprints instead of resubmitting the whole sitemap; reject incomplete snapshots and ignore request tokens and expiring asset signatures.
+
 ## 2026-10-10
 
 - Add a pricing-page reference-selection guide with three sourced examples, a worked borrow/adapt/reject brief, and checks for billing clarity and mobile presentation.
