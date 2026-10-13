@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-13
+
+- Publish five source-backed UI-library selection guides for React, Vue, Svelte, headless components and framework-agnostic HTML/CSS. Include comparison tables, catalogue references, maintenance tradeoffs and worked selection exercises.
+- Link the guides from the library directory and existing coding-agent reference guide; add validated unordered shortlist structured data alongside blog article and breadcrumb metadata.
+
 ## 2026-10-11
 
 - Limit deployment IndexNow notifications to new, changed or removed public content. Compare content fingerprints instead of resubmitting the whole sitemap; reject incomplete snapshots and ignore request tokens and expiring asset signatures.

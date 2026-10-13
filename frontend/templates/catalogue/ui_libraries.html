@@ -15,6 +15,14 @@
             </div>
         </div>
         {% include "catalogue/arena_nav.html" %}
+        <nav class="tk-muted" aria-label="UI library selection guides">
+            Compare libraries:
+            <a href="{% url 'blog_post' slug='best-react-ui-libraries' %}">React</a> ·
+            <a href="{% url 'blog_post' slug='best-vue-ui-libraries' %}">Vue</a> ·
+            <a href="{% url 'blog_post' slug='best-svelte-ui-libraries' %}">Svelte</a> ·
+            <a href="{% url 'blog_post' slug='best-headless-ui-libraries' %}">Headless UI</a> ·
+            <a href="{% url 'blog_post' slug='best-framework-agnostic-ui-libraries' %}">Framework-agnostic</a>
+        </nav>
         <form method="get" class="tk-search">
             <label for="library-search">Search UI libraries</label>
             <div class="tk-search-row">
