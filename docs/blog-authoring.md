@@ -37,6 +37,13 @@ Invalid content emits a structured warning, but does not break other posts.
 
 ## Body and links
 
+Library roundups may include a `roundup_items` list in frontmatter. Each item
+has a `name` and a local `/ui-libraries/<uuid>/` `path` that also appears in the
+body. List only the main recommendations, in their visible order. The renderer
+adds an unordered `ItemList` alongside the existing article and breadcrumb
+schema; positions describe presentation order, not ratings. Do not add reviews,
+scores or claims of testing through this metadata.
+
 The template supplies the H1. Use `##` and `###` headings in the body; these build
 a server-rendered, keyboard-accessible table of contents. Fenced code and tables
 are supported. Write concise paragraphs and descriptive link labels. Include

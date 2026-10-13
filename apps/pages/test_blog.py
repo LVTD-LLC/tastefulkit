@@ -195,6 +195,36 @@ def test_repository_blog_content_has_valid_metadata():
         assert not any(line.startswith("# ") for line in post.body.splitlines()), path
 
 
+def test_roundup_metadata_rejects_external_or_unmentioned_items(content_root):
+    for items in (
+        "not a list",
+        [{"name": "External", "path": "https://example.com/"}],
+        [{"name": "Missing", "path": "/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/"}],
+    ):
+        path = write_post(content_root, roundup_items=items)
+        with pytest.raises(ValueError):
+            blog.load_post(path)
+
+
+def test_roundup_schema_is_unordered_and_escapes_names(content_root):
+    library_path = "/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/"
+    name = "A </script> library"
+    path = write_post(content_root, roundup_items=[{"name": name, "path": library_path}])
+    document = frontmatter.load(path)
+    document.content += f"\n\n[View library]({library_path})"
+    path.write_text(frontmatter.dumps(document), encoding="utf-8")
+    post = blog.load_post(path)
+    context = blog._metadata(post.title, post.description, post.url)
+    raw_schema = blog._post_schema(post, context)
+    assert "</script>" not in raw_schema
+    graph = json.loads(raw_schema)["@graph"]
+    assert [entry["@type"] for entry in graph] == ["BlogPosting", "BreadcrumbList", "ItemList"]
+    shortlist = graph[-1]
+    assert shortlist["itemListOrder"] == "https://schema.org/ItemListUnordered"
+    assert shortlist["itemListElement"][0]["name"] == name
+    assert shortlist["itemListElement"][0]["url"].endswith(library_path)
+
+
 @pytest.mark.django_db
 def test_tables_and_fenced_code_are_keyboard_scrollable(client, content_root):
     path = write_post(content_root)

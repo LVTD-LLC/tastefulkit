@@ -35,6 +35,7 @@ class BlogPost:
     updated: date
     body: str
     draft: bool = False
+    roundup_items: tuple[tuple[str, str], ...] = ()
 
     @property
     def url(self):
@@ -70,6 +71,21 @@ def load_post(path):
         raise ValueError("Blog draft must be a YAML boolean")
     if not document.content.strip():
         raise ValueError("Blog body cannot be empty")
+    roundup_items = document.get("roundup_items", [])
+    if not isinstance(roundup_items, list):
+        raise ValueError("Blog roundup_items must be a list")
+    validated_items = []
+    for item in roundup_items:
+        if (
+            not isinstance(item, dict)
+            or not isinstance(item.get("name"), str)
+            or not item["name"].strip()
+            or not isinstance(item.get("path"), str)
+            or not re.fullmatch(r"/ui-libraries/[0-9a-f-]{36}/", item["path"])
+            or item["path"] not in document.content
+        ):
+            raise ValueError("Roundup items need a name and a referenced library path")
+        validated_items.append((item["name"].strip(), item["path"]))
     return BlogPost(
         path.stem,
         **fields,
@@ -77,6 +93,7 @@ def load_post(path):
         updated=updated,
         body=document.content,
         draft=draft,
+        roundup_items=tuple(validated_items),
     )
 
 
@@ -167,6 +184,25 @@ def _post_schema(post, context):
             },
         ],
     }
+    if post.roundup_items:
+        schema["@graph"].append(
+            {
+                "@type": "ItemList",
+                "@id": context["canonical_url"] + "#shortlist",
+                "name": post.title,
+                "itemListOrder": "https://schema.org/ItemListUnordered",
+                "numberOfItems": len(post.roundup_items),
+                "itemListElement": [
+                    {
+                        "@type": "ListItem",
+                        "position": position,
+                        "name": name,
+                        "url": build_absolute_public_url(path),
+                    }
+                    for position, (name, path) in enumerate(post.roundup_items, 1)
+                ],
+            }
+        )
     # Script elements do not honor HTML entities. Escape delimiters as JSON Unicode
     # sequences so metadata containing </script> can never terminate the element.
     return json.dumps(schema).translate(

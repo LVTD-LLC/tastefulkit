@@ -30,3 +30,15 @@ Public sitemap inventory checked 2026-09-12. Authentication redirects are intent
 
 Each article links from the blog hub, homepage recent guides and sibling articles.
 Product entry points: `/arena/` and `/rankings/` public/free; `/pricing/` explains free-account access.
+
+## UI-library guides — October 13, 2026
+
+- `/blog/best-react-ui-libraries/`: React UI libraries; React component comparison; choose a React toolkit.
+- `/blog/best-vue-ui-libraries/`: Vue UI libraries; Vue component comparison; choose a Vue toolkit.
+- `/blog/best-svelte-ui-libraries/`: Svelte UI libraries; Svelte component shortlist; Svelte styling ownership.
+- `/blog/best-headless-ui-libraries/`: headless UI comparison; unstyled component libraries; custom design-system foundations.
+- `/blog/best-framework-agnostic-ui-libraries/`: framework-agnostic UI libraries; HTML/CSS toolkits; server-rendered UI choices.
+
+Inbound paths: blog index, UI-library directory, existing coding-agent reference
+guide and relevant sibling comparisons. Each roundup links to its actual
+catalogue references and official sources. Performance remains unmeasured.

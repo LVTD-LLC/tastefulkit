@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-09
+updated: 2026-10-13
 ---
 
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
@@ -162,3 +162,8 @@ Another useful correction is: “At the narrow width, the image appears before t
 Change one significant relationship at a time when reviewing the direction. If you change the typography, palette, content order, and imagery together, it becomes harder to tell which decision helped. Once the direction is stable, carry the established rules into the remaining sections.
 
 Finish by keeping the accepted brief with your project. Preserve the reference IDs and source links, the principles you chose, and the browser checks you completed. The next agent session should inherit decisions, not restart the search for a vaguely similar screenshot.
+
+
+## Choose an implementation library after the visual brief
+
+A design reference explains what to build; a component library determines which controls and styling conventions you start with. Compare the [React](/blog/best-react-ui-libraries/), [Vue](/blog/best-vue-ui-libraries/) and [Svelte UI libraries](/blog/best-svelte-ui-libraries/) when the framework is already chosen. For a custom visual system, use the [headless UI guide](/blog/best-headless-ui-libraries/). For server-rendered HTML, compare [framework-agnostic libraries](/blog/best-framework-agnostic-ui-libraries/). Give the agent one selected library and its version-specific docs, not an instruction to mix attractive components from every shortlist.
