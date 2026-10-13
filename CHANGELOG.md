@@ -2,6 +2,10 @@
 
 ## 2026-10-13
 
+- Measure public article-to-reference navigation with privacy-safe CTA events;
+  keep catalogue IDs and query strings out of inferred article-link events and
+  distinguish engagement from signup or activation attribution.
+
 - Publish five source-backed UI-library selection guides for React, Vue, Svelte, headless components and framework-agnostic HTML/CSS. Include comparison tables, catalogue references, maintenance tradeoffs and worked selection exercises.
 - Link the guides from the library directory and existing coding-agent reference guide; add validated unordered shortlist structured data alongside blog article and breadcrumb metadata.
 

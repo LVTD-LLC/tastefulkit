@@ -93,6 +93,58 @@ test("signed-in identity is linked automatically and logout still resets it", ()
   assert.equal(resets, 1);
 });
 
+test("article links measure reference intent without sending IDs or query strings", () => {
+  const state = browser("");
+  window.location.pathname = "/blog/best-react-ui-libraries/";
+  sdkLoaded(window.posthog);
+  window.SaasAnalytics.pageviewContext = {
+    enabled: true, contentGroup: "blog", route: "/blog/:slug/",
+    publicContentPath: "/blog/best-react-ui-libraries/",
+  };
+  initPosthogCtas();
+  const click = (href, { body = true, explicit = false } = {}) => {
+    const element = {
+      href, dataset: explicit ? { posthogCta: "explore", posthogCtaLocation: "article_body" } : {},
+      closest: (selector) => selector === ".tk-blog-body" && body ? {} : null,
+    };
+    // Model a nested span inside the anchor, including explicit CTA precedence.
+    state.listeners.click({ target: { closest: (selector) =>
+      selector === "a[href]" || (explicit && selector === "a[data-posthog-cta]") ? element : null,
+    } });
+  };
+  click("/ui-libraries/8f61f5bc-283d-479d-96fd-aab3ab701cec/?token=secret#private");
+  assert.deepEqual(state.captures.at(-1).properties, {
+    event_version: 1, environment: "test", cta_name: "reference_detail",
+    cta_location: "article_body", destination: "/ui-libraries/:id/",
+    public_content_path: "/blog/best-react-ui-libraries/",
+  });
+  for (const path of ["/explore/", "/arena/", "/rankings/", "/ui-libraries/", "/ai-skills/", "/accounts/signup/", "/docs/api-reference/mcp/"]) {
+    click(`${path}?private=secret`);
+    assert.equal(state.captures.at(-1).properties.destination, path);
+  }
+  for (const type of ["designs", "ai-skills"]) {
+    click(`/${type}/8f61f5bc-283d-479d-96fd-aab3ab701cec/`);
+    assert.equal(state.captures.at(-1).properties.destination, `/${type}/:id/`);
+  }
+  const count = state.captures.length;
+  for (const href of ["https://outside.example/explore/", "//outside.example/explore/", "mailto:private@example.com", "/settings/", "/designs/private-slug/", "/blog/another-guide/", "#heading", "/arena/vote/", "https://user:secret@tastefulkit.com/explore/"]) click(href);
+  click("/explore/", { body: false });
+  assert.equal(state.captures.length, count);
+  click("/explore/", { explicit: true });
+  assert.equal(state.captures.length, count + 1);
+  assert.equal(JSON.stringify(state.captures).includes("secret"), false);
+  assert.equal(JSON.stringify(state.captures).includes("8f61f5bc"), false);
+
+  for (const context of [null, { enabled: false }, { enabled: true, contentGroup: "docs", route: "/blog/:slug/", publicContentPath: "/blog/guide/" }]) {
+    window.SaasAnalytics.pageviewContext = context;
+    click("/explore/");
+  }
+  assert.equal(state.captures.length, count + 1);
+  delete window.SaasAnalytics;
+  delete window.posthog;
+  assert.doesNotThrow(() => click("/explore/"));
+});
+
 test("private routes stay excluded and no-key pages remain functional", async () => {
   const state = browser("");
   document.body.dataset = {};
