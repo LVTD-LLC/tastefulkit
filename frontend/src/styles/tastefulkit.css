@@ -205,6 +205,9 @@
 .tk-blog-next .tk-button { margin-top: 20px; }
 .tk-blog-related { list-style: none; }
 .tk-blog-related a { display: inline-block; padding: 12px 0; line-height: 1.5; }
+@media (max-width: 700px) {
+  .tk-blog-body :is(h2,h3) { scroll-margin-top: 160px; }
+}
 @media (max-width: 600px) {
   .tk-blog { padding-top: 32px; }
   .tk-blog-heading h1 { font-size: 34px; letter-spacing: -1px; }

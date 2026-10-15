@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-10-15
+
+- Add a copyable reference-to-runtime worksheet to the AI coding-agent design guide, with reproducible browser checks, explicit unknowns, and a hypothetical form-review example.
+- Keep blog section headings clear of the multi-row sticky header when following contents links on mobile.
+
 ## 2026-10-13
 
 - Measure public article-to-reference navigation with privacy-safe CTA events;
