@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-15
+
+- Add a copyable reference-to-runtime worksheet to the AI coding-agent design guide, with reproducible browser checks, explicit unknowns, and a hypothetical form-review example.
+
 ## 2026-10-13
 
 - Measure public article-to-reference navigation with privacy-safe CTA events;

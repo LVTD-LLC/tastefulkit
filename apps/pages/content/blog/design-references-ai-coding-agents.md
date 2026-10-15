@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-13
+updated: 2026-10-15
 ---
 
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
@@ -152,6 +152,35 @@ Review in a consistent order:
 Try intermediate widths as well as phone and desktop presets. Google's [responsive design guidance](https://web.dev/articles/responsive-web-design-basics) recommends choosing breakpoints around content needs. A layout can work at two named presets and still fail between them.
 
 For a more detailed narrow-screen pass, use the [mobile landing page design checklist](/blog/mobile-landing-page-design/). Record the viewport and interaction state with each issue so the agent can reproduce it.
+
+### Keep a reference-to-runtime worksheet
+
+A reference screenshot shows the direction you chose. A runtime screenshot shows your implementation in one environment, viewport, and state. Keep both with the brief, but label their roles: an attractive reference cannot prove that your form works, and a working form cannot prove that you followed the visual brief.
+
+Copy this worksheet for one mismatch at a time. It is a review template, not an executable command or a record of completed tests.
+
+```text
+Reference: [design ID or source URL; capture viewport if known]
+Principle to adapt: [one visible relationship, not guessed CSS]
+Our requirement: [what this relationship should help our visitor do]
+
+Runtime: [local/staging/production; build or revision if known]
+Capture: [date/time, viewport width × height, theme, browser]
+Starting state: [guest/test-account role; relevant flags if known]
+Steps to reproduce: [actions that reach the state being reviewed]
+Observed result: [what you saw, with a non-sensitive capture]
+Still unknown: [anything inferred or not exercised]
+
+Requested change: [one bounded adjustment within our design rules]
+Acceptance check: [repeatable condition that would resolve the issue]
+Recheck: [same steps and viewport; passed/failed/not checked]
+```
+
+For a **hypothetical** feedback form, the reference's job might be to keep the explanation close to its input. Your acceptance check could be: “At a 390-pixel viewport width, submit the empty form. The error is readable beside the relevant field, and the submit button remains reachable.” Until someone performs those steps, record the result as **not checked**. Do not copy a successful-looking screenshot into the result field.
+
+For a disappearing message, record the trigger and when the capture was taken; a screenshot after it disappears cannot show whether it was readable. If timing matters, use a short recording or an interaction trace. Playwright's [Trace Viewer documentation](https://playwright.dev/docs/trace-viewer) describes inspecting actions and page snapshots when that tool is already part of your workflow. A screenshot still does not establish keyboard operation or screen-reader behavior; exercise those separately.
+
+Use synthetic test content and keep private routes, credentials, and personal data out of shared screenshots, recordings, and trace files. If the agent cannot open the running page, retain its code review but mark browser checks as unverified. TastefulKit supplies the design references; runtime inspection happens in your own browser or agent tooling.
 
 ## Give feedback that points to a visible mismatch
 
