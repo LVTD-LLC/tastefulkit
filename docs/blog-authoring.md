@@ -44,6 +44,12 @@ adds an unordered `ItemList` alongside the existing article and breadcrumb
 schema; positions describe presentation order, not ratings. Do not add reviews,
 scores or claims of testing through this metadata.
 
+Each listed library's public detail page links back to its published comparison
+guides. This uses the exact `roundup_items` path, not a framework or name guess.
+Keep that list aligned with the visible recommendations. Draft, future-dated and
+invalid guides are excluded; libraries absent from the lists show no comparison
+section.
+
 The template supplies the H1. Use `##` and `###` headings in the body; these build
 a server-rendered, keyboard-accessible table of contents. Fenced code and tables
 are supported. Write concise paragraphs and descriptive link labels. Include

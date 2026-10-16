@@ -36,6 +36,18 @@
    target="_blank"
    rel="noopener noreferrer">Check current pricing and terms ↗</a>{% endif %}
     </section>
+    {% if comparison_guides %}
+        <section class="tk-related" aria-labelledby="comparison-guides-title">
+            <h2 id="comparison-guides-title">Compare {{ design.title }} with alternatives</h2>
+            <p class="tk-description">These guides include {{ design.title }} and explain when to choose it, what you take on, and where another library may fit better.</p>
+            <ul class="mt-4 space-y-3">
+                {% for guide in comparison_guides %}
+                    <li><a class="app-focus underline underline-offset-4"
+   href="{{ guide.url }}">{{ guide.title }}</a></li>
+                {% endfor %}
+            </ul>
+        </section>
+    {% endif %}
     <section class="tk-related">
         <h2>Landing page preview</h2>
         <div class="tk-shot-viewport"

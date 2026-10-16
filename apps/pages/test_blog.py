@@ -225,6 +225,35 @@ def test_roundup_schema_is_unordered_and_escapes_names(content_root):
     assert shortlist["itemListElement"][0]["url"].endswith(library_path)
 
 
+def test_library_comparisons_use_exact_paths_and_published_recommendations(content_root):
+    library_path = "/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/"
+    other_path = "/ui-libraries/7010f654-5d70-41bd-8146-67d5199dfc7d/"
+    for slug, metadata, path in (
+        ("matching", {}, library_path),
+        ("other-library", {}, other_path),
+        ("draft", {"draft": True}, library_path),
+        ("future", {"date": "2026-09-21"}, library_path),
+        ("future-update", {"updated": "2026-09-21"}, library_path),
+        ("invalid", {"author": None}, library_path),
+    ):
+        source = write_post(
+            content_root,
+            slug,
+            roundup_items=[{"name": "Library", "path": path}],
+            **metadata,
+        )
+        document = frontmatter.load(source)
+        document.content += f"\n\n[View library]({path})"
+        source.write_text(frontmatter.dumps(document), encoding="utf-8")
+    # A prose mention is not an editorial recommendation in roundup_items.
+    mention = write_post(content_root, "mention-only")
+    mention.write_text(mention.read_text() + f"\n\n[Library]({library_path})")
+
+    assert [post.slug for post in blog.roundups_for_library(library_path)] == ["matching"]
+    assert [post.slug for post in blog.roundups_for_library(other_path)] == ["other-library"]
+    assert blog.roundups_for_library(library_path.rstrip("/")) == []
+
+
 @pytest.mark.django_db
 def test_tables_and_fenced_code_are_keyboard_scrollable(client, content_root):
     path = write_post(content_root)

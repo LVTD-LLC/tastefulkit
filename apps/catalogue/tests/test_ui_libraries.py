@@ -2,10 +2,12 @@ import json
 from html.parser import HTMLParser
 from unittest.mock import patch
 
+import frontmatter
 import pytest
 
 from apps.catalogue.models import Design
 from apps.catalogue.tests.test_ingestion import bundle
+from apps.pages import blog
 
 pytestmark = pytest.mark.django_db
 
@@ -66,6 +68,37 @@ def test_library_submission_public_pages_and_api(client, admin_key, qdrant_store
     design.save()
     assert client.get(design.get_absolute_url()).status_code == 404
     assert design.get_absolute_url() not in client.get("/sitemap.xml").content.decode()
+
+
+def test_library_detail_links_only_its_published_comparisons(
+    client, admin_key, qdrant_store, tmp_path, monkeypatch
+):
+    monkeypatch.setattr(blog, "BLOG_CONTENT_ROOT", tmp_path)
+    assert submission(client, admin_key).status_code == 201
+    design = Design.objects.get()
+    url = design.get_absolute_url()
+    assert "comparison-guides-title" not in client.get(url).content.decode()
+
+    for slug, draft in (("published-comparison", False), ("draft-comparison", True)):
+        (tmp_path / f"{slug}.md").write_text(
+            frontmatter.dumps(
+                frontmatter.Post(
+                    f"Compare [this library]({url}) with alternatives.",
+                    title="Library & alternatives",
+                    description="Choose a library for your project.",
+                    author="TastefulKit",
+                    date="2026-09-18",
+                    draft=draft,
+                    roundup_items=[{"name": design.title, "path": url}],
+                )
+            )
+        )
+    html = client.get(url).content.decode()
+    assert "Compare Warm editorial reference with alternatives" in html
+    assert 'href="/blog/published-comparison/"' in html
+    assert "Library &amp; alternatives" in html
+    assert "draft-comparison" not in html
+    assert client.get("/blog/published-comparison/").status_code == 200
 
 
 def test_directory_prioritizes_only_the_first_visible_thumbnail(client, admin_key, qdrant_store):
