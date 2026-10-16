@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-16
+
+- Link UI library details to published guides that explicitly compare them, helping readers weigh alternatives without leaving the catalogue journey.
+
 ## 2026-10-15
 
 - Add a copyable reference-to-runtime worksheet to the AI coding-agent design guide, with reproducible browser checks, explicit unknowns, and a hypothetical form-review example.

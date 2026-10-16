@@ -119,6 +119,15 @@ def published_posts():
     return sorted(posts, key=lambda post: (post.published, post.slug), reverse=True)
 
 
+def roundups_for_library(path):
+    """Link only published guides that explicitly recommend this library."""
+    return [
+        post
+        for post in published_posts()
+        if any(item_path == path for _name, item_path in post.roundup_items)
+    ]
+
+
 def _metadata(title, description, path):
     return {
         "page_title": title,

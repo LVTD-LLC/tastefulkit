@@ -9,6 +9,7 @@ from django.views.decorators.cache import never_cache
 from apps.catalogue.models import Design
 from apps.catalogue.navigation import discovery_navigation
 from apps.catalogue.services import clean_search_text, visible_designs
+from apps.pages.blog import roundups_for_library
 
 
 def visible_libraries():
@@ -74,6 +75,7 @@ def detail(request, pk):
         {
             "design": design,
             "library": design.ui_library,
+            "comparison_guides": roundups_for_library(design.get_absolute_url()),
             "canonical_url": settings.SITE_URL.rstrip("/") + design.get_absolute_url(),
         },
     )
