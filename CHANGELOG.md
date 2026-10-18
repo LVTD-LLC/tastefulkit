@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-18
+
+- Add a source-pinned animated-list example and selection-versus-activation acceptance card to the coding-agent reference guide, with a contextual link from the React library guide.
+
 ## 2026-10-16
 
 - Link UI library details to published guides that explicitly compare them, helping readers weigh alternatives without leaving the catalogue journey.
