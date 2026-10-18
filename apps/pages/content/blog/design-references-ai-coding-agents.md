@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-15
+updated: 2026-10-18
 ---
 
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
@@ -181,6 +181,47 @@ For a **hypothetical** feedback form, the reference's job might be to keep the e
 For a disappearing message, record the trigger and when the capture was taken; a screenshot after it disappears cannot show whether it was readable. If timing matters, use a short recording or an interaction trace. Playwright's [Trace Viewer documentation](https://playwright.dev/docs/trace-viewer) describes inspecting actions and page snapshots when that tool is already part of your workflow. A screenshot still does not establish keyboard operation or screen-reader behavior; exercise those separately.
 
 Use synthetic test content and keep private routes, credentials, and personal data out of shared screenshots, recordings, and trace files. If the agent cannot open the running page, retain its code review but mark browser checks as unverified. TastefulKit supplies the design references; runtime inspection happens in your own browser or agent tooling.
+
+### A worked motion brief: highlighting is not activation
+
+For an animated reference, specify what moves **and what action it represents**. A moving outline might follow the pointer, show keyboard selection, or confirm a completed action. Those are different promises to give a coding agent.
+
+TastefulKit exercised [React Bits' Animated List](https://reactbits.dev/components/animated-list) in an isolated Chromium page on October 18, 2026, using fictional file names at 390- and 1440-pixel widths. The component source was pinned to [revision d965399](https://github.com/DavidHDev/react-bits/blob/d965399df489c7b8da3874e07d716c0d98ab39fd/src/content/Components/AnimatedList/AnimatedList.jsx). This is one component observation, not a library ranking, performance benchmark, or accessibility certification.
+
+Hovering a row changed its highlighted selection without invoking the supplied action callback. Clicking invoked that callback. With the list focused, an arrow key changed selection and Enter invoked the action. A quick Down, Up, Down sequence settled on the last selected row. The buildable requirement is therefore more precise than “copy the smooth list”: **movement identifies the candidate; explicit activation invokes the supplied action**.
+
+The diagram separates those two states. It is an explanatory sketch, not a screenshot of the component.
+
+<svg viewBox="0 0 400 300" role="img" aria-labelledby="motion-brief-title motion-brief-desc" style="display:block;width:100%;max-width:400px;height:auto;color:inherit" xmlns="http://www.w3.org/2000/svg">
+  <title id="motion-brief-title">A selected file and an invoked action are different states</title>
+  <desc id="motion-brief-desc">Pointer or arrow input highlights Design brief. Click or Enter invokes the supplied action for that file. Changing the highlight alone invokes no action.</desc>
+  <g fill="none" stroke="currentColor" stroke-width="2">
+    <rect x="12" y="34" width="376" height="78" rx="8"/>
+    <rect x="12" y="182" width="376" height="78" rx="8"/>
+    <path d="M200 122V148m-7-10 7 10 7-10"/>
+  </g>
+  <g fill="currentColor" font-family="Inter, system-ui, sans-serif" font-size="18">
+    <text x="24" y="22">Pointer / arrow</text><text x="24" y="170">Click / Enter</text>
+    <text x="24" y="65">Design brief</text><text x="24" y="93">Highlighted; no action invoked</text>
+    <text x="24" y="213">Design brief</text><text x="24" y="241">Supplied action invoked</text>
+    <text x="12" y="290" font-size="16">Selection alone does not invoke an action.</text>
+  </g>
+</svg>
+
+Reduced motion needs its own observation. When the page started with that preference enabled, the selection outline snapped to the next row rather than springing toward it. When the preference changed after mounting, the outline retained the behavior chosen at mount in the tested version; the pinned source reads the preference during setup. Do not generalize this result to another revision or assume that reduced motion means every transition is removed. No screen-reader or touch-device test was performed here.
+
+Turn those observations into an acceptance card for your own implementation:
+
+| Situation | Requirement to give the agent | How to check it |
+| --- | --- | --- |
+| Pointer over a file | Preview selection without opening the file | Hover, then confirm no open action occurred |
+| Keyboard selection | Arrows only select; Enter invokes one action for the highlighted file | Focus the list on Design brief, press ArrowDown, then Enter: only Launch checklist activates |
+| Interrupted movement | The last input determines selection without activating a file | Start on Launch checklist; press ArrowDown, ArrowUp, ArrowDown quickly: Pricing notes remains selected after settling, with no new action |
+| Reduced-motion preference | Snap the outline when enabled, including after an in-session change; preserve selection and invoke no action | Test an initially enabled preference, then enable it in a running normal-motion page and move selection: the outline should snap in both cases |
+
+These are proposed acceptance checks, not a claim that your application already passes. For a file picker, add an explicit requirement that the preference takes effect without losing selection; the observed mount-time behavior would need adaptation to meet that requirement. Choose what “open” means in your product and verify the real destination, rather than treating a callback as a completed task.
+
+Keep the reference revision, test content, observed behavior, and requested adaptation together. Follow the project's [license at that revision](https://github.com/DavidHDev/react-bits/blob/d965399df489c7b8da3874e07d716c0d98ab39fd/LICENSE.md) before reusing code; this guide does not distribute the component. For broader implementation choices, compare the [React UI libraries](/blog/best-react-ui-libraries/), then use the [reference catalogue](/explore/) to choose visual principles, not unverified interaction promises.
 
 ## Give feedback that points to a visible mismatch
 

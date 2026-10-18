@@ -3,7 +3,7 @@ title: "Best React UI Libraries in 2026: 8 Practical Picks"
 description: "Compare React UI libraries by styling, source ownership and component scope. Find the right fit among shadcn/ui, Mantine, MUI, Radix and more."
 author: TastefulKit
 date: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-18
 draft: false
 roundup_items:
   - name: "shadcn/ui"
@@ -142,6 +142,8 @@ Use this acceptance sheet for the prototype:
 5. **Record ownership:** name which package, local component or application function owns each fix.
 
 Reject a candidate if a required interaction is missing or the ownership story is unclear. Do not average a critical failure away with a pleasing color palette. Once a choice works, capture its conventions in the [brief you give a coding agent](/blog/design-references-ai-coding-agents/).
+
+For an animated specialist, write down what selection, activation and interrupted motion should do before copying the effect. The [worked animated-list acceptance card](/blog/design-references-ai-coding-agents/#a-worked-motion-brief-highlighting-is-not-activation) shows how one observed component becomes a testable brief without turning a demo into a library-wide verdict.
 
 ## Common React UI library questions
 
