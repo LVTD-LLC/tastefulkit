@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-19
+
+- Help motion-skill readers prepare concrete review requirements with a contextual link to the existing animated-list acceptance brief.
+
 ## 2026-10-18
 
 - Add a source-pinned animated-list example and selection-versus-activation acceptance card to the coding-agent reference guide, with a contextual link from the React library guide.

@@ -118,6 +118,9 @@ but old application versions do not recognize preserved legacy credentials after
 
 ### Design-focused AI skills
 
+Motion-tagged skill details link to the public worked animated-list review brief,
+helping readers prepare expected states without implying skill certification.
+
 Browse `/ai-skills/` for agent skills covering interface design, accessibility, and
 frontend workflows. Entries include source links, usage notes, compatible agents,
 installation instructions and licensing where confirmed. The directory is public;

@@ -44,6 +44,10 @@
             <p class="tk-description">A skill guides how your agent works; a design reference shows the direction you want. Choose an example for a specific job, such as the headline hierarchy or form layout, and keep your project's existing design rules explicit.</p>
             <p class="tk-description">Start with <a class="underline underline-offset-4" href="{% url 'library' %}">design references you can inspect</a>, then use our <a class="underline underline-offset-4"
     href="{% url 'blog_post' slug='design-references-ai-coding-agents' %}#choose-the-skill-reference-and-components-separately">guide to briefing an AI coding agent</a> to turn observations into requirements. If you need implementation components, compare <a class="underline underline-offset-4" href="{% url 'ui_libraries' %}">UI libraries for your stack</a>.</p>
+            {% if "motion" in skill.tags %}
+                <p class="tk-description">Reviewing motion? Use the <a class="underline underline-offset-4"
+    href="{% url 'blog_post' slug='design-references-ai-coding-agents' %}#a-worked-motion-brief-highlighting-is-not-activation">worked animated-list review brief</a> to separate selection from activation and specify interruption and reduced-motion checks. Bring your component code and expected states to the review; the example is not a certification of this skill.</p>
+            {% endif %}
             <p class="tk-muted">These pages are public. Browsing a skill does not install it, and TastefulKit's design-reference MCP tools do not search the AI-skill directory.</p>
         </section>
     </div>
