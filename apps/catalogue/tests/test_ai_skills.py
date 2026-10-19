@@ -83,6 +83,18 @@ def test_skill_content_escaped_and_never_executed(client, user):
     html = client.get(item["url"]).content.decode()
     assert "<script>alert(1)</script>" not in html
     assert "&lt;script&gt;" in html and "echo &lt;unsafe&gt;" in html
+    motion_brief = (
+        "/blog/design-references-ai-coding-agents/"
+        "#a-worked-motion-brief-highlighting-is-not-activation"
+    )
+    assert motion_brief not in html
+    from apps.catalogue.models import AISkill
+
+    AISkill.objects.filter(pk=item["id"]).update(tags=["motion", "animation-review"])
+    motion_html = client.get(item["url"]).content.decode()
+    assert motion_brief in motion_html
+    assert "not a certification of this skill" in motion_html
+    assert "&lt;script&gt;" in motion_html and "echo &lt;unsafe&gt;" in motion_html
 
 
 def test_nonvisual_navigation(client):
