@@ -3,7 +3,7 @@ title: "Best Svelte UI Libraries in 2026: 5 Practical Picks"
 description: "Compare shadcn-svelte, Bits UI, Skeleton, Melt UI and Svelte UX, plus form and toast specialists. Choose by styling ownership and version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-20
 draft: false
 roundup_items:
   - name: "shadcn-svelte"
@@ -26,11 +26,11 @@ This guide selects five broad options already in TastefulKit, then separates two
 
 | Library | Choose it for | Main responsibility you keep |
 | --- | --- | --- |
-| shadcn-svelte | Styled components with editable source | Maintaining local presentation changes |
-| Bits UI | Headless Svelte components | Designing and styling the finished controls |
-| Skeleton | A coordinated theme and visual foundation | Adopting its Tailwind conventions |
-| Melt UI | Behavior attached to your own markup | Assembling and validating the interface |
-| Svelte UX | Interactive application components and utilities | Selecting compatible Svelte and Tailwind tracks |
+| [shadcn-svelte](/ui-libraries/206078e2-1c92-45cd-8b55-a7dbaeccd9a1/) | Styled components with editable source | Maintaining local presentation changes |
+| [Bits UI](/ui-libraries/5f847b54-9916-4849-bb31-435fd0d48b49/) | Headless Svelte components | Designing and styling the finished controls |
+| [Skeleton](/ui-libraries/38c10beb-ed6d-4de9-9c64-2a86d7117559/) | A coordinated theme and visual foundation | Adopting its Tailwind conventions |
+| [Melt UI](/ui-libraries/8526ce95-14af-4835-9191-b4e5546196d6/) | Behavior attached to your own markup | Assembling and validating the interface |
+| [Svelte UX](/ui-libraries/2fa251f2-45d9-4701-8fdb-9dc83b4178bd/) | Interactive application components and utilities | Selecting compatible Svelte and Tailwind tracks |
 
 **Start with two, not five.** Compare shadcn-svelte and Skeleton when you want visual defaults. Compare Bits UI and Melt UI when your visual system already exists. Investigate Svelte UX when the application needs a broader collection of interactive building blocks and utilities.
 

@@ -3,7 +3,7 @@ title: "6 Best Vue UI Libraries in 2026: Choose by Workflow"
 description: "Compare Nuxt UI, Vuetify, Element Plus, Naive UI, shadcn-vue and Reka UI by styling ownership, app requirements and Vue version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-20
 draft: false
 roundup_items:
   - name: "Nuxt UI"
@@ -30,12 +30,12 @@ This guide compares six Vue options already represented in TastefulKit. The reco
 
 | Library | Best starting point for | What you take responsibility for |
 | --- | --- | --- |
-| Nuxt UI | A coordinated Nuxt or Vue application | Build integration and theme configuration |
-| Vuetify | An app that welcomes an opinionated visual system | Working within that system and its version-specific APIs |
-| Element Plus | Form-heavy administrative workflows | Application styling and complex business interactions |
-| Naive UI | Vue 3 teams wanting typed theme overrides | Theme configuration and application composition |
-| shadcn-vue | Teams that want editable component source | Local changes and upstream reconciliation |
-| Reka UI | A distinctive in-house design system | Styling, component assembly and integration testing |
+| [Nuxt UI](/ui-libraries/db651335-4e35-4614-a821-a1b39293bdc7/) | A coordinated Nuxt or Vue application | Build integration and theme configuration |
+| [Vuetify](/ui-libraries/587e6e40-a780-4fbb-b5ee-11536517a74a/) | An app that welcomes an opinionated visual system | Working within that system and its version-specific APIs |
+| [Element Plus](/ui-libraries/4565a7ec-b1ae-456e-83db-cda5d5fd10ed/) | Form-heavy administrative workflows | Application styling and complex business interactions |
+| [Naive UI](/ui-libraries/d5bdabb5-0af2-4c80-9a24-079a7f3ede3c/) | Vue 3 teams wanting typed theme overrides | Theme configuration and application composition |
+| [shadcn-vue](/ui-libraries/0ec02d9e-28d3-43f5-8e72-32d328321d75/) | Teams that want editable component source | Local changes and upstream reconciliation |
+| [Reka UI](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/) | A distinctive in-house design system | Styling, component assembly and integration testing |
 
 **Our default shortlist:** Nuxt UI versus Naive UI when you want supplied presentation; shadcn-vue versus Reka UI when owning the visual layer is central. Add Vuetify or Element Plus when their existing component model fits your application's recurring screens.
 

@@ -3,7 +3,7 @@ title: "Best Headless UI Libraries in 2026: 8 Practical Picks"
 description: "Compare eight headless UI libraries by framework, component needs, styling ownership, and integration tradeoffs for your next design system."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-20
 draft: false
 roundup_items:
   - name: "Radix Primitives"
@@ -32,14 +32,14 @@ These are starting points, not a universal ranking. A library with an excellent 
 
 | Library | Framework fit | Best reason to shortlist | Main decision to resolve |
 | --- | --- | --- | --- |
-| Radix Primitives | React | Compose custom controls incrementally | Whether its component coverage matches your product |
-| React Aria | React | Internationalized, complex application controls | Comfort with its composition model |
-| Base UI | React | Own the styling and primitive wrappers | Overlay setup and application integration |
-| Headless UI | React, Vue | Familiar unstyled controls in Tailwind-oriented teams | Framework-specific API and component differences |
-| Ark UI | React, Vue, Svelte, Solid | A shared component approach across frameworks | Adapter/version details for each application |
-| Reka UI | Vue | Vue-native primitive composition | Maintaining your own visual system |
-| Bits UI | Svelte | Custom Svelte interfaces without a supplied theme | Compatibility with your Svelte version |
-| Kobalte | SolidJS | Low-level controls designed for Solid | Required controls and Solid integration |
+| [Radix Primitives](/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/) | React | Compose custom controls incrementally | Whether its component coverage matches your product |
+| [React Aria](/ui-libraries/7010f654-5d70-41bd-8146-67d5199dfc7d/) | React | Internationalized, complex application controls | Comfort with its composition model |
+| [Base UI](/ui-libraries/37a259c9-3a89-4a31-b701-ce22b66bcf46/) | React | Own the styling and primitive wrappers | Overlay setup and application integration |
+| [Headless UI](/ui-libraries/11501345-2581-4748-85c8-c826829aea4e/) | React, Vue | Familiar unstyled controls in Tailwind-oriented teams | Framework-specific API and component differences |
+| [Ark UI](/ui-libraries/95d5c77f-770e-4ca1-b921-ae8671f4bdcf/) | React, Vue, Svelte, Solid | A shared component approach across frameworks | Adapter/version details for each application |
+| [Reka UI](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/) | Vue | Vue-native primitive composition | Maintaining your own visual system |
+| [Bits UI](/ui-libraries/5f847b54-9916-4849-bb31-435fd0d48b49/) | Svelte | Custom Svelte interfaces without a supplied theme | Compatibility with your Svelte version |
+| [Kobalte](/ui-libraries/da0b52d3-614b-45a9-bf47-34c3078bb159/) | SolidJS | Low-level controls designed for Solid | Required controls and Solid integration |
 
 All eight have entries in the [TastefulKit UI library collection](/ui-libraries/). Framework-specific alternatives, including styled kits, are covered in our [React](/blog/best-react-ui-libraries/), [Vue](/blog/best-vue-ui-libraries/), and [Svelte UI library guides](/blog/best-svelte-ui-libraries/).
 
