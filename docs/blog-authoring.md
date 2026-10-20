@@ -50,6 +50,10 @@ Keep that list aligned with the visible recommendations. Draft, future-dated and
 invalid guides are excluded; libraries absent from the lists show no comparison
 section.
 
+In comparison tables, link each recommended library name to its matching public
+reference from `roundup_items`. Readers should be able to inspect a candidate
+directly from the shortlist; keep the descriptive comparison cells unchanged.
+
 The template supplies the H1. Use `##` and `###` headings in the body; these build
 a server-rendered, keyboard-accessible table of contents. Fenced code and tables
 are supported. Write concise paragraphs and descriptive link labels. Include

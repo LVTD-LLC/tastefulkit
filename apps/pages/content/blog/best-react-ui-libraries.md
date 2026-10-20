@@ -3,7 +3,7 @@ title: "Best React UI Libraries in 2026: 8 Practical Picks"
 description: "Compare React UI libraries by styling, source ownership and component scope. Find the right fit among shadcn/ui, Mantine, MUI, Radix and more."
 author: TastefulKit
 date: 2026-10-13
-updated: 2026-10-18
+updated: 2026-10-20
 draft: false
 roundup_items:
   - name: "shadcn/ui"
@@ -34,14 +34,14 @@ This shortlist covers eight libraries already represented in [TastefulKit's UI l
 
 | Library | Start here when | Main commitment |
 | --- | --- | --- |
-| shadcn/ui | You want styled components you can edit | Maintain your local component layer |
-| Mantine | You need varied application controls | Adopt its component and theme conventions |
-| Material UI | Material Design fits the product | Separate core needs from MUI X features |
-| Chakra UI | You want styled, composable application UI | Learn its styling and provider setup |
-| HeroUI | Tailwind-based defaults fit your stack | Match the correct major-version docs |
-| Radix Themes | You want a coherent preset visual system | Work within the theme's design vocabulary |
-| Radix Primitives | You need custom styling and composed controls | Design and maintain the visual layer |
-| React Aria | Detailed interaction and localization matter | Build presentation around unstyled behavior |
+| [shadcn/ui](/ui-libraries/ba3ccc47-1f8e-4089-bcdc-6827f4581555/) | You want styled components you can edit | Maintain your local component layer |
+| [Mantine](/ui-libraries/04fc04d7-80d6-4339-94d0-859c9e6eb062/) | You need varied application controls | Adopt its component and theme conventions |
+| [Material UI](/ui-libraries/e67d952d-4b33-433d-aa4c-f140d9cc755b/) | Material Design fits the product | Separate core needs from MUI X features |
+| [Chakra UI](/ui-libraries/4693dc1d-550f-47ad-9e5f-c99e11ea59c9/) | You want styled, composable application UI | Learn its styling and provider setup |
+| [HeroUI](/ui-libraries/3c8338bc-135f-43da-bb42-816c45c1c2c2/) | Tailwind-based defaults fit your stack | Match the correct major-version docs |
+| [Radix Themes](/ui-libraries/c819894c-ece5-4ca6-91b5-0e861027f18b/) | You want a coherent preset visual system | Work within the theme's design vocabulary |
+| [Radix Primitives](/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/) | You need custom styling and composed controls | Design and maintain the visual layer |
+| [React Aria](/ui-libraries/7010f654-5d70-41bd-8146-67d5199dfc7d/) | Detailed interaction and localization matter | Build presentation around unstyled behavior |
 
 If your application uses another framework, start with the [Vue library guide](/blog/best-vue-ui-libraries/) or [Svelte library guide](/blog/best-svelte-ui-libraries/). A familiar-looking component API does not make a React dependency compatible with either.
 

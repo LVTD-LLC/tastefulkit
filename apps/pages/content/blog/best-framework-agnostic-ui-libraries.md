@@ -3,7 +3,7 @@ title: "Best Framework-Agnostic UI Libraries in 2026"
 description: "Compare Bootstrap, Bulma, UIkit, Basecoat, and Oat for HTML-first sites, with clear styling, JavaScript, and integration tradeoffs."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-13
+updated: 2026-10-20
 draft: false
 roundup_items:
   - name: "Bootstrap"
@@ -28,11 +28,11 @@ Compare who owns the behavior. Bulma supplies no JavaScript; other options inclu
 
 | Library | Starting point | Best fit | Main tradeoff |
 | --- | --- | --- | --- |
-| Bootstrap | Styled HTML plus JavaScript plugins | Conventional forms and application layouts | Choose stable versus prerelease docs deliberately |
-| Bulma | CSS classes, no included JavaScript | Teams that already own interactive behavior | Menus and dialogs need additional behavior work |
-| UIkit | HTML markup with CSS and JavaScript | A coordinated set of page components | Adopt and maintain its markup conventions |
-| Basecoat | CSS components with selective JavaScript | Server-rendered products seeking a shadcn-like look | Stylesheet order and dynamic component lifecycle |
-| Oat | Semantic HTML with selected dynamic controls | Small internal tools and straightforward interfaces | Global styling and pre-v1 change risk |
+| [Bootstrap](/ui-libraries/b1d52efe-d8fa-4bfd-8684-224fdff896ab/) | Styled HTML plus JavaScript plugins | Conventional forms and application layouts | Choose stable versus prerelease docs deliberately |
+| [Bulma](/ui-libraries/9e34d7d0-8515-4f7d-b9aa-f2000ccf74c6/) | CSS classes, no included JavaScript | Teams that already own interactive behavior | Menus and dialogs need additional behavior work |
+| [UIkit](/ui-libraries/4fc3de78-6506-4fa4-9b38-bafd1fe0829a/) | HTML markup with CSS and JavaScript | A coordinated set of page components | Adopt and maintain its markup conventions |
+| [Basecoat](/ui-libraries/b64cde4a-c071-4530-bfe4-3e701fc0b398/) | CSS components with selective JavaScript | Server-rendered products seeking a shadcn-like look | Stylesheet order and dynamic component lifecycle |
+| [Oat](/ui-libraries/4e130820-5001-493b-83d4-b7bfff2d9e76/) | Semantic HTML with selected dynamic controls | Small internal tools and straightforward interfaces | Global styling and pre-v1 change risk |
 
 Explore their screenshots and notes in the [TastefulKit UI library collection](/ui-libraries/). If you actually need framework-native components, use the separate guides to [React](/blog/best-react-ui-libraries/), [Vue](/blog/best-vue-ui-libraries/), or [Svelte UI libraries](/blog/best-svelte-ui-libraries/).
 

@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-20
+
+- Link library names in the five UI-library comparison tables directly to their public visual references, so readers can inspect a shortlist without hunting through the article.
+
 ## 2026-10-19
 
 - Help motion-skill readers prepare concrete review requirements with a contextual link to the existing animated-list acceptance brief.
