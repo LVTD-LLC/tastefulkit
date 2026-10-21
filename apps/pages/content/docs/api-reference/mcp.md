@@ -70,6 +70,48 @@ Free accounts can use every tool. `get_design` includes available DESIGN.md text
 A missing guide returns `design_markdown: null`; `design_markdown_locked` is
 always `false`. No subscription is required.
 
+## Find and inspect your first reference
+
+Once connected, give the assistant a small task before asking it to build a page.
+For example:
+
+```text
+Use TastefulKit to find warm, minimal landing-page references for a tutor-booking
+product. Do not write code yet.
+
+1. Search with search_designs: q="warm minimal landing page",
+   kind="landing_page", page=1. Shortlist up to three relevant results;
+   explain what each could contribute rather than combining whole layouts.
+2. Show each result's title, source_url, viewport_width and captured_at.
+   Keep its id so we can retrieve it again. Do not assume a desktop capture
+   proves mobile behavior.
+3. Call get_design for the strongest candidate. Inspect its screenshot if
+   you can open images, and read design_markdown if it is present.
+4. Return a short brief: what to borrow, what our content needs to change,
+   and what still needs checking on the live site. Separate visible
+   observations from inferred values. Stop for my reference choice.
+```
+
+The expected result is a shortlist and a reference brief, not a finished website.
+The tutor-booking product is a hypothetical example; replace it with your own
+audience, task and visual direction. Search results change as the library grows,
+and not every result will suit the brief.
+
+If the search is too broad, refine the description or use `get_design_filters`
+to discover exact tags and industries before filtering. If it returns no results,
+remove filters or simplify the query. Check `search_mode` to see whether the
+response used semantic search or the text fallback.
+
+If `design_markdown` is `null`, work from the screenshot and metadata instead;
+do not invent a guide. Treat available guides as reference interpretations, not a
+measured copy of the original site's source. If the assistant cannot open images,
+ask it to mark the screenshot **not inspected**, rather than describe it from
+metadata alone. You can [inspect the public reference yourself](/explore/).
+
+Use the [visual search guide](/docs/using-tastefulkit/search/) to refine your
+shortlist, then turn the selected reference into
+[a buildable handoff with explicit acceptance criteria](/blog/design-references-ai-coding-agents/).
+
 ## Use screenshot references
 
 Ask your assistant to retrieve a design's screenshot and inspect it before implementing
