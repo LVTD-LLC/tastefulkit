@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-21
+
+- Add a copyable first-reference workflow to the hosted MCP guide, taking users from search to screenshot inspection and a buildable brief, with explicit handling for missing guides and uninspected images.
+
 ## 2026-10-20
 
 - Link library names in the five UI-library comparison tables directly to their public visual references, so readers can inspect a shortlist without hunting through the article.
