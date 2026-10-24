@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-24
+
+- Expand the Svelte UI-library selection guide with a reproducible dialog/form ownership exercise, a themed structure diagram and explicit checks for submitted values and rejected bookings.
+
 ## 2026-10-21
 
 - Add a copyable first-reference workflow to the hosted MCP guide, taking users from search to screenshot inspection and a buildable brief, with explicit handling for missing guides and uninspected images.

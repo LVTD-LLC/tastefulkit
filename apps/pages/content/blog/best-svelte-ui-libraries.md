@@ -3,7 +3,7 @@ title: "Best Svelte UI Libraries in 2026: 5 Practical Picks"
 description: "Compare shadcn-svelte, Bits UI, Skeleton, Melt UI and Svelte UX, plus form and toast specialists. Choose by styling ownership and version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-20
+updated: 2026-10-24
 draft: false
 roundup_items:
   - name: "shadcn-svelte"
@@ -20,7 +20,7 @@ roundup_items:
 
 For a Svelte application that needs presentable defaults you can edit, start with **shadcn-svelte**. For an original design system, start with **Bits UI**. For a theme-led visual foundation, consider **Skeleton**. **Melt UI** and **Svelte UX** answer different questions about markup control and interactive application tooling.
 
-This guide selects five broad options already in TastefulKit, then separates two useful specialists: Formsnap for form composition and Svelte Sonner for toast notifications. Recommendations are editorial assessments from official documentation and catalogue review on **October 13, 2026**. We did not run application integrations, performance benchmarks or independent accessibility audits for this article.
+This guide selects five broad options already in TastefulKit, then separates two useful specialists: Formsnap for form composition and Svelte Sonner for toast notifications. Recommendations are editorial assessments from official documentation and catalogue review on **October 13, 2026**. We did not run production integrations, performance benchmarks or independent accessibility audits. The form-ownership exercise below adds a bounded synthetic browser check from October 24, 2026; it does not change the five-library recommendations.
 
 ## The shortlist by responsibility
 
@@ -125,6 +125,67 @@ Now define acceptance checks. A keyboard user must reach each field, understand 
 Assess Formsnap separately if repeated form wiring is the hard part. Add a toast only if it supplements persistent feedback. Neither specialist should determine the overall visual system.
 
 Record the decision in three sentences: what the chosen library owns, what your application owns, and which exception you accept. For example: “We own local component styling. The underlying primitives supply interaction behavior. We will review upstream presentation changes before merging them.”
+
+### Test the dialog's form boundary before choosing its styling
+
+For the booking scenario, compare **where the fields submit**, not only how the
+open dialog looks. A portal moves content elsewhere in the rendered document;
+component nesting alone does not prove that an input belongs to its surrounding
+HTML form. Bits UI's [dialog form guidance](https://www.bits-ui.com/docs/components/dialog#working-with-forms)
+explicitly calls out this boundary.
+
+TastefulKit checked a synthetic booking dialog in Chromium on October 24, 2026,
+using **Svelte 5.57.2 and Bits UI 2.20.2**. With the form outside the default
+portal, the customer input and the select's hidden input had no form owner, and
+explicitly constructing `FormData` from the outer form captured no fields. Moving the form inside the dialog
+content included both values. This reproduces a composition mistake, not a
+Bits UI defect or evidence that another library is better.
+
+The diagram shows the failing arrangement and the arrangement used for this
+exercise. Boxes describe rendered document structure, not Svelte source nesting.
+
+<svg viewBox="0 0 400 300" role="img" aria-labelledby="svelte-form-title svelte-form-desc" style="display:block;width:100%;max-width:400px;height:auto;color:inherit" xmlns="http://www.w3.org/2000/svg">
+<title id="svelte-form-title">TastefulKit's dialog form ownership exercise</title>
+<desc id="svelte-form-desc">In the failing arrangement the outer form and portalled fields are siblings. In the checked arrangement the dialog contains the form, which contains its fields.</desc>
+<g fill="none" stroke="currentColor" stroke-width="1.5">
+<rect x="8" y="32" width="384" height="94" rx="8"/>
+<rect x="24" y="65" width="140" height="42" rx="4"/>
+<rect x="186" y="65" width="190" height="42" rx="4"/>
+<rect x="8" y="170" width="384" height="120" rx="8"/>
+<rect x="24" y="203" width="352" height="69" rx="4"/>
+<rect x="40" y="232" width="320" height="26" rx="4"/>
+</g>
+<g fill="currentColor" font-size="14">
+<text x="12" y="20">Failing: fields outside their form</text>
+<text x="24" y="54">Document body</text>
+<text x="36" y="91">Outer form</text>
+<text x="198" y="91">Dialog → fields</text>
+<text x="12" y="157">Checked: form inside the dialog</text>
+<text x="24" y="192">Dialog content</text>
+<text x="36" y="224">Form</text>
+<text x="52" y="250">Customer + service fields</text>
+</g>
+</svg>
+
+Use the [reproducible specimen](https://github.com/LVTD-LLC/tastefulkit/tree/main/docs/examples/svelte-dialog-form)
+to understand this boundary, then apply the same checks to each shortlisted
+candidate in your own app:
+
+1. Select a service and inspect the submitted field names and values. A selected
+   label is not submission evidence. Bits UI's [Select API](https://www.bits-ui.com/docs/components/select#selectroot)
+   documents the `name` property that creates its hidden submission input.
+2. Simulate the appointment becoming unavailable. Keep the dialog open, retain
+   the entered details and show a persistent explanation. The specimen simulates
+   this response locally; it does not contact a booking server.
+3. Cancel and check where keyboard focus returns. Repeat with a nested dropdown
+   open, long error text and your target phone width; those additional states
+   still need testing in your implementation.
+
+For this specimen, the inside-form arrangement retained the customer details
+and displayed the simulated rejection; cancelling returned focus to its trigger.
+It is not a screen-reader audit, a server-validation test or a comparison of all
+five libraries. Choose the candidate whose form composition your team can
+explain and maintain, then judge its visual fit against the public references.
 
 ## Common Svelte UI questions
 
