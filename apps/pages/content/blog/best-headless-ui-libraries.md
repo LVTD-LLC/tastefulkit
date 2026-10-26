@@ -3,7 +3,7 @@ title: "Best Headless UI Libraries in 2026: 8 Practical Picks"
 description: "Compare eight headless UI libraries by framework, component needs, styling ownership, and integration tradeoffs for your next design system."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-20
+updated: 2026-10-26
 draft: false
 roundup_items:
   - name: "Radix Primitives"
@@ -147,6 +147,36 @@ Build the same narrow slice for the finalists. Record what the library provides,
 
 The output should be a short decision record: selected library, exact package version, reasons, known gaps, and the person responsible for local wrappers. That is more useful than a weighted score invented without integration evidence.
 
+## Check the submitted date, not just the calendar
+
+A booking day and an appointment time need different value contracts, even when their date fields look identical. Before choosing a headless library, inspect what the form sends. A locale change should not silently turn a calendar date into an instant or discard an appointment's time zone.
+
+TastefulKit's [reproducible date specimen](https://github.com/LVTD-LLC/tastefulkit/tree/main/docs/examples/headless-date-contract) uses React Aria Components 1.22.1 and `@internationalized/date` 3.12.4. It gives two named date pickers the same day-only display setting: one starts with a calendar date, the other with a zoned appointment. The [official DatePicker reference](https://react-aria.adobe.com/DatePicker) documents display granularity separately from the date value and form submission.
+
+<svg viewBox="0 0 400 270" role="img" aria-labelledby="headless-date-title headless-date-desc" style="display:block;width:100%;max-width:400px;height:auto;color:inherit" xmlns="http://www.w3.org/2000/svg">
+<title id="headless-date-title">TastefulKit's date display and submission exercise</title>
+<desc id="headless-date-desc">Both fields display November 5, 2026. A calendar date submits only a date. A zoned appointment retains its time and zone despite the day-only display. Switching display locale does not change either submitted value in this specimen.</desc>
+<rect x="10" y="10" width="380" height="100" rx="12" fill="none" stroke="currentColor"/>
+<text x="26" y="36" fill="currentColor" font-size="16" font-weight="600">Booking day: 11/5/2026</text>
+<text x="26" y="63" fill="currentColor" font-size="15">Calendar date → date-only payload</text>
+<text x="26" y="90" fill="currentColor" font-size="16">2026-11-05</text>
+<rect x="10" y="124" width="380" height="100" rx="12" fill="none" stroke="currentColor"/>
+<text x="26" y="150" fill="currentColor" font-size="16" font-weight="600">Appointment: 11/5/2026</text>
+<text x="26" y="177" fill="currentColor" font-size="15">Zoned value → date + time + zone</text>
+<text x="26" y="204" fill="currentColor" font-size="15">09:30 still travels with the value</text>
+<text x="12" y="253" fill="currentColor" font-size="14">Same appearance does not mean the same contract.</text>
+</svg>
+
+In this synthetic Chromium check on October 26, both fields displayed `11/5/2026` under US English and `05/11/2026` under UK English. Capturing the form produced `booking_day: 2026-11-05`, but `appointment: 2026-11-05T09:30:00-08:00[America/Los_Angeles]`. Both payloads stayed unchanged when switching locale and when repeating the check with the browser time zone set to Los Angeles or Tokyo. Day-only display did **not** remove the appointment's time.
+
+Repeat that check with your finalist and write down the expected payload first:
+
+1. Decide whether the task needs a calendar date, a local date and time, or an appointment in a named time zone. Give the field a name and capture the actual form data.
+2. Change between two supported display locales. Confirm that the label and date segments make sense while the submitted value keeps its intended meaning.
+3. If time matters, show it for confirmation. Do not hide an inherited appointment time behind a date-only control and assume the customer approved it.
+
+This specimen demonstrates one composition, not a library ranking, daylight-saving test, backend-validation check, or accessibility audit. Clear and invalid input still need their own acceptance cases. [Inspect the React Aria visual reference](/ui-libraries/7010f654-5d70-41bd-8146-67d5199dfc7d/) for styling direction; use the running specimen to evaluate the data boundary that a screenshot cannot show.
+
 ## Define what your wrapper layer promises
 
 Before adding components across the product, agree on a small acceptance contract for the wrappers your team will own. A field should specify how labels, descriptions, errors, disabled state, and required state appear together. An overlay should specify its opening trigger, initial focus, dismissal rules, and focus destination after closing. Write those decisions in application language rather than simply copying library property names.
@@ -171,6 +201,6 @@ They can, but give each interaction a clear owner. Avoid casually mixing overlap
 
 ## How we selected these libraries
 
-This guide covers eight existing TastefulKit catalogue entries, with official documentation reviewed on October 13, 2026. Selection emphasizes framework fit, styling ownership, component purpose, and integration tradeoffs. We did not benchmark runtime performance, conduct a full accessibility audit, or build the illustrative application. Recommendations are editorial judgments, not measured winners.
+This guide covers eight existing TastefulKit catalogue entries, with official documentation reviewed on October 13, 2026. Selection emphasizes framework fit, styling ownership, component purpose, and integration tradeoffs. The separate date-submission specimen was checked on October 26; the complete illustrative booking application was not built. We did not benchmark runtime performance or conduct a full accessibility audit. Recommendations are editorial judgments, not measured winners.
 
 Next, [browse the UI library collection](/ui-libraries/) and shortlist two candidates. Pair the technical choice with a few visual references, then use our [guide to design references for AI coding agents](/blog/design-references-ai-coding-agents/) to explain the intended result. A reference helps communicate appearance; it does not provide reusable source code or permission to copy third-party assets.

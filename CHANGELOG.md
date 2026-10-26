@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-26
+
+- Add a reproducible date/locale submission exercise to the headless UI-library guide, showing why matching calendar displays can carry different values.
+
 ## 2026-10-24
 
 - Expand the Svelte UI-library selection guide with a reproducible dialog/form ownership exercise, a themed structure diagram and explicit checks for submitted values and rejected bookings.
