@@ -3,7 +3,7 @@ title: "Best Headless UI Libraries in 2026: 8 Practical Picks"
 description: "Compare eight headless UI libraries by framework, component needs, styling ownership, and integration tradeoffs for your next design system."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-26
+updated: 2026-10-27
 draft: false
 roundup_items:
   - name: "Radix Primitives"
@@ -147,6 +147,26 @@ Build the same narrow slice for the finalists. Record what the library provides,
 
 The output should be a short decision record: selected library, exact package version, reasons, known gaps, and the person responsible for local wrappers. That is more useful than a weighted score invented without integration evidence.
 
+## Radix or React Aria: define what search means
+
+**Start with Radix Select for a fixed choice with typeahead. Evaluate React Aria ComboBox when the field needs editable text that filters suggestions.** Those are different requirements, even if both mockups show a dropdown.
+
+The [Radix Select documentation](https://www.radix-ui.com/primitives/docs/components/select) describes a button-triggered choice with typeahead. Do not treat that feature as a promise of a search input or a filtered result list. The [WAI-ARIA combobox pattern](https://www.w3.org/WAI/ARIA/apg/patterns/combobox/) explicitly distinguishes select-only controls from editable ones; the word “combobox” alone does not settle the choice.
+
+For the booking form, write the interaction before choosing its visual reference:
+
+| Required behavior | Starting point | Decision to record |
+| --- | --- | --- |
+| Choose one location from a fixed list, with keyboard typeahead | Radix Select | Whether jumping to a matching option is enough |
+| Edit a query and narrow location suggestions | React Aria ComboBox | How input text becomes a committed location |
+| Accept a location absent from the suggestions | An explicitly configured custom-value flow | Whether the application accepts free text at all |
+
+[React Aria's ComboBox reference](https://react-aria.adobe.com/ComboBox) documents input text separately from the selected item, filtering, and an opt-in custom-value mode. Match examples to your installed version. A textbox containing a location name is not sufficient evidence that the application has selected that location's identifier.
+
+Use a concrete acceptance case: select Paris, type an unmatched location, then leave the field. Decide whether your application should restore Paris, clear the selection, or accept free text. Record the visible text **and** the submitted value, stating whether the server expects a location identifier or permits free text. Repeat after clearing the input. These are proposed application checks, not results of a TastefulKit runtime comparison or an accessibility certification.
+
+Inspect the [Radix visual reference](/ui-libraries/2660004d-908a-4a59-bc17-05b591d2704f/) and [React Aria visual reference](/ui-libraries/7010f654-5d70-41bd-8146-67d5199dfc7d/) after choosing the interaction. A team can retain Radix for existing overlays and evaluate a separate combobox implementation; selecting a different field does not require replacing the whole design system.
+
 ## Check the submitted date, not just the calendar
 
 A booking day and an appointment time need different value contracts, even when their date fields look identical. Before choosing a headless library, inspect what the form sends. A locale change should not silently turn a calendar date into an instant or discard an appointment's time zone.
@@ -202,5 +222,8 @@ They can, but give each interaction a clear owner. Avoid casually mixing overlap
 ## How we selected these libraries
 
 This guide covers eight existing TastefulKit catalogue entries, with official documentation reviewed on October 13, 2026. Selection emphasizes framework fit, styling ownership, component purpose, and integration tradeoffs. The separate date-submission specimen was checked on October 26; the complete illustrative booking application was not built. We did not benchmark runtime performance or conduct a full accessibility audit. Recommendations are editorial judgments, not measured winners.
+
+
+The search/selection distinction was checked against the linked Radix, React Aria, and WAI-ARIA documentation on October 27, 2026. It does not extend the original library-wide fact review or the October 26 date specimen into a runtime comparison.
 
 Next, [browse the UI library collection](/ui-libraries/) and shortlist two candidates. Pair the technical choice with a few visual references, then use our [guide to design references for AI coding agents](/blog/design-references-ai-coding-agents/) to explain the intended result. A reference helps communicate appearance; it does not provide reusable source code or permission to copy third-party assets.
