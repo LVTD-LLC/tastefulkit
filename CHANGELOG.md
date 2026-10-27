@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-27
+
+- Clarify typeahead versus editable search in the headless UI-library guide, with a source-backed Radix/React Aria decision table and explicit text-versus-submitted-value checks.
+
 ## 2026-10-26
 
 - Add a reproducible date/locale submission exercise to the headless UI-library guide, showing why matching calendar displays can carry different values.
