@@ -3,7 +3,7 @@ title: "Best Framework-Agnostic UI Libraries in 2026"
 description: "Compare Bootstrap, Bulma, UIkit, Basecoat, and Oat for HTML-first sites, with clear styling, JavaScript, and integration tradeoffs."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-20
+updated: 2026-10-28
 draft: false
 roundup_items:
   - name: "Bootstrap"
@@ -21,6 +21,8 @@ roundup_items:
 You do not need to adopt React to give a server-rendered application a coherent interface. The best framework-agnostic UI libraries let you start with HTML, then add styling and behavior at the level the product needs.
 
 Our shortlist is **Bootstrap for conventional application scaffolding**, **Bulma for a CSS-only styling layer**, **UIkit for an HTML-oriented component toolkit**, **Basecoat for a shadcn-like visual vocabulary without React**, and **Oat for semantic HTML in smaller tools**.
+
+The five-library recommendations were checked on October 13, 2026. The form-submission examples below were checked separately on October 28; they do not change the shortlist.
 
 Compare who owns the behavior. Bulma supplies no JavaScript; other options include scripts for selected interactions. None makes integration automatic.
 
@@ -110,7 +112,7 @@ For additional styling options beyond this shortlist, BrowseAwesome's [CSS resou
 
 ## A worked decision: refreshing a server-rendered support portal
 
-Suppose a support portal already renders HTML on the server. It needs a ticket list, status filters, a reply form, and a confirmation before closing a ticket. The team wants to keep server validation and ordinary form submissions. This is a hypothetical selection exercise, not a claim that we built or tested the portal with each library.
+Suppose a support portal already renders HTML on the server. It needs a ticket list, status filters, editable ticket labels, a reply form, and a confirmation before closing a ticket. The team wants to keep server validation and ordinary form submissions. This is a hypothetical selection exercise, not a claim that we built or tested the portal with each library.
 
 ### First, separate appearance from behavior
 
@@ -118,10 +120,10 @@ Write a short inventory before reviewing demos:
 
 - **Styling:** page spacing, headings, status badges, input appearance, and an error summary.
 - **Native behavior:** links, submit buttons, and the standard form submission path.
-- **Enhanced behavior:** a filter panel that expands and a confirmation dialog.
+- **Enhanced behavior:** a filter panel that expands, a confirmation dialog, and ticket-label editing if native fields do not meet the task.
 - **Lifecycle:** the ticket list may be replaced after a filter request.
 
-This reveals a smaller problem than “choose the best frontend stack.” Most of the interface needs consistent styling. Only two interactions need a behavior decision, and one section has a dynamic lifecycle.
+This reveals a smaller problem than “choose the best frontend stack.” Most of the interface needs consistent styling. Only a small number of interactions need a behavior decision, and one section has a dynamic lifecycle.
 
 ### Then choose two candidates with different ownership models
 
@@ -134,6 +136,26 @@ Bootstrap becomes a reasonable substitute when familiar conventions are more imp
 Build one ticket-detail page for each finalist. Submit an invalid reply, correct it, expand the filter panel, open and cancel confirmation, and revisit the page through the application's real navigation.
 
 Record whether existing styles conflict, whether inserted content initializes correctly, and whether repeated visits create duplicate behavior. Check focus after errors and after closing the dialog. Decide once you understand the remaining work and who maintains it.
+
+## Check what the form sends, not just how it looks
+
+Choose a control's submission path before choosing its styling. A native form field, a JavaScript-enhanced widget, and a custom HTML element can look similar while exposing different values to your server.
+
+The official examples checked on **October 28, 2026** show why this is a component-level decision:
+
+| Control path | What to inspect | Selection consequence |
+| --- | --- | --- |
+| Native HTML | The field's form owner, `name`, selected values, and disabled state | Prefer this when ordinary browser submission meets the task |
+| Enhanced widget | The actual field carrying the value, not only the visible trigger | Budget for its initialization and value synchronization |
+| Custom element | Its documented form integration or the application's explicit value bridge | Do not assume a `name` on a custom tag makes its state a submitted field |
+
+Basecoat offers both a [Native Select](https://basecoatui.com/components/native-select/) and a [JavaScript Select](https://basecoatui.com/components/select/). The latter documents a hidden input as its submitted value; multiple selection uses a JSON array. Those are different server-side parsing contracts, even within one kit.
+
+Oat's [TagInput documentation](https://oat.ink/components/#taginput) exposes a tag array through `.value` and an `input` event. Decide how that array becomes the server's expected fields; an editor's current text is not necessarily the committed tags. The browser also supports [form-associated custom elements](https://html.spec.whatwg.org/multipage/custom-elements.html#custom-elements-face-example), but that is an explicit component capability, not a property of every custom tag.
+
+For the support portal, agree whether ticket labels arrive as repeated fields or one encoded array. Add two labels, remove one, and inspect the remaining submitted value. Then reset the form and try a rejected submission. Check both the visible labels and the captured fields; keep server validation authoritative. These are proposed acceptance checks, not claims that we tested every shortlisted library.
+
+Use the [Basecoat reference](/ui-libraries/b64cde4a-c071-4530-bfe4-3e701fc0b398/) and [Oat reference](/ui-libraries/4e130820-5001-493b-83d4-b7bfff2d9e76/) to compare the visual direction after that contract is clear.
 
 ## Agree on a handoff before expanding the rollout
 
