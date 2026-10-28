@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-28
+
+- Clarify native, enhanced and custom-element form submission paths in the framework-agnostic UI-library guide, with source-backed parsing tradeoffs and a ticket-label acceptance checklist.
+
 ## 2026-10-27
 
 - Clarify typeahead versus editable search in the headless UI-library guide, with a source-backed Radix/React Aria decision table and explicit text-versus-submitted-value checks.
