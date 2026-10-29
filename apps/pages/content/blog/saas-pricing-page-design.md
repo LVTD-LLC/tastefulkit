@@ -3,7 +3,11 @@ title: "SaaS Pricing Page Design: Choose References That Fit"
 description: "Choose SaaS pricing page design references by billing unit, plan differences and buying path. Use three real examples and a worked reference brief."
 author: TastefulKit
 date: 2026-10-10
-updated: 2026-10-10
+updated: 2026-10-29
+related:
+  - landing-page-design-ideas
+  - mobile-landing-page-design
+  - design-references-ai-coding-agents
 ---
 
 Choose SaaS pricing page design references by matching three things: what the customer pays for, what changes between plans, and how they buy. Then name the specific behavior you will borrow. A useful reference brief explains those choices, rejects mismatched patterns, and checks billing clarity before anyone copies the visual treatment.

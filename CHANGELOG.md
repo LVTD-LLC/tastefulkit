@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-29
+
+- Keep landing-page readers on a relevant path with curated next-guide links instead of the same latest UI-library articles. Related links include only published guides.
+
 ## 2026-10-28
 
 - Clarify native, enhanced and custom-element form submission paths in the framework-agnostic UI-library guide, with source-backed parsing tradeoffs and a ticket-label acceptance checklist.

@@ -36,6 +36,7 @@ class BlogPost:
     body: str
     draft: bool = False
     roundup_items: tuple[tuple[str, str], ...] = ()
+    related_slugs: tuple[str, ...] = ()
 
     @property
     def url(self):
@@ -49,6 +50,21 @@ def metadata_date(value):
     if isinstance(value, str) and re.fullmatch(r"\d{4}-\d{2}-\d{2}", value):
         return date.fromisoformat(value)
     raise ValueError("Blog dates must use YYYY-MM-DD")
+
+
+def related_slugs(value, current_slug):
+    """Validate editorial navigation without allowing external or duplicate targets."""
+    if (
+        not isinstance(value, list)
+        or len(value) > 3
+        or any(
+            not isinstance(slug, str) or not SLUG_PATTERN.fullmatch(slug) or slug == current_slug
+            for slug in value
+        )
+        or len(set(value)) != len(value)
+    ):
+        raise ValueError("Blog related guides need up to three unique other article slugs")
+    return tuple(value)
 
 
 def load_post(path):
@@ -94,6 +110,7 @@ def load_post(path):
         body=document.content,
         draft=draft,
         roundup_items=tuple(validated_items),
+        related_slugs=related_slugs(document.get("related", []), path.stem),
     )
 
 
@@ -269,6 +286,13 @@ def blog_post(request, slug):
     post = next((post for post in posts if post.slug == slug), None)
     if post is None:
         raise Http404("Blog post not found")
+    if post.related_slugs:
+        visible_posts = {other.slug: other for other in posts}
+        related_posts = [
+            visible_posts[related] for related in post.related_slugs if related in visible_posts
+        ]
+    else:
+        related_posts = [other for other in posts if other.slug != slug][:3]
     renderer = markdown.Markdown(
         extensions=["fenced_code", "tables", "toc"], extension_configs={"toc": {"toc_depth": "2-3"}}
     )
@@ -279,7 +303,7 @@ def blog_post(request, slug):
             # Only a validated, published repository article can supply this identity.
             "posthog_public_content_path": post.url,
             "content": scrollable_content(renderer.convert(post.body)),
-            "related_posts": [other for other in posts if other.slug != slug][:3],
+            "related_posts": related_posts,
         }
     )
     context["toc"] = renderer.toc if renderer.toc_tokens else ""
