@@ -24,7 +24,13 @@
             <section class="tk-blog-next" aria-labelledby="related-heading">
                 <h2 id="related-heading">Keep reading</h2>
                 <ul class="tk-blog-related">
-                    {% for related in related_posts %}<li><a href="{{ related.url }}">{{ related.title }}</a></li>{% endfor %}
+                    {% for related in related_posts %}
+                        <li>
+                            <a href="{{ related.url }}"
+                               data-posthog-cta="related_guide"
+                               data-posthog-cta-location="related_guides">{{ related.title }}</a>
+                        </li>
+                    {% endfor %}
                 </ul>
             </section>
         {% endif %}

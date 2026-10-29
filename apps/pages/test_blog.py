@@ -53,6 +53,11 @@ def write_post(root, slug="sample-guide", **metadata):
         {"date": "2026-09-18T12:00:00Z"},
         {"updated": "2026-09-17"},
         {"draft": "false"},
+        {"related": "other-guide"},
+        {"related": ["https://example.com/"]},
+        {"related": ["other-guide", "other-guide"]},
+        {"related": ["sample-guide"]},
+        {"related": ["one", "two", "three", "four"]},
     ],
 )
 def test_invalid_metadata_is_rejected(content_root, changes):
@@ -96,8 +101,15 @@ def test_publication_filter_sorting_and_dates(content_root):
 def test_index_article_related_links_and_sitemap_agree(client, settings, content_root):
     settings.SITE_URL = "https://tastefulkit.com"
     settings.POSTHOG_API_KEY = "phc_test"
-    write_post(content_root, "sample-guide", updated="2026-09-19")
+    write_post(
+        content_root,
+        "sample-guide",
+        updated="2026-09-19",
+        related=["other-guide", "second-guide", "future-secret"],
+    )
     write_post(content_root, "other-guide")
+    write_post(content_root, "second-guide")
+    write_post(content_root, "unrelated-guide", date="2026-09-20")
     write_post(content_root, "draft-secret", draft=True)
     write_post(content_root, "future-secret", date="2026-09-21")
     write_post(content_root, "bad-secret", author=None)
@@ -119,6 +131,23 @@ def test_index_article_related_links_and_sitemap_agree(client, settings, content
     assert 'href="#compare-references"' in html
     assert 'id="compare-references"' in html
     assert 'href="/blog/other-guide/"' in html
+    assert [post.slug for post in article.context["related_posts"]] == [
+        "other-guide",
+        "second-guide",
+    ]
+    assert 'data-posthog-cta="related_guide"' in html
+    assert 'data-posthog-cta-location="related_guides"' in html
+    assert 'href="/blog/unrelated-guide/"' not in html
+    fallback = client.get("/blog/other-guide/")
+    assert [post.slug for post in fallback.context["related_posts"]] == [
+        "unrelated-guide",
+        "second-guide",
+        "sample-guide",
+    ]
+    document = frontmatter.load(content_root / "sample-guide.md")
+    document["related"] = ["missing", "draft-secret", "future-secret"]
+    (content_root / "sample-guide.md").write_text(frontmatter.dumps(document))
+    assert not client.get("/blog/sample-guide/").context["related_posts"]
     assert 'datetime="2026-09-19"' in html
     assert "Updated" in html
     head = HeadMetadata()
@@ -193,6 +222,7 @@ def test_repository_blog_content_has_valid_metadata():
         post = blog.load_post(path)
         assert post.body.strip(), path
         assert not any(line.startswith("# ") for line in post.body.splitlines()), path
+        assert all((root / f"{slug}.md").is_file() for slug in post.related_slugs), path
 
 
 def test_roundup_metadata_rejects_external_or_unmentioned_items(content_root):

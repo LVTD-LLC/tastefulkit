@@ -65,8 +65,18 @@ free-forever promise.
 Markdown is trusted, code-reviewed repository content, like the existing docs;
 raw HTML is not a user-upload surface. Do not add scripts or unreviewed embeds.
 Frontmatter is escaped in HTML and JSON-LD. Blog rendering requires no JavaScript.
+
+An optional `related` frontmatter list selects up to three other article slugs
+in editorial order for “Keep reading”. Use existing, relevant guides; do not
+include the current slug or duplicates. Only currently published targets appear:
+drafts, future posts and missing targets are omitted without substituting
+unrelated articles. Without a nonempty list, the section uses the latest other
+published articles. Substantive changes to these recommendations should update
+`updated`. These links use the existing privacy-safe marketing CTA event with
+`related_guide` / `related_guides` labels; navigation is not activation.
+
 The index is newest-first and links every published post. Each article links to
-up to three other recent articles and back to the index. The global navigation
+its eligible related guides and back to the index. The global navigation
 and footer link to the blog on public pages.
 
 ## Verify
