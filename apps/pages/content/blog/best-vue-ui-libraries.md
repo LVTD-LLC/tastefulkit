@@ -3,7 +3,7 @@ title: "6 Best Vue UI Libraries in 2026: Choose by Workflow"
 description: "Compare Nuxt UI, Vuetify, Element Plus, Naive UI, shadcn-vue and Reka UI by styling ownership, app requirements and Vue version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-20
+updated: 2026-10-31
 draft: false
 roundup_items:
   - name: "Nuxt UI"
@@ -24,7 +24,7 @@ The best Vue UI library is the one whose defaults match the work you actually ne
 
 Those are different decisions, not positions on one universal leaderboard. A library that helps a support team build a dense customer table may be an awkward foundation for an editorial subscription product.
 
-This guide compares six Vue options already represented in TastefulKit. The recommendations are editorial judgments based on official documentation and catalogue review on **October 13, 2026**, not installation tests, performance benchmarks or independent accessibility audits. The scope is deliberately selective rather than an exhaustive list of every Vue package.
+This guide compares six Vue options already represented in TastefulKit. The recommendations are editorial judgments based on official documentation and catalogue review on **October 13, 2026**, not comparative installation tests, performance benchmarks or independent accessibility audits. A separately dated Nuxt/Reka SSR check below examines one small composition, not all six libraries. The scope is deliberately selective rather than an exhaustive list of every Vue package.
 
 ## Choose a starting point in one minute
 
@@ -100,6 +100,23 @@ Our recommendation is for teams with a real reason to own a design system: disti
 The tradeoff is work you cannot skip. You must design and implement the visible states, compose the pieces correctly, and test the finished interaction. Maintainer accessibility goals do not certify your application's composition.
 
 Use the [Reka UI reference](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/) for orientation, then read the [headless UI library comparison](/blog/best-headless-ui-libraries/) if you are weighing styling freedom against delivery effort.
+
+## For Nuxt SSR, check identity before styling
+
+Reka UI supports server rendering; an old hydration warning is not enough reason to reject it. Before choosing a Vue UI library for a server-rendered application, check the installed versions and the IDs in your composed screen, then test keyboard behavior after hydration.
+
+The [Reka SSR guide](https://reka-ui.com/docs/guides/server-side-rendering) describes an ID workaround for **Vue below 3.5**. Modern [Vue `useId`](https://vuejs.org/api/composition-api-helpers.html#useid) produces IDs that are stable across server and client rendering. Separately, the current [Reka ConfigProvider guide](https://reka-ui.com/docs/utilities/config-provider#hydration-issue) explains how to supply an app-level ID function, including a Nuxt prerendering case. Read the guidance for your actual dependency versions; neither “SSR supported” nor “use this workaround” settles every integration.
+
+Use a small slice of the support console below: **Account** and **Billing** tab groups, each with **Summary** and **History** tabs. Repeated visible labels are intentional. Shared DOM IDs are not.
+
+1. Inspect the server HTML. Record the IDs it actually emits and check for duplicates across the groups. Do not require a conditionally rendered panel to exist before it opens.
+2. After hydration, compare the IDs of those same elements. Check that each panel's `aria-labelledby` and each tab's emitted `aria-controls` resolve to the intended element in its own group, not the other group.
+3. Move from Summary to History with the keyboard in each group. Confirm the correct panel becomes visible and focus stays in the intended group. A quiet console alone does not establish that the interaction works.
+4. If your real screen adds a dialog portal, check that separately. [Vue's SSR guide](https://vuejs.org/guide/scaling-up/ssr.html#teleports) explains that teleported markup needs special handling and recommends a dedicated target when hydrating it. Follow your framework's integration rather than assuming a portal's default destination proves server-rendering compatibility.
+
+A local TastefulKit check on **October 31, 2026**, using **Nuxt 4.6.3, Vue 3.5.44 and Reka UI 2.11.0**, kept the tab IDs stable and the two keyboard paths independent in development and production SSR, both with and without an explicit ConfigProvider ID function. That narrow fixture does not establish prerendering, portal or application-wide compatibility; it gives no basis for prescribing an override to every current Nuxt app.
+
+Keep this identity check separate from visual selection. Use the [Reka UI reference](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/) to assess styling direction, then record the version-specific integration requirement in your implementation brief. A screenshot cannot reveal a hydration mismatch.
 
 ## A worked selection exercise: a customer-support console
 

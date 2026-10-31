@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-10-31
+
+- Add a version-aware Nuxt SSR identity check to the Vue UI-library guide, distinguishing historical ID workarounds from current integration requirements and visual-reference selection.
+
 ## 2026-10-29
 
 - Keep landing-page readers on a relevant path with curated next-guide links instead of the same latest UI-library articles. Related links include only published guides.
