@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-01
+
+- Connect the SaaS pricing-page guide to the pricing reference collection and two contextual public examples, keeping capture limitations explicit instead of sending readers to the default landing-page gallery.
+
 ## 2026-10-31
 
 - Add a version-aware Nuxt SSR identity check to the Vue UI-library guide, distinguishing historical ID workarounds from current integration requirements and visual-reference selection.
