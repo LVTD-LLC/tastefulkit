@@ -3,7 +3,7 @@ title: "SaaS Pricing Page Design: Choose References That Fit"
 description: "Choose SaaS pricing page design references by billing unit, plan differences and buying path. Use three real examples and a worked reference brief."
 author: TastefulKit
 date: 2026-10-10
-updated: 2026-10-29
+updated: 2026-11-01
 related:
   - landing-page-design-ideas
   - mobile-landing-page-design
@@ -154,6 +154,8 @@ Use the following fields for each reference you keep. They work in a document, a
 
 Avoid handing over “make it like Linear.” A better instruction is: “Keep the plan name, billing unit and commitment together. Use our per-agency wording. Do not introduce seat pricing or a sales-only tier. Leave unresolved limit behavior flagged until we provide the rule.”
 
-For additional visual directions, [browse TastefulKit's public reference library](/explore/) or use the [search guide](/docs/using-tastefulkit/search/) to narrow a description. You can inspect public screenshots and available DESIGN.md guides without an account; saving a shortlist requires a free account. References help explain a design decision, but they do not provide a licence to copy a site's assets or proof that its pricing page converts well.
+For additional visual directions, [browse pricing-page references](/explore/?kind=pricing_page) rather than starting with landing-page heroes. To study how a usage input sits above plan choices, open the [Ghost pricing reference](/designs/61e86cfd-1543-4ddf-b0f7-a7b39363435e/). For a plan-card group followed by a feature matrix, open the [Missive pricing reference](/designs/bd795b70-7675-4d80-be87-aede259bf91f/). These are captured states, not current offers or evidence that their controls work; follow each original source to verify behavior and terms.
+
+Use the [search guide](/docs/using-tastefulkit/search/) to narrow a description. You can inspect public screenshots and available DESIGN.md guides without an account; saving a shortlist requires a free account. References help explain a design decision, but they do not provide a licence to copy a site's assets or proof that its pricing page converts well.
 
 Start with one reference and fill in its **reject** field. If nothing seems non-transferable, revisit your own billing unit and buying path before adding more screenshots.
