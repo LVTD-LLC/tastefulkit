@@ -3,7 +3,7 @@ title: "Landing Page Design Ideas: Choose a Direction"
 description: "Turn landing page design ideas into a useful brief. Match layouts to your visitor's task, compare references, and decide what to borrow."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-29
+updated: 2026-11-04
 related:
   - creative-landing-page-design
   - mobile-landing-page-design
@@ -59,6 +59,21 @@ A useful note reads: “Borrow the short explanation beside each product image. 
 An unhelpful note reads: “Make it clean and premium.” Those words can mean generous spacing, low visual density, restrained color, expensive photography, or almost anything else. Replace them with visible decisions.
 
 In TastefulKit, [searching by a visual description](/docs/using-tastefulkit/search/) can help narrow the library. [Explore the full library](/explore/) without an account, including full screenshots. A free [account](/accounts/signup/) is needed to save references and build personal rankings. DESIGN.md guides are included for free when available. You can also use [Arena](/arena/) to compare landing-page directions or inspect the [global rankings](/rankings/). Neither a winning vote nor a high rank establishes that the page converts better for your audience.
+
+### Compare two hero references by the evidence you can supply
+
+The hero is the opening section that introduces the offer and next step. Before borrowing its layout, decide what you can actually show there. These two captured desktop references offer different starting points:
+
+| Reference to inspect | Visible decision to study | What your brief must supply |
+|---|---|---|
+| [folk: product-view hero](/designs/90740a98-7cc6-4551-94a1-661f142aa632/) | A centered headline and compact signup form lead into a large CRM view. | A product scene that explains the task, plus your actual signup requirements—not another product's form fields. |
+| [Senja: customer-quote hero](/designs/101f9f44-4a2d-42b6-9518-eb8187209121/) | An attributed quotation takes the headline position; the product explanation and purple action follow. | A relevant, accurately attributed customer statement you have permission to publish. Without one, reject this structure rather than inventing proof. |
+
+For the hypothetical tutor-booking product, suppose you have a working booking flow but no approved customer quotation. Start with the product-view reference: borrow the relationship between the explanation, action and interface, then adapt the scene to lesson selection. Do not borrow the CRM's dense record cards or copy its signup fields. Keep the quote-led reference only if real customer evidence later makes it appropriate.
+
+**Write the selection down:** “We will show lesson selection beside a clear trial action. We will not use a testimonial headline because we do not yet have an approved statement.” That gives the builder a reason to reject an attractive but unsupported alternative.
+
+These observations describe the captured desktop views checked on November 4, 2026, not conversion results. Open each reference's original website to check its current design and behavior. A screenshot does not establish mobile reflow, working forms or permission to reuse its copy, imagery or customer statements.
 
 ## 4. Translate the references into a section order
 
