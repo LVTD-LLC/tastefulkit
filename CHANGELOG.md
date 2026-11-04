@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-04
+
+- Connect the landing-page ideas guide to product-view and customer-quote hero references, with an evidence-based selection example and explicit capture and reuse limits.
+
 ## 2026-11-01
 
 - Connect the SaaS pricing-page guide to the pricing reference collection and two contextual public examples, keeping capture limitations explicit instead of sending readers to the default landing-page gallery.
