@@ -3,7 +3,7 @@ title: "Best Svelte UI Libraries in 2026: 5 Practical Picks"
 description: "Compare shadcn-svelte, Bits UI, Skeleton, Melt UI and Svelte UX, plus form and toast specialists. Choose by styling ownership and version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-24
+updated: 2026-11-06
 draft: false
 roundup_items:
   - name: "shadcn-svelte"
@@ -20,7 +20,7 @@ roundup_items:
 
 For a Svelte application that needs presentable defaults you can edit, start with **shadcn-svelte**. For an original design system, start with **Bits UI**. For a theme-led visual foundation, consider **Skeleton**. **Melt UI** and **Svelte UX** answer different questions about markup control and interactive application tooling.
 
-This guide selects five broad options already in TastefulKit, then separates two useful specialists: Formsnap for form composition and Svelte Sonner for toast notifications. Recommendations are editorial assessments from official documentation and catalogue review on **October 13, 2026**. We did not run production integrations, performance benchmarks or independent accessibility audits. The form-ownership exercise below adds a bounded synthetic browser check from October 24, 2026; it does not change the five-library recommendations.
+This guide selects five broad options already in TastefulKit, then separates two useful specialists: Formsnap for form composition and Svelte Sonner for toast notifications. Recommendations are editorial assessments from official documentation and catalogue review on **October 13, 2026**. We did not run production integrations, performance benchmarks or independent accessibility audits. The form-ownership exercise below adds a bounded synthetic browser check from October 24, 2026. The data-widget exercise adds a source review and paper example from November 6, 2026. Neither changes the five-library recommendations.
 
 ## The shortlist by responsibility
 
@@ -87,6 +87,45 @@ Our suggested use case is a data-oriented application whose interface work exten
 Its documentation deserves a version check before you begin. The catalogue review found a root page describing v1 with Tailwind 3 alongside a v2/Svelte 5/Tailwind 4 path. Use one compatible set of instructions; do not combine configuration copied from different generations. Consult the [current Svelte UX documentation](https://svelte-ux.techniq.dev/) for the track you intend to install.
 
 The tradeoff is a broader integration surface than a narrow primitive library. Verify only the components and utilities your product needs first. The [Svelte UX reference](/ui-libraries/2fa251f2-45d9-4701-8fdb-9dc83b4178bd/) provides visual context, not evidence that every documented utility is required for your app.
+
+### Choose data widgets by who owns the rows
+
+For a data-heavy screen, decide whether the browser or server sorts and filters
+the rows before choosing the table's appearance. A polished pagination control
+does not establish that sorting covers rows you have not loaded.
+
+In the [Svelte UX Table example source](https://github.com/techniq/svelte-ux/blob/7172294e25f587700608e44e6555f4a4b8879ea9/packages/svelte-ux/src/routes/docs/components/Table/%2Bpage.svelte),
+ordering, pagination and rendering are composed separately: the combined example
+sorts the supplied array before passing it to `Paginate`, renders `pageData` in
+`Table`, and gives `Pagination` the page state. This is a source review of the
+1.0.11 repository snapshot on November 6, 2026, not a tested server-data
+integration or instructions for the v2 track.
+
+Try this original TastefulKit paper exercise before comparing demos. An inventory
+arrives in this order: Orchid, 90 units; Juniper, 10; Maple, 70; Birch, 30. Show two
+rows per page, sorted by stock from lowest to highest.
+
+| Processing choice | First page | What it establishes |
+| --- | --- | --- |
+| Sort all four rows, then choose page one | Juniper, 10; Birch, 30 | Lowest stock across the supplied inventory |
+| Choose the first two rows, then sort them | Juniper, 10; Orchid, 90 | Lowest stock only within that slice |
+
+Both outputs look sorted. Only the first answers the inventory question. If the
+server sends only one page, define filtering, ordering and pagination over the
+full matching inventory there; sorting that page in the browser cannot establish
+the global order. Treat loading failures and a genuine empty result as different
+states, and decide whether changing a filter resets the table to page one.
+
+For a different composition model, the [shadcn-svelte data-table guide](https://www.shadcn-svelte.com/docs/components/data-table),
+reviewed on November 6, 2026, builds on TanStack Table rather than presenting
+its basic table as a complete data engine. Neither approach removes your
+application's data responsibilities.
+
+Write down three owners: the full query and row order, the page state, and the
+rendered cells. Then inspect the [Svelte UX reference](/ui-libraries/2fa251f2-45d9-4701-8fdb-9dc83b4178bd/)
+and [shadcn-svelte reference](/ui-libraries/206078e2-1c92-45cd-8b55-a7dbaeccd9a1/)
+for visual fit. Keep a system you already use if it meets those responsibilities;
+this exercise is not a reason to migrate or a library performance comparison.
 
 ## Two specialists that should not replace your shortlist
 

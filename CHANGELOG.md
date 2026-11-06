@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-06
+
+- Add a source-backed data-widget selection exercise to the Svelte UI-library guide, showing why sorting a page is different from ordering the full inventory before pagination.
+
 ## 2026-11-04
 
 - Connect the landing-page ideas guide to product-view and customer-quote hero references, with an evidence-based selection example and explicit capture and reuse limits.
