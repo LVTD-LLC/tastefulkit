@@ -3,7 +3,7 @@ title: "Mobile Landing Page Design: A Practical Review Checklist"
 description: "Review mobile landing page design with a practical checklist for reading order, image crops, reflow, controls, keyboard access, and sticky elements."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-29
+updated: 2026-11-09
 related:
   - landing-page-design-ideas
   - saas-pricing-page-design
@@ -95,6 +95,22 @@ Tab through the navigation, actions, and form fields. Confirm that focus is visi
 On a phone, focus a field so the software keyboard appears. Can you still see the active field and its label? Can you scroll to the submit button? Does a bottom-fixed action overlap the keyboard or cover an error? These are interaction questions that a tall, full-page capture cannot answer.
 
 Sticky elements deserve their own pass. Review the combination of the header, consent controls if present, chat launcher, and bottom action bar. Each may seem reasonable in isolation while the combined result leaves little usable content. Prefer fewer persistent elements, and check the entire page rather than only the hero.
+
+## Keep plan names with mobile comparison values
+
+A pricing comparison needs to preserve which plan each value belongs to. Stacking the introductory cards does not settle what happens farther down, where someone compares the same feature across plans.
+
+On November 9, 2026, we checked [Whereby Embedded's original pricing page](https://whereby.com/information/embedded/pricing) at 390 and 1440 CSS pixels. Its narrow comparison repeats Explore, Build and Enterprise with the values under “Included participant minutes”; the desktop version uses column headings above the rows. [Whereby Meetings](https://whereby.com/information/meetings/pricing) makes the same change for Free, Pro and Business under “Meeting capacity.” These are observations of two page layouts, not an accessibility audit or evidence that either converts better.
+
+Try the comparison with your own offer:
+
+1. Choose one feature that could change the buyer's plan choice, such as the number of collaborators.
+2. At 390 CSS pixels, scroll straight to that feature. Read each option as **feature → plan → value**, including any qualification. Can you identify the next plan without remembering a heading several screens above?
+3. Repeat at 320 CSS pixels. Check that longer plan names and qualifications stay with the correct values. If you retain a horizontally scrolling comparison, inspect its labels at both ends of the scroll area too.
+
+Repeating plan names costs vertical space. Use it when that tradeoff makes the comparison clearer; a contained table with persistent labels may suit another offer. The acceptance note should name the relationship to preserve: “At the collaborator limit, each value still identifies its plan and any exception.”
+
+You can inspect the [Whereby Embedded desktop reference](/designs/97932911-8a23-4e18-b7ab-5bb2dd225678/) in TastefulKit, then open the original at a narrow width. That 1440-pixel capture does not demonstrate mobile behavior. For choosing references by billing unit rather than layout, use the [SaaS pricing page design guide](/blog/saas-pricing-page-design/).
 
 ## A worked mobile review worksheet
 

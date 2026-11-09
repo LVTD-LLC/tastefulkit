@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-09
+
+- Add a source-checked mobile pricing comparison example and feature–plan–value review task to the existing mobile landing-page guide; distinguish desktop captures from observed mobile behavior.
+
 ## 2026-11-06
 
 - Add a source-backed data-widget selection exercise to the Svelte UI-library guide, showing why sorting a page is different from ordering the full inventory before pagination.
