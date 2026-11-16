@@ -188,5 +188,25 @@
       "signed-in homepage installation prompt"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "Oat selection guidance uses verified post-v1 release status",
+    "paths": [
+      "apps/pages/content/blog/best-framework-agnostic-ui-libraries.md"
+    ],
+    "urls": [
+      "/blog/best-framework-agnostic-ui-libraries/"
+    ],
+    "must_match": [
+      "Oat is no longer pre-v1",
+      "v1\\.1\\.0",
+      "November 1, 2026"
+    ],
+    "must_not_match": [
+      "below version 1",
+      "Global styling and pre-v1",
+      "pre-v1 status is a real maintenance consideration"
+    ],
+    "flags": "i"
   }
 ]

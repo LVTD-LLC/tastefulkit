@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-16
+
+- Correct the framework-agnostic UI guide's outdated Oat pre-v1 warning using the official v1.1.0 release; retain version-pinning and integration checks.
+
 ## 2026-11-09
 
 - Add a source-checked mobile pricing comparison example and feature–plan–value review task to the existing mobile landing-page guide; distinguish desktop captures from observed mobile behavior.
