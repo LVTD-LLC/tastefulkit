@@ -9,3 +9,9 @@ Verified October 1, 2026 against public Explore and full-detail access in [PR #5
 | Public comparison | Arena voting and global rankings work without an account; preference does not establish conversion performance. | `apps/catalogue/arena_views.py`, `/docs/using-tastefulkit/browsing/` | 2026-10-01 | Medium |
 
 Do not promise free forever or automatic cancellation of existing subscriptions. Preserve account boundaries for saves/personal rankings, API-key authentication and administrator-only ingestion. Mechanical public-copy checks live in `truth-checks.json`.
+
+## Dated external-library claims
+
+| Claim | Current value | Source | Read date | Risk |
+|---|---|---|---|---|
+| Oat release status | Oat is no longer pre-v1; v1.1.0 was published November 1, 2026. This is a dated release observation, not an integration guarantee. | [Official v1.1.0 release](https://github.com/knadh/oat/releases/tag/v1.1.0), [usage guide](https://oat.ink/usage/) | 2026-11-16 | Medium: library selection |

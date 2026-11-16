@@ -3,7 +3,7 @@ title: "Best Framework-Agnostic UI Libraries in 2026"
 description: "Compare Bootstrap, Bulma, UIkit, Basecoat, and Oat for HTML-first sites, with clear styling, JavaScript, and integration tradeoffs."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-28
+updated: 2026-11-16
 draft: false
 roundup_items:
   - name: "Bootstrap"
@@ -22,7 +22,7 @@ You do not need to adopt React to give a server-rendered application a coherent 
 
 Our shortlist is **Bootstrap for conventional application scaffolding**, **Bulma for a CSS-only styling layer**, **UIkit for an HTML-oriented component toolkit**, **Basecoat for a shadcn-like visual vocabulary without React**, and **Oat for semantic HTML in smaller tools**.
 
-The five-library recommendations were checked on October 13, 2026. The form-submission examples below were checked separately on October 28; they do not change the shortlist.
+The five-library recommendations were checked on October 13, 2026. The form-submission examples below were checked separately on October 28. Oat's release status was rechecked on November 16; neither check changes the shortlist.
 
 Compare who owns the behavior. Bulma supplies no JavaScript; other options include scripts for selected interactions. None makes integration automatic.
 
@@ -34,7 +34,7 @@ Compare who owns the behavior. Bulma supplies no JavaScript; other options inclu
 | [Bulma](/ui-libraries/9e34d7d0-8515-4f7d-b9aa-f2000ccf74c6/) | CSS classes, no included JavaScript | Teams that already own interactive behavior | Menus and dialogs need additional behavior work |
 | [UIkit](/ui-libraries/4fc3de78-6506-4fa4-9b38-bafd1fe0829a/) | HTML markup with CSS and JavaScript | A coordinated set of page components | Adopt and maintain its markup conventions |
 | [Basecoat](/ui-libraries/b64cde4a-c071-4530-bfe4-3e701fc0b398/) | CSS components with selective JavaScript | Server-rendered products seeking a shadcn-like look | Stylesheet order and dynamic component lifecycle |
-| [Oat](/ui-libraries/4e130820-5001-493b-83d4-b7bfff2d9e76/) | Semantic HTML with selected dynamic controls | Small internal tools and straightforward interfaces | Global styling and pre-v1 change risk |
+| [Oat](/ui-libraries/4e130820-5001-493b-83d4-b7bfff2d9e76/) | Semantic HTML with selected dynamic controls | Small internal tools and straightforward interfaces | Global styling and version-specific integration |
 
 Explore their screenshots and notes in the [TastefulKit UI library collection](/ui-libraries/). If you actually need framework-native components, use the separate guides to [React](/blog/best-react-ui-libraries/), [Vue](/blog/best-vue-ui-libraries/), or [Svelte UI libraries](/blog/best-svelte-ui-libraries/).
 
@@ -94,11 +94,11 @@ The [official installation guide](https://basecoatui.com/installation/) distingu
 
 [Oat on TastefulKit](/ui-libraries/4e130820-5001-493b-83d4-b7bfff2d9e76/) is a useful candidate for modest interfaces where ordinary HTML elements should look coherent without a large class vocabulary.
 
-Its [official usage guide](https://oat.ink/usage/) explains that semantic elements receive default styling and provides direct CSS/JavaScript and package-based installation paths. The same guide explicitly warns that the library is below version 1 and may introduce breaking changes.
+Its [official usage guide](https://oat.ink/usage/) explains that semantic elements receive default styling and provides direct CSS/JavaScript and package-based installation paths. Oat is no longer pre-v1: its official [v1.1.0 release](https://github.com/knadh/oat/releases/tag/v1.1.0) was published on November 1, 2026. Match the documentation and assets to the version you adopt.
 
 **Choose it when:** you are building a small administration screen, internal utility, or straightforward form-driven tool and can accept the library's basic visual approach.
 
-**Tradeoff:** semantic styling has a broad reach. Test it against existing pages and embedded content, not just a clean demo document. It may be a poor match when several unrelated design systems share one page. Pin versions and plan how upgrades will be checked; pre-v1 status is a real maintenance consideration, not a reason to assume the project is unusable.
+**Tradeoff:** semantic styling has a broad reach. Test it against existing pages and embedded content, not just a clean demo document. It may be a poor match when several unrelated design systems share one page. Pin versions and plan how upgrades will be checked. A 1.x release does not verify that the library fits your existing markup or application behavior.
 
 ## Add a specialist only for a specific missing interaction
 
