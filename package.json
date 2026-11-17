@@ -10,7 +10,8 @@
     "watch": "npm run build:vendor && node scripts/watch-assets.mjs",
     "lint": "eslint \"frontend/src/js/**/*.js\" \"scripts/**/*.mjs\"",
     "test:analytics": "node --test scripts/test-posthog.mjs && node --test scripts/test-sentry.mjs",
-    "test:motion": "node --test scripts/test-motion.mjs"
+    "test:motion": "node --test scripts/test-motion.mjs",
+    "test:reference-brief": "node --test scripts/test-reference-brief.mjs"
   },
   "repository": {
     "type": "git",

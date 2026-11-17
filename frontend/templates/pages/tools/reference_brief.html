@@ -1,0 +1,193 @@
+{% extends "base_landing.html" %}
+{% load social_metadata %}
+{% block meta %}
+    {% page_metadata "reference_brief" %}
+{% endblock meta %}
+{% block schema %}
+    <script type="application/ld+json">{{ schema_json|safe }}</script>
+{% endblock schema %}
+{% block content %}
+    <div class="tk-container py-10 sm:py-16">
+        <nav class="tk-blog-breadcrumbs" aria-label="Breadcrumb"><a href="{% url 'tools_index' %}">Tools</a><span aria-hidden="true">/</span><span>Reference brief</span></nav>
+        <header class="tk-blog-heading">
+            <h1>Design reference brief builder</h1>
+            <p>Turn one reference into a decision your coding agent can implement and check. Record the evidence, choose what changes, and export a Markdown brief.</p>
+        </header>
+        <p class="mb-6 max-w-3xl text-gray-600 dark:text-gray-300">This tool formats your notes. It does not open URLs, inspect screenshots or test the result. Your entries stay in this page; copy or download them before leaving. Do not include credentials or private customer information.</p>
+        <noscript>
+            <p class="mb-6">The builder needs JavaScript. You can still use the <a class="underline" href="/blog/design-references-ai-coding-agents/">briefing guide and its written worksheet</a>.</p>
+        </noscript>
+        <div class="grid min-w-0 gap-10 lg:grid-cols-2">
+            <form data-reference-brief
+                  class="ph-no-capture min-w-0"
+                  data-markdown-exclude
+                  novalidate
+                  autocomplete="off">
+                <fieldset disabled class="space-y-5">
+                    <legend class="mb-4 text-xl font-semibold">One reference, one decision</legend>
+                    <p class="text-sm text-gray-600 dark:text-gray-300">The prefilled notes are an illustrative example, not observations of a real site. Fields marked * are required. Each field allows 2,000 characters.</p>
+                    <div>
+                        <label class="mb-2 block font-medium" for="brief-project">Project task *</label>
+                        <textarea id="brief-project"
+                                  data-brief-field="project"
+                                  class="app-input w-full"
+                                  rows="2"
+                                  maxlength="2000"
+                                  required>Help an agency choose a client-portal plan without mistaking the fee for a per-teammate charge.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium" for="brief-source">Public reference URL (optional)</label>
+                        <input id="brief-source"
+                               data-brief-field="source"
+                               class="app-input w-full"
+                               type="url"
+                               maxlength="2000"
+                               aria-describedby="brief-source-help" />
+                        <p id="brief-source-help"
+                           class="mt-2 text-sm text-gray-600 dark:text-gray-300">Use the page URL without a query, fragment or credentials. It will not be fetched. Record a reference ID below.</p>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-context">Reference ID / sketch name, capture date, viewport and state (optional)</label>
+                        <textarea id="brief-context"
+                                  data-brief-field="context"
+                                  class="app-input w-full"
+                                  rows="2"
+                                  maxlength="2000">Illustrative desktop pricing-card sketch, 1440 px. No live page, capture date or mobile state checked.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-observation">What you observed, not inferred *</label>
+                        <textarea id="brief-observation"
+                                  data-brief-field="observation"
+                                  class="app-input w-full"
+                                  rows="3"
+                                  maxlength="2000"
+                                  required>In this hypothetical sketch, the billed unit sits immediately below the amount. The image does not establish checkout behavior.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium" for="brief-decision">Decision *</label>
+                        <select id="brief-decision"
+                                data-brief-field="decision"
+                                class="app-input w-full"
+                                required>
+                            <option value="borrow">Borrow a principle</option>
+                            <option value="adapt" selected>Adapt with a named change</option>
+                            <option value="reject">Reject a pattern</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-consequence"
+                               data-brief-consequence-label>What will you keep, and what must change for your page? *</label>
+                        <textarea id="brief-consequence"
+                                  data-brief-field="consequence"
+                                  class="app-input w-full"
+                                  rows="3"
+                                  maxlength="2000"
+                                  required>Keep the nearby unit explanation, but use our actual per-agency billing unit. Do not carry over a per-user label or an unlimited allowance.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-requirement">Requirement for your implementation *</label>
+                        <textarea id="brief-requirement"
+                                  data-brief-field="requirement"
+                                  class="app-input w-full"
+                                  rows="3"
+                                  maxlength="2000"
+                                  required>Show the agency billing unit and approved teammate allowance beside each plan amount. Use our existing type and spacing tokens.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-check">Repeatable browser task and expected result *</label>
+                        <textarea id="brief-check"
+                                  data-brief-field="check"
+                                  class="app-input w-full"
+                                  rows="3"
+                                  maxlength="2000"
+                                  required>At 390 px and 1440 px, locate a plan amount and its billing unit without opening a tooltip. Check that the unit remains attached to the correct amount. Record actual behavior; do not mark this passed from the sketch.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-unknowns">Unresolved questions (optional)</label>
+                        <textarea id="brief-unknowns"
+                                  data-brief-field="unknowns"
+                                  class="app-input w-full"
+                                  rows="2"
+                                  maxlength="2000">The owner has not confirmed what happens at the active-client limit. Do not invent overage or automatic-upgrade rules.</textarea>
+                    </div>
+                    <div>
+                        <label class="mb-2 block font-medium"
+                               for="brief-constraints">Existing project constraints to preserve (optional)</label>
+                        <textarea id="brief-constraints"
+                                  data-brief-field="constraints"
+                                  class="app-input w-full"
+                                  rows="2"
+                                  maxlength="2000">Keep the current brand, approved offer wording and keyboard-accessible controls. Use only assets we have permission to use.</textarea>
+                    </div>
+                    <div class="flex flex-wrap gap-3">
+                        <button class="app-button-primary" type="submit">Build Markdown brief</button>
+                        <button class="app-button-secondary" type="button" data-brief-clear>Start blank</button>
+                        <button class="app-button-secondary" type="button" data-brief-example>Load example</button>
+                    </div>
+                </fieldset>
+            </form>
+            <section class="ph-no-capture min-w-0"
+                     data-markdown-exclude
+                     aria-labelledby="brief-output-heading">
+                <h2 id="brief-output-heading" class="mb-4 text-xl font-semibold">Your Markdown brief</h2>
+                <p class="mb-4 text-sm text-gray-600 dark:text-gray-300"
+                   data-brief-status
+                   role="status"
+                   aria-live="polite">The example appears when the builder is ready. Browser tasks always begin as not checked.</p>
+                <label class="sr-only" for="brief-output">Generated Markdown, selectable for manual copying</label>
+                <textarea id="brief-output"
+                          class="app-input w-full font-mono text-sm"
+                          rows="30"
+                          readonly
+                          spellcheck="false"
+                          data-brief-output></textarea>
+                <div class="mt-4 flex flex-wrap gap-3">
+                    <button class="app-button-primary" type="button" data-brief-copy disabled>Copy Markdown</button>
+                    <button class="app-button-secondary"
+                            type="button"
+                            data-brief-download
+                            disabled>Download .md</button>
+                </div>
+                <p class="mt-4 text-sm text-gray-600 dark:text-gray-300">No result link or saved draft is created. Share only the file or text you have reviewed. Opening a new reference or asking an AI service to use it is a separate action.</p>
+            </section>
+        </div>
+        <article class="tk-blog-body mt-16 max-w-3xl">
+            <h2>Read the brief as a decision, not a screenshot description</h2>
+            <p>A useful reference has a job. It might explain how a headline and product view work together, how a pricing unit stays attached to an amount, or how a form introduces an error. Start with that job rather than asking a coding agent to reproduce an entire page. You are selecting a principle for your own product, not approving another site's assets, prices or behavior.</p>
+            <p>The builder keeps the observation, decision and implementation requirement separate. That separation matters when someone asks why the design changed: the source may show a useful relationship, while your product needs different content, controls or limits. The exported notes are quoted as supplied material. They do not override the agent's project instructions or establish that a linked page is trustworthy.</p>
+            <h2>Choose borrow, adapt or reject</h2>
+            <p><strong>Borrow</strong> means keeping a named principle, such as putting an explanation next to the value it qualifies. State what stays consistent, and describe it in your own project's terms. Do not turn “borrow” into an instruction to download another company's illustration or reuse its copy.</p>
+            <p><strong>Adapt</strong> needs an intentional difference. For the example above, the proximity of amount and billing unit is useful, but a per-teammate label would be wrong for an agency-priced product. Record both the relationship to retain and the change to make. If you cannot name the difference, inspect the reference again before choosing this option.</p>
+            <p><strong>Reject</strong> creates a boundary. A dramatic hover effect may look appealing but hide information that your mobile visitors need immediately. Name the pattern the implementation must leave out and the reason. Then specify what the page should do instead. A rejection without an alternative leaves the next person to guess.</p>
+            <aside class="my-8 border-y border-gray-200 py-6 dark:border-gray-800">
+                <h3>A worked adaptation</h3>
+                <p><strong>Evidence:</strong> a hypothetical desktop sketch puts the billed unit below the price. <strong>Decision:</strong> retain that relationship, replace the unit with the approved agency unit, and reject copied allowance claims. <strong>Requirement:</strong> show the actual unit beside each amount. <strong>Unknown:</strong> the limit policy still needs a product decision. This is a completed reasoning example, not a tested pricing page.</p>
+            </aside>
+            <h2>Keep evidence and unknowns attached</h2>
+            <p>Record the reference URL and, when available, its catalogue ID, capture date, width and visible state. A desktop image does not show what happens at a narrow viewport, after a click, with a keyboard or during an error. Write those limits in the evidence context rather than quietly turning them into assumptions.</p>
+            <p>Optional fields left blank export as “Not recorded — confirm before implementation.” The builder does not supply missing customer research, brand rules, layout measurements or source verification. It does not rank references or choose a library. Use the <a href="/blog/design-references-ai-coding-agents/">coding-agent briefing guide</a> for the broader observation and handoff workflow, or <a href="/blog/saas-pricing-page-design/">choose pricing references by buying decision</a> when the offer is the hard part.</p>
+            <h2>Write a check someone can actually run</h2>
+            <p>Give the browser task an action, an inspection condition and an expected result. “Looks good on mobile” is not repeatable. “At 390 px, locate the billing unit beside each amount without opening a tooltip” gives the reviewer something to do. Add keyboard, zoom, long-content or failure states when they matter to this specific decision.</p>
+            <aside class="my-8 border-y border-gray-200 py-6 dark:border-gray-800">
+                <h3>A brief is not a passing test</h3>
+                <p>Every exported acceptance task begins <strong>NOT CHECKED</strong>. After implementation, run it in the actual project and record the observed behavior and evidence. If the source or the result could not be inspected, leave that part unresolved. A filled form cannot establish accessibility, responsive correctness or conversion performance.</p>
+            </aside>
+            <h2>How the builder works</h2>
+            <p>Reviewed November 17, 2026. The builder assembles your entries into Markdown in your browser. It makes no source-fetching or AI-generation request and does not save entries to browser storage or create a result URL. Copy and download operate on the current built brief; editing a field clears that result until you build it again. Ordinary site assets and navigation still use the network.</p>
+            <p>Copy or download before leaving: refreshing the page starts over with the example. URLs must use HTTP or HTTPS without credentials, a query or a fragment; keep reference IDs in the context field. Fields are limited to 2,000 characters. Missing required notes or an invalid URL prevent export. Review what you share with another person or service, and leave credentials and private customer information out.</p>
+            <h2>Common questions</h2>
+            <h3>Does it analyze a URL or screenshot?</h3>
+            <p>No. You inspect the source and enter the observations. For a starting point, <a href="{% url 'library' %}">explore public design references</a> and choose one for a specific job. TastefulKit's available screenshots and DESIGN.md guides are references, not downloadable component source or permission to copy third-party assets.</p>
+            <h3>Can I brief more than one reference?</h3>
+            <p>Build one decision at a time, then combine the exported sections in your project document. Give each source a distinct job and resolve conflicts explicitly. The builder does not decide which reference wins when their directions disagree.</p>
+            <h3>What if copying or downloading fails?</h3>
+            <p>The generated Markdown remains selectable. Copy it manually from the result field. If JavaScript is unavailable, use the written worksheet in the briefing guide; no source inspection or browser test is claimed in either path.</p>
+        </article>
+    </div>
+{% endblock content %}

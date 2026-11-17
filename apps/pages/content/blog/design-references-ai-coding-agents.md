@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-10-29
+updated: 2026-11-17
 related:
   - landing-page-design-ideas
   - mobile-landing-page-design
@@ -13,6 +13,8 @@ related:
 Give an AI coding agent a small set of design references, explain which visible principles matter, and turn those principles into requirements for your own page. Separate observations from guesses, keep existing project constraints explicit, and verify the implementation in a browser. A screenshot supplies evidence, not a complete specification.
 
 “Make it look like this” leaves many decisions unresolved. Does “this” mean the typography, the arrangement of information, the color palette, the product imagery, or all of them? An agent can produce working code while interpreting those choices differently from you.
+
+To hand off one decision now, use the [design reference brief builder](/tools/reference-brief/). Record your observation, choose what to borrow, adapt or reject, and export the requirement with a browser task marked not checked. The builder formats your notes; it does not inspect the source or replace the review workflow below.
 
 A [July 8, 2026 discussion in r/cursor](https://www.reddit.com/r/cursor/comments/1uqq4s9/i_feel_like_im_missing_something_with_cursor_and/) describes this frustration directly: a developer supplies screenshots but still struggles with spacing, hierarchy, typography, and proportions. That is one practitioner's experience, not a benchmark of any model. It is a useful description of the problem a better brief should solve.
 

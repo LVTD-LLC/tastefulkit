@@ -1,0 +1,19 @@
+{% extends "base_landing.html" %}
+{% load social_metadata %}
+{% block meta %}
+    {% page_metadata "tools_index" %}
+{% endblock meta %}
+{% block content %}
+    <div class="tk-container tk-blog">
+        <header class="tk-blog-heading">
+            <h1>Design reference tools</h1>
+            <p>Turn a reference you like into a decision someone can build from.</p>
+        </header>
+        <article class="tk-blog-entry">
+            <h2><a href="{% url 'reference_brief' %}">Design reference brief builder</a></h2>
+            <p>Record what to borrow, adapt or reject. Export your evidence, implementation requirement and unperformed browser check as Markdown.</p>
+        </article>
+        <p class="mt-8">Need a reference first? <a class="app-focus underline" href="{% url 'library' %}">Explore the catalogue</a>, or read the <a class="app-focus underline"
+    href="/blog/design-references-ai-coding-agents/">coding-agent briefing guide</a>.</p>
+    </div>
+{% endblock content %}
