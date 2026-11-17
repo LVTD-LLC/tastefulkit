@@ -52,6 +52,8 @@ class StaticViewSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
             "landing",
             "how_to_use",
             "blog_index",
+            "tools_index",
+            "reference_brief",
             "ui_libraries",
             "ai_skills",
             "uses",

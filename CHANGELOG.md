@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-17
+
+- Add a browser-local design reference brief builder with borrow/adapt/reject decisions, explicit unknowns, unperformed browser tasks and Markdown copy/download; connect it from the tools hub and briefing guide.
+
 ## 2026-11-16
 
 - Correct the framework-agnostic UI guide's outdated Oat pre-v1 warning using the official v1.1.0 release; retain version-pinning and integration checks.

@@ -7,6 +7,7 @@ import { initMessages } from "./modules/messages.js";
 import { initPosthog } from "./modules/posthog.js";
 import { initTheme } from "./modules/theme.js";
 import { initUserSettingsCache } from "./modules/user-settings.js";
+import { initReferenceBrief } from "./modules/reference-brief.js";
 
 document.addEventListener("DOMContentLoaded", () => {
   initTheme();
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
   initMessages();
   initCopyButtons();
   initDocsEnhancements();
+  initReferenceBrief();
 
   initPosthog();
 

@@ -12,6 +12,7 @@ urlpatterns = [
     path("accounts/signup/", TemplateView.as_view(), name="account_signup"),
     path("app/", TemplateView.as_view(), name="home"),
     path("blog/", TemplateView.as_view(), name="blog_index"),
+    path("tools/", TemplateView.as_view(), name="tools_index"),
     path("docs/", TemplateView.as_view(), name="docs_home"),
     path("ai-skills/", TemplateView.as_view(), name="ai_skills"),
     path("ui-libraries/", TemplateView.as_view(), name="ui_libraries"),

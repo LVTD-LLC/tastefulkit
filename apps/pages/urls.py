@@ -1,7 +1,7 @@
 from django.urls import path
 
 from apps.catalogue.views import landing
-from apps.pages import blog, newsletter, social, views
+from apps.pages import blog, newsletter, social, tools, views
 
 urlpatterns = [
     path("newsletter/", newsletter.subscribe, name="newsletter"),
@@ -18,6 +18,8 @@ urlpatterns = [
     path("terms-of-service", views.TermsOfServiceView.as_view(), name="terms_of_service"),
     path("blog/", blog.blog_index, name="blog_index"),
     path("blog/<slug:slug>/", blog.blog_post, name="blog_post"),
+    path("tools/", tools.tools_index, name="tools_index"),
+    path("tools/reference-brief/", tools.reference_brief, name="reference_brief"),
     path("docs/", views.docs_home_view, name="docs_home"),
     path("docs/<str:category>/<str:page>/", views.docs_page_view, name="docs_page"),
 ]

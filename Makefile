@@ -150,6 +150,7 @@ frontend-install:
 frontend-check:
 	$(NPM) run test:analytics
 	$(NPM) run test:motion
+	$(NPM) run test:reference-brief
 	$(NPM) run lint
 	$(NPM) run build
 

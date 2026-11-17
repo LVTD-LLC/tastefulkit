@@ -13,6 +13,24 @@ from django.views.decorators.http import require_safe
 from apps.pages.social_images import render_social_image
 
 PAGES = {
+    "tools_index": {
+        "title": "Design Reference Tools | TastefulKit",
+        "description": (
+            "Turn design references into practical implementation decisions "
+            "with TastefulKit's browser-based tools."
+        ),
+        "headline": "From reference\nto requirement.",
+        "label": "Design reference tools",
+    },
+    "reference_brief": {
+        "title": "Design Reference Brief Builder | TastefulKit",
+        "description": (
+            "Turn reference observations into borrow, adapt or reject decisions. "
+            "Export a Markdown brief with requirements, unknowns and browser acceptance tasks."
+        ),
+        "headline": "A reference.\nA clear decision.",
+        "label": "Reference brief builder",
+    },
     "how_to_use": {
         "title": "How to Use TastefulKit",
         "description": (

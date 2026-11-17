@@ -70,6 +70,15 @@ rather than a plain `@pytest.mark.django_db` test.
 
 ## Command Reference
 
+The public reference-brief builder at `/tools/reference-brief/` runs entirely in
+the browser. Its decision/export logic is in
+`frontend/src/js/modules/reference-brief.js`; views never accept brief text.
+Run `npm run test:reference-brief` and
+`make pytest-check -- apps/pages/test_tools.py -q`. The Node checks also run in
+`make frontend-check`. Verify copy/download, invalid and blank entries, stale
+output clearing, keyboard operation and both themes at narrow/full width. Do not
+add input values, generated briefs or source URLs to analytics or browser storage.
+
 | Command | Purpose |
 | --- | --- |
 | `make python-quality` | Runs pre-commit across the repo, then `make pyscn-check`. |
