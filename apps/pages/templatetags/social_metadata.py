@@ -20,7 +20,8 @@ def docs_metadata(category, page):
 def design_metadata(pk, title, review_summary=""):
     return social.metadata(
         f"{title} | TastefulKit",
-        review_summary or f"Explore {title}, a public landing page design reference on TastefulKit.",
+        review_summary
+        or f"Explore {title}, a public landing page design reference on TastefulKit.",
         reverse("design_detail", args=[pk]),
         reverse("design_social_image", args=[pk]),
         alt=f"{title} landing page preview, curated by TastefulKit",

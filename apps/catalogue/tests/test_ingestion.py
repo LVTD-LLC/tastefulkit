@@ -196,6 +196,7 @@ def test_replace_is_explicit_and_preserves_identity_and_visibility(client, admin
     first = submit(client, admin_key)
     design = Design.objects.get()
     original_shot = design.screenshot.name
+    design.review_summary = "Reviewed opening layout"
     design.published = False
     design.save()
     assert (
@@ -205,6 +206,7 @@ def test_replace_is_explicit_and_preserves_identity_and_visibility(client, admin
     assert updated.status_code == 200 and updated.json()["id"] == first.json()["id"]
     design.refresh_from_db()
     assert design.title == "Replacement title" and not design.published
+    assert design.review_summary == ""
     assert design.screenshot.name != original_shot
     assert Design.objects.count() == 1
 

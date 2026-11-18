@@ -76,8 +76,13 @@ def render(row, evidence, review):
                 "",
             ]
         )
-    frontmatter, body = row["design_markdown"].split("\n---\n", 1)
-    return frontmatter + "\n---\n" + "\n".join(lines) + "\n" + body.lstrip("\n")
+    original = row["design_markdown"]
+    boundary = re.search(r"(?m)^---\r?$(?!\A)", original[3:])
+    if boundary is None:
+        raise ValueError("Missing closing front matter delimiter.")
+    end = 3 + boundary.end()
+    frontmatter, body = original[:end].rstrip("\r"), original[end:]
+    return frontmatter + "\n" + "\n".join(lines) + "\n" + body.lstrip("\n")
 
 
 def main(args):
