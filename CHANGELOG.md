@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-18
+
+- Add browser-measured design reviews to landing-page guides. Reviewed references expose their practical layout notes in search, public page metadata and the sitemap.
+
 ## 2026-11-17
 
 - Add a browser-local design reference brief builder with borrow/adapt/reject decisions, explicit unknowns, unperformed browser tasks and Markdown copy/download; connect it from the tools hub and briefing guide.

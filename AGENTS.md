@@ -164,8 +164,9 @@ New users receive API keys automatically. The signed-in How to Use installation 
 the owner’s key; encrypted recovery supplements hashed authentication. Legacy keys remain
 valid until explicit Settings rotation. See README for backfill and encryption-key rotation.
 Only active superusers may submit; staff status and the first signup confer no
-write access. All catalogue creation/refreshes use `POST /api/v1/designs` as multipart:
+write access. Full-bundle catalogue creation and refreshes use `POST /api/v1/designs` as multipart:
 JSON `payload`, binary `screenshot`, `thumbnail`, UTF-8 `design_md`, and optional `video` MP4 plus `motion_notes` in the payload.
+For guide-only editorial updates, see the [browser review workflow](docs/maintainers/reference-reviews.md).
 See [the submission contract](docs/maintainers/design-ingestion.md)
 for exact preparation requirements, limits, a curl example and the pinned DESIGN.md format.
 

@@ -102,6 +102,22 @@ class UILibrarySitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
         return item.updated_at
 
 
+class ReviewedLandingSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
+    def items(self):
+        from apps.catalogue.models import Design
+        from apps.catalogue.services import visible_designs
+
+        return (
+            visible_designs()
+            .filter(kind=Design.Kind.LANDING)
+            .exclude(review_summary="")
+            .only("id", "kind", "updated_at")
+        )
+
+    def lastmod(self, item):
+        return item.updated_at
+
+
 class AISkillSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
     def items(self):
         from apps.catalogue.skills import skill_results
@@ -113,6 +129,7 @@ class AISkillSitemap(ConfiguredSitemapMixin, sitemaps.Sitemap):
 
 
 sitemaps = {
+    "reviewed_landings": ReviewedLandingSitemap,
     "ai_skills": AISkillSitemap,
     "ui_libraries": UILibrarySitemap,
     "static": StaticViewSitemap,

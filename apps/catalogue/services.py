@@ -47,6 +47,7 @@ def search_designs(
         lexical = lexical.filter(
             Q(title__icontains=word)
             | Q(description__icontains=word)
+            | Q(review_summary__icontains=word)
             | Q(tags__name__icontains=word)
             | Q(industry__icontains=word)
         )

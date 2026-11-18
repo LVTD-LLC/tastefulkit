@@ -107,6 +107,7 @@ def submit_design(payload, user, screenshot, thumbnail, design_md, *, library=Fa
             design.processing_at = None
             if created:
                 design.published = True
+            design.review_summary = ""
             design.save()
             _save_library(design, library_data)
             design.tags.set([Tag.objects.get_or_create(name=tag)[0] for tag in tags])
