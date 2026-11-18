@@ -76,6 +76,7 @@ class Design(models.Model):
     )
     capture_error = models.CharField(max_length=200, blank=True)
     design_markdown = models.TextField(blank=True)
+    review_summary = models.CharField(max_length=600, blank=True, db_default="", editable=False)
     embedding = models.JSONField(default=list, blank=True)
     embedding_model = models.CharField(max_length=100, blank=True)
     embedding_error = models.CharField(max_length=200, blank=True)

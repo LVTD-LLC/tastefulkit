@@ -156,3 +156,7 @@ Static responses have `video_url: null`, null measured metadata, and empty notes
 Pilot with a Raycast animated section and a Heyneuma animated section, grouped
 with their source sites. Verify one complete submission and playback before
 expanding daily collection. No existing screenshot-only record needs backfilling.
+
+For editorial reviews of existing landing-page guides, follow the
+[browser review workflow](reference-reviews.md). Its operator command updates
+only the guide, review summary and modification time.
