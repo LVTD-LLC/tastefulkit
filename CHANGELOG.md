@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-19
+
+- Show how to turn a measured landing-page reference into a project brief, with a linked example and a mobile check for the reader's own implementation.
+
 ## 2026-11-18
 
 - Add browser-measured design reviews to landing-page guides. Reviewed references expose their practical layout notes in search, public page metadata and the sitemap.
