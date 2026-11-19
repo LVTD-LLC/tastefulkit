@@ -36,10 +36,28 @@ Reload the detail page to request a fresh image link. If you copied an image URL
 ## Reuse a design guide
 
 When an example includes DESIGN.md, anyone can view, copy, or download the file.
-Retrieving its text through API/MCP requires your free account API key. Place it in your project's repository and ask your coding agent to
-follow that visual direction alongside the screenshot. Review inferred values
-against the original reference. This guide does not transfer ownership of the
-original site's assets. Some older examples do not have a guide yet.
+Retrieving its text through API/MCP requires your free account API key. Use the
+guide and screenshot to decide what belongs in your own project's brief rather
+than handing the guide to a coding agent as a specification. Some older
+examples do not have a guide yet; a guide does not give you rights to the
+original site's assets.
+
+### Turn one measured detail into a brief
+
+Open [the Jitter landing-page reference](/designs/28a92046-cefe-4618-ad8a-e209853e08f3/)
+and choose **View DESIGN.md**. Its browser review recorded an 80px headline and a
+20px trial-link label on November 18, 2026, at a 1440 × 900 CSS-pixel viewport.
+That's evidence of the type hierarchy at one desktop size, not a mobile
+measurement. The original guide below the review describes the archived
+reference; some of its values are estimates. Keep the review date and viewport
+with the values you cite, rather than combining the two sets of values.
+
+In the [reference brief builder](/tools/reference-brief/), record that observation
+and choose **Adapt**. For your own hero, keep the headline more prominent than
+the action, but size both for your type scale and use your own copy and assets.
+For the browser check, try your longest headline at 390px wide: it should wrap
+without clipping or sideways scrolling, and Tab should reach a visible action.
+Leave the check unverified until you've tried it on your implementation.
 
 ## Compare designs and discover your taste
 
