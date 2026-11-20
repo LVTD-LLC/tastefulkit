@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-20
+
+- Add the Nuxt UI patch guidance for server-rendered untrusted Markdown and connect the Vue guide’s tab-state check to existing visual references and the brief builder.
+
 ## 2026-11-19
 
 - Show how to turn a measured landing-page reference into a project brief, with a linked example and a mobile check for the reader's own implementation.
