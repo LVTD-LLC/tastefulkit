@@ -208,5 +208,24 @@
       "pre-v1 status is a real maintenance consideration"
     ],
     "flags": "i"
+  },
+  {
+    "claim": "Vue guide states the complete Nuxt UI Markdown patch floor and keeps the SSR exercise unverified",
+    "paths": [
+      "apps/pages/content/blog/best-vue-ui-libraries.md"
+    ],
+    "urls": [
+      "/blog/best-vue-ui-libraries/"
+    ],
+    "must_match": [
+      "4\\.12\\.2 or later",
+      "Comark or MDC",
+      "Neither reference screenshot proves the result",
+      "/tools/reference-brief/"
+    ],
+    "must_not_match": [
+      "4\\.12\\.1 or later"
+    ],
+    "flags": "i"
   }
 ]

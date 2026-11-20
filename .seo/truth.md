@@ -15,3 +15,4 @@ Do not promise free forever or automatic cancellation of existing subscriptions.
 | Claim | Current value | Source | Read date | Risk |
 |---|---|---|---|---|
 | Oat release status | Oat is no longer pre-v1; v1.1.0 was published November 1, 2026. This is a dated release observation, not an integration guarantee. | [Official v1.1.0 release](https://github.com/knadh/oat/releases/tag/v1.1.0), [usage guide](https://oat.ink/usage/) | 2026-11-16 | Medium: library selection |
+| Nuxt UI server-rendered Markdown patch | The maintainer identifies Nuxt UI 4.12.2 as the complete fix for GHSA-x9jw-j844-v24h. Scope is apps rendering untrusted Markdown server-side through the affected stack, not TastefulKit's Django blog. | [Official Nuxt UI 4.12.2 release](https://ui.nuxt.com/docs/releases/v4.12.2), [Nuxt UI 4.12.1 update guidance](https://ui.nuxt.com/docs/releases/v4.12.1) | 2026-11-20 | High: dependency guidance |

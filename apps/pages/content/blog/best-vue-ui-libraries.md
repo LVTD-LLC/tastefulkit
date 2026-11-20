@@ -3,7 +3,7 @@ title: "6 Best Vue UI Libraries in 2026: Choose by Workflow"
 description: "Compare Nuxt UI, Vuetify, Element Plus, Naive UI, shadcn-vue and Reka UI by styling ownership, app requirements and Vue version fit."
 author: "TastefulKit"
 date: 2026-10-13
-updated: 2026-10-31
+updated: 2026-11-20
 draft: false
 roundup_items:
   - name: "Nuxt UI"
@@ -48,6 +48,8 @@ Nuxt UI combines styled application components with Reka UI primitives and Tailw
 It is a sensible first candidate for a product with navigation, forms, dialogs and settings that should feel like one system. The practical appeal is reducing the number of styling decisions repeated across those screens. That is an editorial assessment of its approach, not a claim that it will make every team faster.
 
 The tradeoff is commitment to its styling and configuration model. If your existing application deliberately avoids Tailwind, include the cost of that change in the decision. The current repository uses a v4 branch and links older branches separately; an old tutorial may describe a different setup.
+
+If your Nuxt app renders user- or AI-authored Markdown on the server with Comark or MDC, check the installed `@nuxt/ui` version before prototyping. Use **4.12.2 or later** for the complete fix described in the [Nuxt UI 4.12.2 release notes](https://ui.nuxt.com/docs/releases/v4.12.2). Updating the Markdown renderer alone is not a substitute for updating Nuxt UI.
 
 Inspect the [Nuxt UI visual reference](/ui-libraries/db651335-4e35-4614-a821-a1b39293bdc7/) to decide whether its presentation gives you a useful starting point.
 
@@ -116,7 +118,9 @@ Use a small slice of the support console below: **Account** and **Billing** tab 
 
 A local TastefulKit check on **October 31, 2026**, using **Nuxt 4.6.3, Vue 3.5.44 and Reka UI 2.11.0**, kept the tab IDs stable and the two keyboard paths independent in development and production SSR, both with and without an explicit ConfigProvider ID function. That narrow fixture does not establish prerendering, portal or application-wide compatibility; it gives no basis for prescribing an override to every current Nuxt app.
 
-Keep this identity check separate from visual selection. Use the [Reka UI reference](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/) to assess styling direction, then record the version-specific integration requirement in your implementation brief. A screenshot cannot reveal a hydration mismatch.
+Keep the visual decision separate from the behavior check. Compare the [themed Nuxt UI reference](/ui-libraries/db651335-4e35-4614-a821-a1b39293bdc7/) with the [Reka UI reference](/ui-libraries/a43737ff-ef27-4c19-bd3d-645f48dfdcb9/). For the support console, pick one detail to carry over, such as how you distinguish a selected tab from a keyboard-focused tab. With Nuxt UI, start by checking what its theme already provides. With Reka UI, specify both visible states yourself.
+
+Record the visual decision and the unrun check separately in the [reference brief builder](/tools/reference-brief/). For example: “At 390 px, the selected tab stays identifiable while keyboard focus moves. After activating Billing → History, only the Billing panel changes; Account → Summary stays selected.” If your tabs activate on focus, check the panel on arrow-key movement; if they use manual activation, check it after pressing Enter. Run this on your implementation after hydration. Neither reference screenshot proves the result.
 
 ## A worked selection exercise: a customer-support console
 
