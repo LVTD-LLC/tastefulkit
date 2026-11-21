@@ -7,6 +7,8 @@ description: Use visual descriptions and Style and Industry filters to find usef
 
 In [Explore](/explore/), enter a description and choose **Find inspiration ↗**. Start with a few useful words, such as `minimal`, `bold typography`, or `warm landing page`.
 
+If you already know the name of a component library, search [UI libraries](/ui-libraries/) instead. For example, enter `Reka UI` to open that library’s reference rather than browsing landing pages. An exact library name comes first; other results can mention it in their descriptions or notes.
+
 ## Combine a description with filters
 
 - **Style** selects a tag used in the library.

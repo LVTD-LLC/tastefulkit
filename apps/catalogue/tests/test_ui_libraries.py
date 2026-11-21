@@ -101,6 +101,23 @@ def test_library_detail_links_only_its_published_comparisons(
     assert client.get("/blog/published-comparison/").status_code == 200
 
 
+def test_directory_ranks_exact_library_name_before_newer_related_match(
+    client, admin_key, qdrant_store
+):
+    for title, url in [
+        ("Reka UI", "https://example.org/"),
+        ("Reka UI Themes", "https://example.net/"),
+    ]:
+        assert submission(client, admin_key, title=title, source_url=url).status_code == 201
+
+    def titles(query):
+        page = client.get("/ui-libraries/", {"q": query}).context["page"]
+        return [design.title for design in page]
+
+    assert titles("reka ui") == ["Reka UI", "Reka UI Themes"]
+    assert titles("reka") == titles("") == ["Reka UI Themes", "Reka UI"]
+
+
 def test_directory_prioritizes_only_the_first_visible_thumbnail(client, admin_key, qdrant_store):
     class ThumbnailParser(HTMLParser):
         def __init__(self):
