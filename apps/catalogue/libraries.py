@@ -53,7 +53,12 @@ def library_results(query=""):
 @never_cache
 def directory(request):
     query = clean_search_text(request.GET.get("q", ""))
-    page = Paginator(library_results(query), 24).get_page(request.GET.get("page"))
+    items = library_results(query)
+    if query:
+        items = items.alias(exact_title=Q(title__iexact=query)).order_by(
+            "-exact_title", *Design._meta.ordering
+        )
+    page = Paginator(items, 24).get_page(request.GET.get("page"))
     return render(
         request,
         "catalogue/ui_libraries.html",

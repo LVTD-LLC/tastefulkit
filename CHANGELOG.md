@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-21
+
+- Show exact library names first in public UI library searches and explain where to look up a known library in the search guide.
+
 ## 2026-11-20
 
 - Add the Nuxt UI patch guidance for server-rendered untrusted Markdown and connect the Vue guide’s tab-state check to existing visual references and the brief builder.
