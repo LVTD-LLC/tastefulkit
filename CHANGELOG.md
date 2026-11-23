@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-23
+
+- Add a keyboard-only signup error exercise and its matching skill to the AI design-reference guide.
+
 ## 2026-11-21
 
 - Show exact library names first in public UI library searches and explain where to look up a known library in the search guide.
