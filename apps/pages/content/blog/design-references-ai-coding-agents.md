@@ -3,7 +3,7 @@ title: "How to Give AI Coding Agents Better Design References"
 description: "Turn screenshots into buildable briefs for AI coding agents: separate observations from guesses, use TastefulKit MCP, and verify the result in a browser."
 author: TastefulKit
 date: 2026-09-20
-updated: 2026-11-17
+updated: 2026-11-23
 related:
   - landing-page-design-ideas
   - mobile-landing-page-design
@@ -59,7 +59,9 @@ Start with the gap in your workflow:
 - **The visual direction is unclear:** [explore design references](/explore/) and give each selected example one job. Inspect the screenshot instead of relying only on a description.
 - **You need components to implement the direction:** compare [UI libraries](/ui-libraries/) against your existing framework, styling conventions, and the components you actually need. Keep the current library if it already does the job.
 
-For a hypothetical signup page, you might use a skill to review the form, a reference to study the relationship between the explanation and fields, and your existing components to build it. The brief should say which source governs each decision. Do not let a newly added skill silently replace the project's design rules.
+Suppose the reference shows a signup form with a red error under the email field. Borrow the placement if it makes the message easy to find. The screenshot cannot tell you where keyboard focus goes after a failed submit. For that question, open the [Keyboard Navigation skill](/ai-skills/789c2b64-2252-4c92-8c9d-aa66c241ca94/) rather than asking the agent to infer behavior from the image.
+
+Give the agent a check it can run on **your test form**: “Leave the required email blank, tab to Submit, and press Enter. Record where focus lands, whether its indicator is visible, and which keys take you back to the field. Correct the email without using a pointer.” Keep the result separate from the visual brief. If nobody has run the check, mark it untested; a keyboard walkthrough also does not establish what a screen reader announces.
 
 TastefulKit's skill directory is separate from its design-reference MCP tools. Finding a skill on the website does not install it, and `search_designs` does not search the AI-skill directory. Use the source's setup instructions for skills; use the MCP workflow below to retrieve visual references.
 
