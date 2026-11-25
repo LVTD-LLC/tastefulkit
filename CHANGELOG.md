@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-25
+
+- Link the brief builder’s source field to the public design library in a separate tab so readers can inspect references without leaving their notes.
+
 ## 2026-11-23
 
 - Add a keyboard-only signup error exercise and its matching skill to the AI design-reference guide.
