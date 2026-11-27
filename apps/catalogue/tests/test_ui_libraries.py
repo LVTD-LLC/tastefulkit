@@ -248,3 +248,18 @@ def test_library_name_alias_framework_search_and_escaped_notes(client, admin_key
     assert "<script>alert(1)</script>" not in page and "&lt;script&gt;" in page
     assert client.get("/ui-libraries/?q=svelte").context["page"].paginator.count == 1
     assert client.get("/ui-libraries/?q=react").context["page"].paginator.count == 0
+
+
+def test_solidjs_search_matches_the_solid_framework_label(client, admin_key, qdrant_store):
+    submission(client, admin_key, name="Example UI", library={"frameworks": ["Solid"]})
+    submission(
+        client,
+        admin_key,
+        name="Solid choice",
+        source_url="https://example.org/",
+        library={"frameworks": ["Solidarity"]},
+    )
+    for query in ("SolidJS", "Example solidjs"):
+        results = client.get("/ui-libraries/", {"q": query}).context["page"]
+        assert [design.title for design in results] == ["Example UI"]
+    assert not client.get("/ui-libraries/", {"q": "missing solidjs"}).context["page"].object_list

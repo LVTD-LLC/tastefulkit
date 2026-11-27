@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-27
+
+- Include libraries tagged Solid when readers search the UI directory for SolidJS.
+
 ## 2026-11-25
 
 - Link the brief builder’s source field to the public design library in a separate tab so readers can inspect references without leaving their notes.
