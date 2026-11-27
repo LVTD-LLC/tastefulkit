@@ -41,12 +41,16 @@ def library_metadata(design):
 def library_results(query=""):
     items = visible_libraries()
     for word in clean_search_text(query).split()[:12]:
-        items = items.filter(
+        matches = (
             Q(title__icontains=word)
             | Q(description__icontains=word)
             | Q(ui_library__notes__icontains=word)
             | Q(ui_library__frameworks__icontains=word)
         )
+        if word.casefold() == "solidjs":
+            # Match the framework label, not descriptions containing the adjective "solid".
+            matches |= Q(ui_library__frameworks__icontains='"Solid"')
+        items = items.filter(matches)
     return items
 
 
