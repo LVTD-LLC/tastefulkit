@@ -34,6 +34,9 @@
             </div>
         </form>
         <p class="tk-muted">{{ page.paginator.count }} librar{{ page.paginator.count|pluralize:'y,ies' }}</p>
+        {% if alternative %}
+            <p>Looking for components without a default theme? <a href="?q={{ alternative|urlencode }}">Search for {{ alternative }}</a>.</p>
+        {% endif %}
         <div class="design-grid">
             {% for design in page %}
                 <article class="design-card">
