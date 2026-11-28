@@ -1,5 +1,9 @@
 # Changelog
 
+## 2026-11-28
+
+- Offer a matching “unstyled” search alongside compound headless UI searches without changing the original results.
+
 ## 2026-11-27
 
 - Include libraries tagged Solid when readers search the UI directory for SolidJS.

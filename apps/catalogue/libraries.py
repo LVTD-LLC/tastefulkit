@@ -62,6 +62,16 @@ def directory(request):
         items = items.alias(exact_title=Q(title__iexact=query)).order_by(
             "-exact_title", *Design._meta.ordering
         )
+    alternative = ""
+    words = query.split()
+    if "headless" in query.casefold().split() and any(
+        word.casefold() not in {"headless", "ui"} for word in words
+    ):
+        candidate = " ".join(
+            "unstyled" if word.casefold() == "headless" else word for word in words
+        )
+        if library_results(candidate).exists():
+            alternative = candidate
     page = Paginator(items, 24).get_page(request.GET.get("page"))
     return render(
         request,
@@ -69,6 +79,7 @@ def directory(request):
         {
             "page": page,
             "q": query,
+            "alternative": alternative,
             **discovery_navigation(Design.Kind.UI_LIBRARY, "explore"),
             "canonical_url": settings.SITE_URL.rstrip("/") + "/ui-libraries/",
         },

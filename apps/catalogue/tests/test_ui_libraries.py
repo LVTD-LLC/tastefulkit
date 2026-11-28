@@ -263,3 +263,19 @@ def test_solidjs_search_matches_the_solid_framework_label(client, admin_key, qdr
         results = client.get("/ui-libraries/", {"q": query}).context["page"]
         assert [design.title for design in results] == ["Example UI"]
     assert not client.get("/ui-libraries/", {"q": "missing solidjs"}).context["page"].object_list
+
+
+def test_compound_headless_search_links_to_matching_unstyled_search(
+    client, admin_key, qdrant_store
+):
+    submission(client, admin_key, name="Unstyled UI", library={"frameworks": ["Solid"]})
+    directory = "/ui-libraries/"
+    page = client.get(directory, {"q": "SolidJS HEADLESS UI"})
+    assert page.context["page"].paginator.count == 0
+    assert 'href="?q=SolidJS%20unstyled%20UI"' in page.content.decode()
+    assert (
+        client.get(directory, {"q": page.context["alternative"]}).context["page"].paginator.count
+        == 1
+    )
+    for query in ("Headless UI", "missing headless", "headlessUI"):
+        assert not client.get(directory, {"q": query}).context["alternative"]
